@@ -1,0 +1,52 @@
+﻿
+@page "/admin/beer"
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+
+@inject IBeertastingRepository _db
+
+<h1>Beer</h1>
+
+<h4>All beers</h4>
+@if (beers is null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>ABV %</th>
+                <th align="center">Ratebeer</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var beer in beers.OrderBy(x => x.Name))
+            {
+                <tr>
+                    <td>@beer.Name</td>
+                    <td>@beer.ABV%</td>
+                    @if(!string.IsNullOrEmpty(beer.RateBeerLink))
+                    {
+                        <td align="center"><a href=@beer.RateBeerLink target="_blank"><span class="oi oi-external-link"/></a></td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+	private List<BeerModel> beers = new List<BeerModel>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		beers = await _db.GetBeers();
+	}
+}
