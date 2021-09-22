@@ -19,7 +19,8 @@ else
             <tr>
                 <th>Name</th>
                 <th>ABV %</th>
-                <th align="center">Ratebeer</th>
+                <th>Ratebeer</th>
+                <th>Operation</th>
             </tr>
         </thead>
         <tbody>
@@ -30,12 +31,22 @@ else
                     <td>@beer.ABV%</td>
                     @if(!string.IsNullOrEmpty(beer.RateBeerLink))
                     {
-                        <td align="center"><a href=@beer.RateBeerLink target="_blank"><span class="oi oi-external-link"/></a></td>
+                        <td>
+                            <div class="btn btn-outline-primary">
+                                <a href=@beer.RateBeerLink target="_blank">
+                                    <span class="oi oi-external-link"/>
+                                </a>
+                            </div>
+                        </td>
                     }
                     else
                     {
                         <td></td>
                     }
+                    <td>
+                        <div class="btn btn-outline-warning" @onclick="() => clickme(beer)"><span class="oi oi-wrench"/></div>
+                        <div class="btn btn-outline-danger"><span class="oi oi-delete"/></div>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -44,6 +55,11 @@ else
 
 @code {
 	private List<BeerModel> beers = new List<BeerModel>();
+    
+    private void clickme(BeerModel beer)
+    {
+
+    }
 
 	protected override async Task OnInitializedAsync()
 	{
