@@ -1,0 +1,324 @@
+USE [master]
+GO
+
+/****** Object:  Database [BouvetBeertastingDb]    Script Date: 22.09.2021 15:18:41 ******/
+CREATE DATABASE [BouvetBeertastingDb]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'BouvetBeertastingDb_Data', FILENAME = N'C:\FIXME\BouvetBeertastingDb.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
+ LOG ON 
+( NAME = N'BouvetBeertastingDb_Log', FILENAME = N'C:\FIXME\log\BouvetBeertastingDb.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
+
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [BouvetBeertastingDb].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET ANSI_NULL_DEFAULT OFF 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET ANSI_NULLS OFF 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET ANSI_PADDING OFF 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET ANSI_WARNINGS OFF 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET ARITHABORT OFF 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET AUTO_CLOSE OFF 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET AUTO_SHRINK OFF 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET AUTO_UPDATE_STATISTICS ON 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET CURSOR_DEFAULT  GLOBAL 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET NUMERIC_ROUNDABORT OFF 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET QUOTED_IDENTIFIER OFF 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET RECURSIVE_TRIGGERS OFF 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET  ENABLE_BROKER 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET TRUSTWORTHY OFF 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET ALLOW_SNAPSHOT_ISOLATION ON 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET PARAMETERIZATION SIMPLE 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET READ_COMMITTED_SNAPSHOT ON 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET HONOR_BROKER_PRIORITY OFF 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET RECOVERY FULL 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET  MULTI_USER 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET PAGE_VERIFY CHECKSUM  
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET DB_CHAINING OFF 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET TARGET_RECOVERY_TIME = 120 SECONDS 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET DELAYED_DURABILITY = DISABLED 
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET QUERY_STORE = ON
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 100, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
+GO
+
+ALTER DATABASE [BouvetBeertastingDb] SET  READ_WRITE 
+GO
+
+USE [BouvetBeertastingDb]
+GO
+/****** Object:  Table [dbo].[Beer]    Script Date: 22.09.2021 15:19:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Beer](
+	[BeerId] [int] IDENTITY(1,1) NOT NULL,
+	[BeerStyleId] [int] NOT NULL,
+	[BreweryId] [int] NOT NULL,
+	[Name] [nvarchar](max) NULL,
+	[ABV] [float] NOT NULL,
+	[RateBeerLink] [nvarchar](max) NULL,
+	[BeerClassId] [int] NOT NULL,
+ CONSTRAINT [PK_Beer] PRIMARY KEY CLUSTERED 
+(
+	[BeerId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Beerclass]    Script Date: 22.09.2021 15:19:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Beerclass](
+	[BeerClassId] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](max) NULL,
+ CONSTRAINT [PK_Beerclass] PRIMARY KEY CLUSTERED 
+(
+	[BeerClassId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Beerstyle]    Script Date: 22.09.2021 15:19:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Beerstyle](
+	[BeerstyleId] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](max) NULL,
+ CONSTRAINT [PK_Beerstyle] PRIMARY KEY CLUSTERED 
+(
+	[BeerstyleId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Brewery]    Script Date: 22.09.2021 15:19:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Brewery](
+	[BreweryId] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](max) NULL,
+	[Country] [nvarchar](max) NULL,
+	[Website] [nvarchar](max) NULL,
+ CONSTRAINT [PK_Brewery] PRIMARY KEY CLUSTERED 
+(
+	[BreweryId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[RandomFact]    Script Date: 22.09.2021 15:19:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RandomFact](
+	[RandomFactId] [int] IDENTITY(1,1) NOT NULL,
+	[FactText] [nvarchar](max) NULL,
+ CONSTRAINT [PK_RandomFact] PRIMARY KEY CLUSTERED 
+(
+	[RandomFactId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Taster]    Script Date: 22.09.2021 15:19:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Taster](
+	[TasterId] [int] IDENTITY(1,1) NOT NULL,
+	[EmailAddress] [nvarchar](max) NULL,
+	[DisplayName] [nvarchar](max) NULL,
+	[Password] [nvarchar](max) NULL,
+	[IsAdmin] [bit] NOT NULL,
+ CONSTRAINT [PK_Taster] PRIMARY KEY CLUSTERED 
+(
+	[TasterId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Tasting]    Script Date: 22.09.2021 15:19:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Tasting](
+	[TastingId] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](max) NULL,
+	[Description] [nvarchar](max) NULL,
+	[IsActive] [bit] NOT NULL,
+	[IsBlind] [bit] NOT NULL,
+	[TastingDate] [datetime2](7) NOT NULL,
+ CONSTRAINT [PK_Tasting] PRIMARY KEY CLUSTERED 
+(
+	[TastingId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[TastingBeer]    Script Date: 22.09.2021 15:19:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[TastingBeer](
+	[TastingBeerId] [int] IDENTITY(1,1) NOT NULL,
+	[TastingId] [int] NOT NULL,
+	[BeerId] [int] NOT NULL,
+	[SortOrder] [int] NOT NULL,
+ CONSTRAINT [PK_TastingBeer] PRIMARY KEY CLUSTERED 
+(
+	[TastingBeerId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[TastingResult]    Script Date: 22.09.2021 15:19:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[TastingResult](
+	[TastingBeerResultId] [int] IDENTITY(1,1) NOT NULL,
+	[TastingId] [int] NOT NULL,
+	[BeerId] [int] NOT NULL,
+	[BeerClassId] [int] NOT NULL,
+	[BeerName] [nvarchar](max) NULL,
+	[BreweryName] [nvarchar](max) NULL,
+	[BeerStyle] [nvarchar](max) NULL,
+	[Abv] [float] NOT NULL,
+	[BreweryUrl] [nvarchar](max) NULL,
+	[RateBeerUrl] [nvarchar](max) NULL,
+	[ScoreTaste] [float] NOT NULL,
+	[ScoreAppearance] [float] NOT NULL,
+	[ScoreOverall] [float] NOT NULL,
+	[ScoreFinal] [float] NOT NULL,
+	[BeerClassName] [nvarchar](max) NULL,
+ CONSTRAINT [PK_TastingResult] PRIMARY KEY CLUSTERED 
+(
+	[TastingBeerResultId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Vote]    Script Date: 22.09.2021 15:19:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Vote](
+	[VoteId] [int] IDENTITY(1,1) NOT NULL,
+	[BeerId] [int] NOT NULL,
+	[TastingId] [int] NOT NULL,
+	[TasterId] [int] NOT NULL,
+	[Taste] [float] NOT NULL,
+	[Appearance] [float] NOT NULL,
+	[Overall] [float] NOT NULL,
+	[Note] [nvarchar](1000) NULL,
+ CONSTRAINT [PK_Vote] PRIMARY KEY CLUSTERED 
+(
+	[VoteId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Beer] ADD  DEFAULT ((0)) FOR [BeerClassId]
+GO
+ALTER TABLE [dbo].[Tasting] ADD  DEFAULT ('0001-01-01T00:00:00.0000000') FOR [TastingDate]
+GO
+ALTER TABLE [dbo].[Beer]  WITH CHECK ADD  CONSTRAINT [FK_Beer_Beerstyle_BeerStyleId] FOREIGN KEY([BeerStyleId])
+REFERENCES [dbo].[Beerstyle] ([BeerstyleId])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Beer] CHECK CONSTRAINT [FK_Beer_Beerstyle_BeerStyleId]
+GO
+ALTER TABLE [dbo].[Beer]  WITH CHECK ADD  CONSTRAINT [FK_Beer_Brewery_BreweryId] FOREIGN KEY([BreweryId])
+REFERENCES [dbo].[Brewery] ([BreweryId])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Beer] CHECK CONSTRAINT [FK_Beer_Brewery_BreweryId]
+GO
+ALTER TABLE [dbo].[TastingBeer]  WITH CHECK ADD  CONSTRAINT [FK_TastingBeer_Beer_BeerId] FOREIGN KEY([BeerId])
+REFERENCES [dbo].[Beer] ([BeerId])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[TastingBeer] CHECK CONSTRAINT [FK_TastingBeer_Beer_BeerId]
+GO
+ALTER TABLE [dbo].[TastingBeer]  WITH CHECK ADD  CONSTRAINT [FK_TastingBeer_Tasting_TastingId] FOREIGN KEY([TastingId])
+REFERENCES [dbo].[Tasting] ([TastingId])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[TastingBeer] CHECK CONSTRAINT [FK_TastingBeer_Tasting_TastingId]
+GO
+
