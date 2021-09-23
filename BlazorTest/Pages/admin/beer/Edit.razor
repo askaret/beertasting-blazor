@@ -1,5 +1,6 @@
 ﻿
-@page "/admin/beer"
+@page "/admin/beer/edit/{Id:int}"
+
 @using DataAccessLibrary
 @using DataAccessLibrary.Models
 
@@ -7,14 +8,15 @@
 
 <h1>Beer</h1>
 
-<h4>All beers</h4>
-@if (beers is null)
+@if (beer is null)
 {
 	<p><em>Loading...</em></p>
 }
 else
 {
-	<table class="table table-striped">
+    <h4>Edit @beer.Name</h4>
+
+@*	<table class="table table-striped">
         <thead>
             <tr>
                 <th>Name</th>
@@ -50,19 +52,18 @@ else
                 </tr>
             }
         </tbody>
-    </table>
+    </table>*@
 }
 
 @code {
-	private List<BeerModel> beers = new List<BeerModel>();
-    
-    private void clickme(BeerModel beer)
-    {
+    [Parameter]
+    public int Id { get; set; }
 
-    }
+    
+    private BeerModel? beer;
 
 	protected override async Task OnInitializedAsync()
 	{
-		beers = await _db.GetBeers();
-	}
+        beer = await _db.GetBeer(Id);
+    }
 }

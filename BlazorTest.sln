@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31717.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorTest", "BlazorTest\BlazorTest.csproj", "{9ACF743A-A26B-4515-B352-38FDAB31728C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLibrary", "DataAccessLibrary\DataAccessLibrary.csproj", "{8785A8D0-4D71-4F2F-8B38-EAF79EAD0300}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLibrary", "DataAccessLibrary\DataAccessLibrary.csproj", "{8785A8D0-4D71-4F2F-8B38-EAF79EAD0300}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

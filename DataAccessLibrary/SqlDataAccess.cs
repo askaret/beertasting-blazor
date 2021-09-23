@@ -32,5 +32,13 @@ namespace DataAccessLibrary
             using IDbConnection connection = new SqlConnection(connectionString);
             await connection.ExecuteAsync(sql, parameters);
         }
+
+        public async Task<T> LoadSingle<T, U>(string query, U parameters)
+        {
+            var connectionString = _configuration.GetConnectionString(ConnectionStringName);
+
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryFirstOrDefaultAsync<T>(query, parameters);            
+        }
     }
 }

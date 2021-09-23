@@ -1,0 +1,117 @@
+﻿@page "/admin/beer"
+@using BlazorTest.ViewModels
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+
+@inject IBeertastingRepository _db
+@inject NavigationManager _nav
+
+<h1>Beer</h1>
+
+<div class="card m-3">
+	<h4 class="card-header">New beer</h4>
+	<div class="card-body">
+		<EditForm Model="@newBeer" OnValidSubmit="@InsertBeer">
+			<DataAnnotationsValidator />
+			<ValidationSummary />
+
+			<div class="form-row">
+				<div class="form-group col">
+					<label>Name</label>
+					<InputText class="form-control" id="name" @bind-Value="newBeer.Name" />
+				</div>
+				<div class="form-group col-1">
+					<label>ABV</label>
+					<InputNumber class="form-control" id="abv" @bind-Value="newBeer.ABV" title="Poo" />
+				</div>
+
+				<div class="form-group col-5">
+					<label>Ratebeer link</label>
+					<InputText class="form-control" id="ratebeerlink" @bind-Value="newBeer.RateBeerLink" />
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="text-center">
+					<button type="submit" class="btn btn-primary">Save</button>
+				</div>
+			</div>
+		</EditForm>
+	</div>
+</div>
+
+<h4>All beers</h4>
+@if (beers is null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>ABV %</th>
+				<th>Ratebeer</th>
+				<th>Operation</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var beer in beers.OrderBy(x => x.Name))
+			{
+				<tr>
+					<td>@beer.Name</td>
+					<td>@beer.ABV%</td>
+					@if (!string.IsNullOrEmpty(beer.RateBeerLink))
+					{
+						<td>
+							<div class="btn btn-outline-primary">
+								<a href=@beer.RateBeerLink target="_blank">
+									<span class="oi oi-external-link" />
+								</a>
+							</div>
+						</td>
+					}
+					else
+					{
+						<td></td>
+					}
+					<td>
+						<div class="btn btn-outline-warning" @onclick="() => clickme(beer)"><span class="oi oi-wrench" /></div>
+						<div class="btn btn-outline-danger"><span class="oi oi-delete" /></div>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+@code {
+	private List<BeerModel> beers = new List<BeerModel>();
+	public BeerViewModel newBeer = new BeerViewModel();
+
+	private void clickme(BeerModel beer)
+	{
+		_nav.NavigateTo($"/admin/beer/edit/{beer.BeerId}");
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		beers = await _db.GetBeers();
+	}
+
+	private async Task InsertBeer()
+	{
+		var added = new BeerModel()
+			{
+				Name = newBeer.Name,
+				ABV = newBeer.ABV,
+				RateBeerLink = newBeer.RateBeerLink,
+				BeerClassId = 1,
+				BeerStyleId = 1,
+				BreweryId = 1
+			};
+		await _db.AddBeer(added);
+		beers.Add(added);
+		newBeer = new BeerViewModel();
+	}
+}

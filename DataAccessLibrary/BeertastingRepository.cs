@@ -29,5 +29,11 @@ namespace DataAccessLibrary
 
             return _db.SaveData(sql, beer);
         }
+
+        public Task<BeerModel> GetBeer(int id)
+        {
+            var sql = @"select * from dbo.Beer where BeerId = @beerId";
+            return _db.LoadSingle<BeerModel, dynamic>(sql, new { beerId = id });
+        }
     }
 }
