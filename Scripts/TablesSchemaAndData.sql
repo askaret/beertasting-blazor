@@ -913,195 +913,195 @@ SET IDENTITY_INSERT [dbo].[RandomFact] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Taster] ON 
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (1, N'andreas.skaret@bouvet.no', N'Andreas', NULL, 1)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (1, N'andreas.skaret@costco.com', N'Andreas', NULL, 1)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (2, N'andreas.skaret@gmail.com', N'Andreas', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (2, N'andreas.skaret@poomail.com', N'Andreas', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (3, N'mowen@bouvet.no', N'Morten', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (3, N'mowen@costco.com', N'Morten', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (4, N'admin@skarets.com', N'Admin', NULL, 1)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (4, N'admin@costco.com', N'Admin', NULL, 1)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (12, N'anders.grendstadbakk@bouvet.no', N'Anders', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (12, N'anders.grendstadbakk@costco.com', N'Anders', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (13, N'Hege.torsvik@bouvet.no', N'Hegita', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (13, N'Hege.torsvik@costco.com', N'Hegita', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (14, N'Eirik.lyngaas@bouvet.no ', N'Rasmus Lyngaas', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (14, N'Eirik.lyngaas@costco.com ', N'Rasmus Lyngaas', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (15, N'robert.baar@bouvet.no', N'Robban', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (15, N'robert.baar@costco.com', N'Robban', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (16, N'daniel.royland@bouvet.no', N'Daniel Røyland', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (16, N'daniel.royland@costco.com', N'Daniel Røyland', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (17, N'ole.talgo@bouvet.no', N'Ole Petter', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (17, N'ole.talgo@costco.com', N'Ole Petter', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (18, N'Per.paasche@bouvet.no', N'Per Christian', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (18, N'Per.paasche@costco.com', N'Per Christian', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (19, N'per-ivar.skinderhaug@bouvet.no', N'Per Ivar', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (19, N'per-ivar.skinderhaug@costco.com', N'Per Ivar', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (20, N'Morten.Wennevik@bouvet.no', N'Hakamoto', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (20, N'Morten.Wennevik@costco.com', N'Hakamoto', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (21, N'roy.halvorsen@bouvet.no', N'Roy1', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (21, N'roy.halvorsen@costco.com', N'Roy1', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (22, N'Andrea.leikvold@bouvet.no', N'Andrea L', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (22, N'Andrea.leikvold@costco.com', N'Andrea L', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (23, N'oddvar.johnsen@bouvet.no', N'Bjorno', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (23, N'oddvar.johnsen@costco.com', N'Bjorno', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (24, N'dag.prestegarden@bouvet.no', N'Dag Olav', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (24, N'dag.prestegarden@costco.com', N'Dag Olav', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (25, N'Poop@bouvet.no', N'😎🍻😐🤘''''&$@;/\¶%©', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (25, N'Poop@costco.com', N'😎🍻😐🤘''''&$@;/\¶%©', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (26, N'stig.ofstad@bouvet.no', N'Stig Oskar', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (26, N'stig.ofstad@costco.com', N'Stig Oskar', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (27, N'trond.bjorgum@bouvet.no', N'Trond Håvard', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (27, N'trond.bjorgum@costco.com', N'Trond Håvard', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (28, N'Jeppe.aaker@bouvet.no', N'Porterveien 2', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (28, N'Jeppe.aaker@costco.com', N'Porterveien 2', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (29, N'Eirik.thomessen@bouvet.no', N'Affiegutt', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (29, N'Eirik.thomessen@costco.com', N'Affiegutt', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (30, N'kay.johnsen@bouvet.no', N'SnapKay', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (30, N'kay.johnsen@costco.com', N'SnapKay', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (31, N'Oyvind.wilson@bouvet.no', N'Wilson', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (31, N'Oyvind.wilson@costco.com', N'Wilson', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (32, N'Joran.haines@bouvet.no', N'Jøran', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (32, N'Joran.haines@costco.com', N'Jøran', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (33, N'Borge.rodsjo@bouvet.no', N'Børge Rødsjø', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (33, N'Borge.rodsjo@costco.com', N'Børge Rødsjø', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (34, N'Johan.loudon@bouvet.no', N'Johan', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (34, N'Johan.loudon@costco.com', N'Johan', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (35, N'astrid.hongset@bouvet.no', N'Astrid', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (35, N'astrid.hongset@costco.com', N'Astrid', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (36, N'Renate.Kristiansen@bouvet.no', N'Renna', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (36, N'Renate.Kristiansen@costco.com', N'Renna', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (37, N'fredrik.worren@bouvet.no', N'Beise sjarken', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (37, N'fredrik.worren@costco.com', N'Beise sjarken', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (38, N'Ingrid.odegaard@bouvet.no', N'Daftbird', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (38, N'Ingrid.odegaard@costco.com', N'Daftbird', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (39, N'tatiana.igumnova@bouvet.no', N'Tanja', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (39, N'tatiana.igumnova@costco.com', N'Tanja', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (40, N'eirik.fosse@bouvet.no', N'Eirik Fosse', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (40, N'eirik.fosse@costco.com', N'Eirik Fosse', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (41, N'jonas.dalseth@bouvet.no', N'Jonas', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (41, N'jonas.dalseth@costco.com', N'Jonas', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (42, N'jonatan.lund@bouvet.no', N'Super Lund', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (42, N'jonatan.lund@costco.com', N'Super Lund', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (43, N'Simen.budde@bouvet.no ', N'Simen', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (43, N'Simen.budde@costco.com ', N'Simen', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (44, N'Jostein.solaas@bouvet.no', N'jostein', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (44, N'Jostein.solaas@costco.com', N'jostein', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (45, N'constanza.hauge@bouvet.no', N'FortKickass', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (45, N'constanza.hauge@costco.com', N'FortKickass', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (46, N'Tull@bouvet.no', N'Test', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (46, N'Tull@costco.com', N'Test', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (47, N'Torgeir.kruke@bouvet.no', N'Krukis', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (47, N'Torgeir.kruke@costco.com', N'Krukis', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (48, N'havard.nygard@bouvet.no', N'Håvard Nygård', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (48, N'havard.nygard@costco.com', N'Håvard Nygård', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (49, N'espen.bjornsen@bouvet.no', N'Espen B', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (49, N'espen.bjornsen@costco.com', N'Espen B', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (50, N'ole.dahl@bouvet.no', N'Ole Halvor Dahl', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (50, N'ole.dahl@costco.com', N'Ole Halvor Dahl', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (51, N'bendik.kristiansen@bouvet.no', N'Bendik', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (51, N'bendik.kristiansen@costco.com', N'Bendik', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (52, N'kirsti.brors@bouvet.no', N'Kirsti', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (52, N'kirsti.brors@costco.com', N'Kirsti', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (53, N'olav.fykse@bouvet.no', N'Olav Fykse', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (53, N'olav.fykse@costco.com', N'Olav Fykse', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (54, N'roar.larsen@bouvet.no', N'Roar', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (54, N'roar.larsen@costco.com', N'Roar', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (55, N'markus.foss@bouvet.no', N'Markus', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (55, N'markus.foss@costco.com', N'Markus', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (56, N'Stian.kilaas@bouvet.no', N'Stinis', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (56, N'Stian.kilaas@costco.com', N'Stinis', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (57, N'laila.jossund@bouvet.no', N'Laila', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (57, N'laila.jossund@costco.com', N'Laila', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (58, N'richard.gjerde@bouvet.no', N'Richard', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (58, N'richard.gjerde@costco.com', N'Richard', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (59, N'lars.owren@bouvet.no', N'Lowren', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (59, N'lars.owren@costco.com', N'Lowren', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (60, N'nils.thommesen@bouvet.no', N'Nils Andreas', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (60, N'nils.thommesen@costco.com', N'Nils Andreas', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (61, N'sindre.nistad@bouvet.no', N'Sindre Nistad', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (61, N'sindre.nistad@costco.com', N'Sindre Nistad', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (62, N'Oyvind.kvalnes@bouvet.no', N'Øyvind', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (62, N'Oyvind.kvalnes@costco.com', N'Øyvind', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (63, N'inger.hakedal@bouvet.no', N'ingerjo', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (63, N'inger.hakedal@costco.com', N'ingerjo', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (64, N'peder.birkeland@bouvet.no', N'Peder', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (64, N'peder.birkeland@costco.com', N'Peder', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (65, N'espen.oyan@bouvet.no', N'Espen Ø', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (65, N'espen.oyan@costco.com', N'Espen Ø', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (66, N'Ane.otterlei@bouvet.no', N'Ane ', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (66, N'Ane.otterlei@costco.com', N'Ane ', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (67, N'stian.hagensen@bouvet.no', N'Stian H', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (67, N'stian.hagensen@costco.com', N'Stian H', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (68, N'Irene.skanke@bouvet.no', N'Irene', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (68, N'Irene.skanke@costco.com', N'Irene', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (69, N'eirik.vefsnmo@bouvet.no', N'Eirik V', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (69, N'eirik.vefsnmo@costco.com', N'Eirik V', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (70, N'kia.brekke@bouvet.no', N'Kia', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (70, N'kia.brekke@costco.com', N'Kia', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (71, N'kari.dahn@bouvet.no', N'Kari', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (71, N'kari.dahn@costco.com', N'Kari', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (72, N'John.solem@bouvet.no', N'JohnSverre', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (72, N'John.solem@costco.com', N'JohnSverre', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (73, N'torbjorn.kvale@bouvet.no', N'Torbjørn', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (73, N'torbjorn.kvale@costco.com', N'Torbjørn', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (74, N'fredrik.worrem@bouvet.no', N'Fiffert', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (74, N'fredrik.worrem@costco.com', N'Fiffert', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (75, N'vegard.stuan@bouvet.no', N'VegardS', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (75, N'vegard.stuan@costco.com', N'VegardS', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (76, N'Lars.owren@bouvet.no', N'Lbowren', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (76, N'Lars.owren@costco.com', N'Lbowren', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (77, N'jens.lien@bouvet.no', N'Jens', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (77, N'jens.lien@costco.com', N'Jens', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (78, N'marianne.slordahl@bouvet.no', N'Marianne', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (78, N'marianne.slordahl@costco.com', N'Marianne', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (79, N'magnus.guttormsen@bouvet.no', N'MG', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (79, N'magnus.guttormsen@costco.com', N'MG', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (80, N'ann.kinge@bouvet.no', N'Ann Kinge', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (80, N'ann.kinge@costco.com', N'Ann Kinge', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (81, N'ingvald.skaug@bouvet.no', N'ingvald', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (81, N'ingvald.skaug@costco.com', N'ingvald', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (82, N'kristian.kjerstad@bouvet.no', N'Kristian_Kjerstad', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (82, N'kristian.kjerstad@costco.com', N'Kristian_Kjerstad', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (83, N'vegard.stenvik@bouvet.no', N'Vegard Stenvik', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (83, N'vegard.stenvik@costco.com', N'Vegard Stenvik', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (84, N'eivind.tafto@bouvet.no', N'Eivind T', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (84, N'eivind.tafto@costco.com', N'Eivind T', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (85, N'stiasor@bouvet.no', N'Stian Sørli', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (85, N'stiasor@costco.com', N'Stian Sørli', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (86, N'torgeir.myhre@bouvet.no', N'Torgeir', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (86, N'torgeir.myhre@costco.com', N'Torgeir', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (87, N'Toril.aspaas@bouvet.no', N'Toril', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (87, N'Toril.aspaas@costco.com', N'Toril', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (88, N'Lars.grytten@bouvet.no', N'largehendrix', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (88, N'Lars.grytten@costco.com', N'largehendrix', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (89, N'anders.bakkevold@bouvet.no', N'Anders B', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (89, N'anders.bakkevold@costco.com', N'Anders B', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (90, N'magnus.eriksson@bouvet.no', N'Magnus', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (90, N'magnus.eriksson@costco.com', N'Magnus', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (91, N'kenneth.rannem@bouvet.no', N'Rannem', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (91, N'kenneth.rannem@costco.com', N'Rannem', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (92, N'Magnus.longva@bouvet.no', N'Magnus', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (92, N'Magnus.longva@costco.com', N'Magnus', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (93, N'rune.molden@bouvet.no', N'Rune "Amarone" Molden', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (93, N'rune.molden@costco.com', N'Rune "Amarone" Molden', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (94, N'rita.aursoy@bouvet.no', N'Rita', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (94, N'rita.aursoy@costco.com', N'Rita', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (95, N'Mari.eggen@bouvet.no', N'Mari SE', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (95, N'Mari.eggen@costco.com', N'Mari SE', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (96, N'anna.heistad@bouvet.no', N'Banana', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (96, N'anna.heistad@costco.com', N'Banana', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (97, N'Thomas.johansen@bouvet.no ', N'Monsieur Thomas', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (97, N'Thomas.johansen@costco.com ', N'Monsieur Thomas', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (98, N'andrea.vesterhus@bouvet.no', N'Rudolf', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (98, N'andrea.vesterhus@costco.com', N'Rudolf', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (99, N'test@bouvet.no', N'Reinbeer Rudolph', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (99, N'test@costco.com', N'Reinbeer Rudolph', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (100, N'Sigrid.krishnan@bouvet.no', N'Dancer', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (100, N'Sigrid.krishnan@costco.com', N'Dancer', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (101, N'Trude.arntsen@bouvet.no', N'Trujea', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (101, N'Trude.arntsen@costco.com', N'Trujea', NULL, 0)
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (102, N'arve.bremseth@bouvet.no', N'Arve', NULL, 0)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (102, N'arve.bremseth@costco.com', N'Arve', NULL, 0)
 GO
 SET IDENTITY_INSERT [dbo].[Taster] OFF
 GO
