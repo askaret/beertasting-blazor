@@ -1,57 +1,6 @@
 ﻿<MudNavMenu>
-    <MudNavLink Href="/dashboard">Dashboard</MudNavLink>
-    <MudNavLink Href="/servers">Servers</MudNavLink>
-    <MudNavGroup Title="Settings" Expanded="true">
-        <MudNavLink Href="/users">Users</MudNavLink>
-        <MudNavLink Href="/security">Security</MudNavLink>
+    <MudNavLink Href="/">Home</MudNavLink>
+    <MudNavGroup Icon="@Icons.Material.Outlined.AdminPanelSettings" Title="Admin" Expanded="true">
+        <MudNavLink Icon="@Icons.Material.Outlined.LocalDrink" Href="/admin/beer">Beer</MudNavLink>
     </MudNavGroup>
-    <MudNavLink Href="/about">About</MudNavLink>
 </MudNavMenu>
-
-@*<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">BlazorTest</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
-
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <nav class="flex-row">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </div>
-        <nav class=navbar-collapse>
-            <div class="nav-item px-3 ">
-                <NavLink class="nav-link btn-danger" href="admin/beer">
-                    <span class="oi oi-ban" aria-hidden="true"></span> ADMIN
-                </NavLink>
-            </div>
-        </nav>        
-    </nav>
-</div>
-
-@code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}
-*@
