@@ -15,5 +15,7 @@ namespace DataAccessLibrary.Models
         public string Name { get; set; }
         public float ABV { get; set; }
         public string? RateBeerLink { get; set; }
+        public BeerstyleModel? BeerStyleModel { get; set; }
+        public BeerclassModel? BeerclassModel { get; set; }
     }
 }

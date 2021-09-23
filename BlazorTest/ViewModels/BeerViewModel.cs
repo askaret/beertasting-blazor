@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DataAccessLibrary.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlazorTest.ViewModels
 {
@@ -8,6 +9,9 @@ namespace BlazorTest.ViewModels
         public int BeerStyleId { get; set; }
         public int BreweryId { get; set; }
         public int BeerClassId { get; set; }
+
+        public BeerstyleModel? BeerStyleModel {  get; set; }
+        public BeerclassModel? BeerclassModel { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "Name is too long")]

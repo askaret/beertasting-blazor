@@ -11,9 +11,22 @@ namespace DataAccessLibrary
             _db = db;
         }
 
+        public Task<List<BeerstyleModel>> GetBeerstyles()
+        {
+            var query = "select * from dbo.Beerstyle";
+            return _db.LoadData<BeerstyleModel, dynamic>(query, new { });
+        }
+
+        public Task<List<BeerclassModel>> GetBeerclasses()
+        {
+            var query = "select * from dbo.Beerclass";
+            return _db.LoadData<BeerclassModel, dynamic>(query, new { });
+        }
+        
         public Task<List<BeerModel>> GetBeers()
         {
             var query = "select * from dbo.Beer";
+
             return _db.LoadData<BeerModel, dynamic>(query, new { });
         }
         public Task<List<BreweryModel>> GetBreweries()
