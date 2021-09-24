@@ -2,74 +2,164 @@
 @using BlazorTest.ViewModels
 @using DataAccessLibrary
 @using DataAccessLibrary.Models
+@using System.Globalization
 
 @inject IBeertastingRepository _db
 @inject NavigationManager _nav
 
 <h1>Beer</h1>
-
-<div class="card m-3">
-    <h4 class="card-header">New beer</h4>
-    <div class="card-body">
-        <EditForm Model="@newBeer" OnValidSubmit="@InsertBeer">
-            <DataAnnotationsValidator />
-            <ValidationSummary />
-
-            <div class="form-row">
-                <div class="form-group col">
-                    <label>Name</label>
-                    <InputText class="form-control" id="name" @bind-Value="newBeer.Name" />
-                </div>
-                <div class="form-group col-1">
-                    <label>ABV</label>
-                    <InputNumber class="form-control" id="abv" @bind-Value="newBeer.ABV" title="Poo" />
-                </div>
-
-                <div class="form-group col-5">
-                    <label>Ratebeer link</label>
-                    <InputText class="form-control" id="ratebeerlink" @bind-Value="newBeer.RateBeerLink" />
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-5">
-                    <label>Style</label>
-                    <InputSelect id="beerstyle" @bind-Value="newBeer.BeerStyleId" class="form-control">
+<h2>New beer</h2>
+<EditForm Model="@newBeer" OnValidSubmit="@InsertBeer">
+    <DataAnnotationsValidator />
+    <MudCard>
+        <MudCardContent>
+            <MudGrid>
+                <MudItem xs="12" sm="5">
+                    <MudTextField Label="Name" @bind-Value="newBeer.Name" For="@(() => newBeer.Name)" Variant="Variant.Outlined" />
+                </MudItem>
+                <MudItem xs="12" sm="2">
+                    <MudNumericField T="float" @bind-Value="newBeer.ABV" Immediate="true" Label="ABV" Format="N2" Culture="@_nb" Variant="Variant.Outlined" />
+                </MudItem>
+                <MudItem xs="12" sm="5">
+                    <MudTextField Label="Ratebeer" @bind-Value="newBeer.RateBeerLink" For="@(() => newBeer.RateBeerLink)" Variant="Variant.Outlined" />
+                </MudItem>
+                <MudItem xs="12" sm="4">
+                    <MudSelect T="int" Label="Style" @bind-Value="newBeer.BeerStyleId" Strict="true" Variant="Variant.Outlined">
                         @foreach (var style in styles.OrderBy(x => x.Name))
                         {
-                            <option value="@style.BeerStyleId">@style.Name</option>
+                            <MudSelectItem Value="@style.BeerStyleId">@style.Name</MudSelectItem>
                         }
-                    </InputSelect>
-                </div>
-                <div class="form-group col-5">
-                    <label>Class</label>
-                    <InputSelect id="beerclass" @bind-Value="newBeer.BeerClassId" class="form-control">
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12" sm="4">
+                    <MudSelect T="int" Label="Class" @bind-Value="newBeer.BeerClassId" Strict="true" Variant="Variant.Outlined">
                         @foreach (var beerclass in classes.OrderBy(x => x.Name))
                         {
-                            <option value="@beerclass.BeerClassId">@beerclass.Name</option>
+                            <MudSelectItem Value="@beerclass.BeerClassId">@beerclass.Name</MudSelectItem>
                         }
-                    </InputSelect>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-1">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </div>
-            </div>
-        </EditForm>
-    </div>
-</div>
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12" sm="4">
+                    <MudSelect T="int" Label="Brewery" @bind-Value="newBeer.BreweryId" Strict="true" Variant="Variant.Outlined">
+                        @foreach (var brewery in breweries.OrderBy(x => x.Name))
+                        {
+                            <MudSelectItem Value="@brewery.BreweryId">@brewery.Name (@brewery.Country)</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+            </MudGrid>
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton ButtonType="ButtonType.Submit" OnClick="@InsertBeer" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
+        </MudCardActions>
+    </MudCard>
 
-<h4>All beers</h4>
+    @*<MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3" @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password" />
+        <MudTextField Label="Password" HelperText="Repeat the password" Class="mt-3" @bind-Value="model.Password2" For="@(() => model.Password2)" InputType="InputType.Password" />
+        </MudCardContent>
+        <MudCardActions>
+        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Save</MudButton>
+        </MudCardActions>
+        </MudCard>    *@
+</EditForm>
+
+@*<div class="card m-3">
+    <h4 class="card-header">New beer</h4>
+    <div class="card-body">
+    <EditForm Model="@newBeer" OnValidSubmit="@InsertBeer">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-row">
+    <div class="form-group col">
+    <label>Name</label>
+    <InputText class="form-control" id="name" @bind-Value="newBeer.Name" />
+    </div>
+    <div class="form-group col-1">
+    <label>ABV</label>
+    <InputNumber class="form-control" id="abv" @bind-Value="newBeer.ABV" title="Poo" />
+    </div>
+
+    <div class="form-group col-5">
+    <label>Ratebeer link</label>
+    <InputText class="form-control" id="ratebeerlink" @bind-Value="newBeer.RateBeerLink" />
+    </div>
+    </div>
+    <div class="form-row">
+    <div class="form-group col-5">
+    <label>Style</label>
+    <InputSelect id="beerstyle" @bind-Value="newBeer.BeerStyleId" class="form-control">
+    @foreach (var style in styles.OrderBy(x => x.Name))
+    {
+    <option value="@style.BeerStyleId">@style.Name</option>
+    }
+    </InputSelect>
+    </div>
+    <div class="form-group col-5">
+    <label>Class</label>
+    <InputSelect id="beerclass" @bind-Value="newBeer.BeerClassId" class="form-control">
+    @foreach (var beerclass in classes.OrderBy(x => x.Name))
+    {
+    <option value="@beerclass.BeerClassId">@beerclass.Name</option>
+    }
+    </InputSelect>
+    </div>
+    </div>
+    <div class="form-row">
+    <div class="form-group col-1">
+    <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+    </div>
+    </EditForm>
+    </div>
+    </div>*@
+
+
 @if (!beers.Any())
 {
     <p><em>Loading...</em></p>
 }
 else
 {
+    <MudTable Items="@beers" Dense="false" Hover="true" RowsPerPage=100 Bordered="true" Striped= "true" Filter="new Func<BeerModel,bool>(TableFilterFunction)" @bind-SelectedItem="SelectedBeer">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">All beers</MudText>
+            <MudSpacer />
+            <MudTextField @bind-Value="tableSearchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh>Brewery</MudTh>
+            <MudTh>ABV %</MudTh>
+            <MudTh>Style</MudTh>
+            <MudTh>Class</MudTh>
+            <MudTh>Ratebeer</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="Brewery">@(context.BreweryModel == null ? "" : context.BreweryModel.Name)</MudTd>
+            <MudTd DataLabel="ABV %">@context.ABV</MudTd>
+            <MudTd DataLabel="Style">@(context.BeerStyleModel == null ? "" : context.BeerStyleModel.Name)</MudTd>
+            <MudTd DataLabel="Class">@(context.BeerclassModel == null ? "" : context.BeerclassModel.Name)</MudTd>
+            <MudTd DataLabel="Ratebeer">@{
+            if (!string.IsNullOrEmpty(context?.RateBeerLink))
+                    {
+                        <MudIcon Icon="@Icons.Material.Outlined.Link" Color="Color.Primary" />
+                    }    
+            }</MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>
+
+@*
+
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>Name</th>
+                <th>Brewery</th>
                 <th>ABV %</th>
                 <th>Style</th>
                 <th>Class</th>
@@ -81,8 +171,9 @@ else
             @foreach (var beer in beers.OrderBy(x => x.Name))
             {
                 <tr>
-                    <td>@beer.Name</td>
-                    <td>@beer.ABV%</td>
+                    <td>@beer?.Name</td>
+                    <td>@beer?.BreweryModel?.Name</td>
+                    <td>@beer?.ABV%</td>
                     <td>@beer?.BeerStyleModel?.Name</td>
                     <td>@beer?.BeerclassModel?.Name</td>
 
@@ -107,24 +198,43 @@ else
                 </tr>
             }
         </tbody>
-    </table>
+    </table>*@
 }
 
 @code {
+    public CultureInfo _nb = CultureInfo.GetCultureInfo("nb-NO");
     private List<BeerModel> beers = new List<BeerModel>();
     private List<BeerstyleModel> styles = new List<BeerstyleModel>();
     private List<BeerclassModel> classes = new List<BeerclassModel>();
+    private List<BreweryModel> breweries = new List<BreweryModel>();
+    private BeerModel SelectedBeer = new BeerModel();
     public BeerViewModel newBeer = new BeerViewModel();
+
+    private string tableSearchString = "";
 
     private void clickme(BeerModel? beer)
     {
         _nav.NavigateTo($"/admin/beer/edit/{beer?.BeerId}");
     }
 
+    private bool TableFilterFunction(BeerModel beer) => TableFilter(beer, tableSearchString);
+
+    private bool TableFilter(BeerModel beer, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (beer.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (beer.BreweryModel.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
+    }
+
     protected override async Task OnInitializedAsync()
     {
         styles = await _db.GetBeerstyles();
         classes = await _db.GetBeerclasses();
+        breweries = await _db.GetBreweries();
 
         var localBeers = await _db.GetBeers();
 
@@ -132,6 +242,7 @@ else
         {
             beer.BeerclassModel = classes.FirstOrDefault(x => x.BeerClassId == beer.BeerClassId);
             beer.BeerStyleModel = styles.FirstOrDefault(x => x.BeerStyleId == beer.BeerStyleId);
+            beer.BreweryModel = breweries.FirstOrDefault(x => x.BreweryId == beer.BreweryId);
         }
 
         beers = localBeers;
@@ -146,13 +257,15 @@ else
                 RateBeerLink = newBeer.RateBeerLink,
                 BeerClassId = newBeer.BeerClassId,
                 BeerStyleId = newBeer.BeerStyleId,
-                BreweryId = 1,
-                BeerclassModel = classes.FirstOrDefault(x => x.BeerClassId == newBeer.BeerClassId),
-                BeerStyleModel = styles.FirstOrDefault(x => x.BeerStyleId == newBeer.BeerStyleId)
+                BreweryId = newBeer.BreweryId,
+                BeerclassModel = classes.First(x => x.BeerClassId == newBeer.BeerClassId),
+                BeerStyleModel = styles.First(x => x.BeerStyleId == newBeer.BeerStyleId),
+                BreweryModel = breweries.First(x => x.BreweryId == newBeer.BreweryId)
             };
+
         await _db.AddBeer(added);
         beers.Add(added);
         newBeer = new BeerViewModel();
-            
+
     }
 }
