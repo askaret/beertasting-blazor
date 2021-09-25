@@ -1,0 +1,110 @@
+﻿@page "/admin/tasting/edit"
+@page "/admin/tasting/edit/{Id:int}"
+
+@using BlazorTest.ViewModels
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+
+@inject IBeertastingRepository _db
+@inject NavigationManager _nav
+
+<EditForm Model="@tasting">
+    <DataAnnotationsValidator />
+    <MudCard Elevation="2" Outlined="true">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.body1">@headerTag tasting</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent Class="pa-4">
+            <MudGrid>
+                <MudItem xs="6">
+                    <MudTextField Label=Name @bind-Value="tasting.Name" For="@(() => tasting.Name)"></MudTextField>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudTextField Label=Description @bind-Value="tasting.Description" For="@(() => tasting.Description)"></MudTextField>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudDatePicker Label=TastingDate @bind-Date="tasting.TastingDate" For="@(() => tasting.TastingDate)"></MudDatePicker>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudTimePicker Label=TastingTime @bind-Time="tasting.TastingTime" For="@(() => tasting.TastingTime)"></MudTimePicker>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudCheckBox Label=Active @bind-Checked="tasting.IsActive" For="@(() => tasting.IsActive)"></MudCheckBox>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudCheckBox Label=Blind @bind-Checked="tasting.IsBlind" For="@(() => tasting.IsBlind)"></MudCheckBox>
+                </MudItem>
+            </MudGrid>
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton ButtonType="ButtonType.Submit" OnClick="@InsertOrUpdateTasting" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">@headerTag</MudButton>
+        </MudCardActions>
+    </MudCard>
+</EditForm>
+<MudTable Items="@beers">
+    <HeaderContent>
+        <MudTh>Name</MudTh>
+        <MudTh>ABV %</MudTh>
+        <MudTh>Ratebeer</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="ABV %">@context.ABV</MudTd>
+        <MudTd DataLabel="Ratebeer">@{
+        if (!string.IsNullOrEmpty(context.RateBeerLink))
+                {
+                    <MudIcon Icon="@Icons.Material.Outlined.Link" Color="Color.Primary" />
+                }    
+        }</MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+@code
+{
+    [Parameter]
+    public int? Id { get; set; }
+
+    private string headerTag = "Add";
+    private TastingViewModel tasting = new TastingViewModel();
+    private List<BeerModel> beers { get; set; } = new List<BeerModel>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id is null)
+        {
+            headerTag = "Add";
+            tasting = new TastingViewModel();
+        }
+        else
+        {
+            headerTag = "Edit";
+            tasting = new TastingViewModel(await _db.GetTasting(Id.Value));
+            beers = await _db.GetBeersByTasting(Id.Value);
+        }
+    }
+
+    private async void InsertOrUpdateTasting()
+    {
+        var editedTasting = new TastingModel()
+            {
+                TastingId = tasting.TastingId,
+                Name = tasting.Name,
+                Description = tasting.Description,
+                IsActive = tasting.IsActive,
+                IsBlind = tasting.IsBlind,
+                TastingDate = new DateTime(tasting.TastingDate.Value.Year, tasting.TastingDate.Value.Month, tasting.TastingDate.Value.Day, tasting.TastingTime.Value.Hours, tasting.TastingTime.Value.Minutes, tasting.TastingTime.Value.Seconds)
+            };
+
+        if (editedTasting.TastingId == -1)
+            await _db.AddTasting(editedTasting);
+        else
+            await _db.EditTasting(editedTasting);
+
+        _nav.NavigateTo("/admin/tasting");
+    }
+}

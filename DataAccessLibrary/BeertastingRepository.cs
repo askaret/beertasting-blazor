@@ -29,6 +29,14 @@ namespace DataAccessLibrary
 
             return _db.LoadData<BeerModel, dynamic>(query, new { });
         }
+
+        public Task<List<BeerModel>> GetBeersByTasting(int id)
+        {
+            var query = "select * from dbo.Beer where BeerId in (select BeerId from dbo.TastingBeer where TastingId = @tastingId)";
+
+            return _db.LoadData<BeerModel, dynamic>(query, new { tastingId = id });
+        }
+
         public Task<List<BreweryModel>> GetBreweries()
         {
             var query = "select * from dbo.Brewery";
@@ -43,10 +51,36 @@ namespace DataAccessLibrary
             return _db.SaveData(sql, beer);
         }
 
+        public Task AddTasting(TastingModel tasting)
+        {
+            var sql = @"insert into dbo.Tasting (Name, Description, IsActive, IsBlind, TastingDate) values (@Name, @Description, @IsActive, @IsBlind, @TastingDate)";
+
+            return _db.SaveData(sql, tasting);
+        }
+
+        public Task EditTasting(TastingModel tasting)
+        {
+            var sql = @"update dbo.Tasting set Name = @Name, Description = @Description, IsActive = @IsActive, IsBlind = @IsBlind, TastingDate = @TastingDate where TastingId = @TastingId";
+
+            return _db.SaveData(sql, tasting);
+        }
+
         public Task<BeerModel> GetBeer(int id)
         {
             var sql = @"select * from dbo.Beer where BeerId = @beerId";
             return _db.LoadSingle<BeerModel, dynamic>(sql, new { beerId = id });
+        }
+        
+        public Task<List<TastingModel>> GetTastings()
+        {
+            var sql = @"select * from dbo.Tasting";
+            return _db.LoadData<TastingModel, dynamic>(sql, new { });
+        }
+
+        public Task<TastingModel> GetTasting(int id)
+        {
+            var sql = @"select * from dbo.Tasting where TastingId = @id";
+            return _db.LoadSingle<TastingModel, dynamic>(sql, new { id });
         }
     }
 }
