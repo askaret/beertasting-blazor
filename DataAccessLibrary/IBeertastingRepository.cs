@@ -11,5 +11,7 @@ namespace DataAccessLibrary
         Task<List<BeerclassModel>> GetBeerclasses();
         Task<List<BeerstyleModel>> GetBeerstyles();
         Task<List<TastingModel>> GetTastings();
+        Task<List<TastingResultModel>> GetTastingResults(int tastingId);
+        Task<int> GetParticipantCount(int tastingId);
     }
 }

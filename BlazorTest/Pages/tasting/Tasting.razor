@@ -38,15 +38,54 @@ else
 {
     <MudTable Items="@oldTastings" Hover="true">
         <HeaderContent>
+            <MudTh></MudTh>
             <MudTh>Name</MudTh>
             <MudTh>Description</MudTh>
             <MudTh>Date</MudTh>
         </HeaderContent>
         <RowTemplate>
+            <MudTh><MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => OnButtonPressed(context.TastingId))">@(context.ShowDetails ? "Hide" : "Show") details</MudButton></MudTh>
             <MudTd DataLabel="Name">@context.Name</MudTd>
             <MudTd DataLabel="Description">@context.Description</MudTd>
             <MudTd DataLabel="Date">@context.TastingDate</MudTd>
         </RowTemplate>
+        <ChildRowContent>
+            @if (context.ShowDetails)
+            {
+            <MudTr>
+                <td colspan="4" >
+                    <MudCard Elevation="2" Outlined="true">
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.body1">Details for @context.Name</MudText>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent Class="pa-4">
+                            <MudText>In @context.Name, @context.NumberOfTasters participants tested @context.TastingResults.Count different beers. The following table shows the scores:</MudText>
+                            <MudTable Items="@context.TastingResults" Hover="true" SortLabel="Sort By" RowsPerPage="5">
+                                <HeaderContent>
+                                    <MudTh><MudTableSortLabel SortBy="new Func<TastingResultModel, object>(x => x.BeerName)">Beer</MudTableSortLabel></MudTh>
+                                    <MudTh><MudTableSortLabel SortBy="new Func<TastingResultModel, object>(x => x.BreweryName)">Brewery</MudTableSortLabel></MudTh>
+                                    <MudTh><MudTableSortLabel SortBy="new Func<TastingResultModel, object>(x => x.Abv)">Abv</MudTableSortLabel></MudTh>
+                                    <MudTh><MudTableSortLabel InitialDirection="SortDirection.Descending" SortBy="new Func<TastingResultModel, object>(x => x.ScoreFinal)">Average Score</MudTableSortLabel></MudTh>
+                                </HeaderContent>
+                                <RowTemplate Context="tastingContext">
+                                    <MudTd DataLabel="Beer">@tastingContext.BeerName</MudTd>
+                                    <MudTd DataLabel="Brewery">@tastingContext.BreweryName</MudTd>
+                                    <MudTd DataLabel="Abv">@tastingContext.Abv</MudTd>
+                                    <MudTd DataLabel="Average Score">@tastingContext.ScoreFinal</MudTd>
+                                </RowTemplate>
+                                
+                                <PagerContent>
+                                    <MudTablePager PageSizeOptions="new int[]{5, 10, 50}" />
+                                </PagerContent>
+                            </MudTable>
+                        </MudCardContent>
+                    </MudCard>
+                </td>
+            </MudTr>
+            }
+        </ChildRowContent>
     </MudTable>
 }
 
@@ -59,7 +98,18 @@ else
     protected override async Task OnInitializedAsync()
     {
         tastings = await _db.GetTastings();
+        foreach (TastingModel tasting in tastings)
+        {
+            tasting.TastingResults = await _db.GetTastingResults(tasting.TastingId);
+            tasting.NumberOfTasters = await _db.GetParticipantCount(tasting.TastingId);
+        }
         activeTastings = tastings.Where(t => t.IsActive).ToList();
         oldTastings = tastings.Where(t => !t.IsActive).ToList();
+    }
+
+    private void OnButtonPressed(int id)
+    {
+        TastingModel tasting = tastings.Single(t => t.TastingId == id);
+        tasting.ShowDetails = !tasting.ShowDetails;
     }
 }
