@@ -48,5 +48,11 @@ namespace DataAccessLibrary
             var sql = @"select * from dbo.Beer where BeerId = @beerId";
             return _db.LoadSingle<BeerModel, dynamic>(sql, new { beerId = id });
         }
+
+        public Task<List<TastingModel>> GetTastings()
+        {
+            var sql = @"select * from dbo.Tasting";
+            return _db.LoadData<TastingModel, dynamic>(sql, new { });
+        }
     }
 }

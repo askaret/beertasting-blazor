@@ -1,0 +1,65 @@
+﻿@page "/tasting"
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+
+@inject IBeertastingRepository _db
+
+<h1>Tastings</h1>
+
+<h4>Active Tastings</h4>
+
+@if (tastings is null)
+{
+    <p><em>Loading...</em></p>
+} 
+else
+{
+    <MudTable Items="@activeTastings" Hover="true">
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh>Description</MudTh>
+            <MudTh>Date</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="Description">@context.Description</MudTd>
+            <MudTd DataLabel="Date">@context.TastingDate</MudTd>
+        </RowTemplate>
+    </MudTable>
+
+}
+
+<h4>Old Tastings</h4>
+@if (tastings is null)
+{
+    <p><em>Loading...</em></p>
+} 
+else
+{
+    <MudTable Items="@oldTastings" Hover="true">
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh>Description</MudTh>
+            <MudTh>Date</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="Description">@context.Description</MudTd>
+            <MudTd DataLabel="Date">@context.TastingDate</MudTd>
+        </RowTemplate>
+    </MudTable>
+}
+
+@code
+{
+    private List<TastingModel> tastings = new List<TastingModel>();
+    private List<TastingModel> activeTastings = new List<TastingModel>();
+    private List<TastingModel> oldTastings = new List<TastingModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        tastings = await _db.GetTastings();
+        activeTastings = tastings.Where(t => t.IsActive).ToList();
+        oldTastings = tastings.Where(t => !t.IsActive).ToList();
+    }
+}
