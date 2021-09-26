@@ -54,20 +54,6 @@
             <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Save</MudButton>
         </MudCardActions>
     </MudCard>
-    <MudExpansionPanels>
-            <MudExpansionPanel Text="Validation" IsExpanded="true">
-                @if (success)
-                {
-                    <MudText Color="Color.Success">Success</MudText>
-                }
-                else
-                {
-                    <MudText Color="@Color.Error">
-                        <ValidationSummary />
-                    </MudText>
-                }
-            </MudExpansionPanel>
-        </MudExpansionPanels>
 </EditForm>
 
 @if (!beers.Any())
