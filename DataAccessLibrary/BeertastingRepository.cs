@@ -58,6 +58,33 @@ namespace DataAccessLibrary
             return _db.SaveData(sql, tasting);
         }
 
+        public Task EditTastingBeer(TastingBeerModel tastingBeer)
+        {
+            var sql = @"update dbo.TastingBeer set TastingId = @TastingId, BeerId = @BeerId, SortOrder = @SortOrder where TastingBeerId = @TastingBeerId";
+
+            return _db.SaveData(sql, tastingBeer);
+        }
+
+        public Task RemoveTastingBeer(int id)
+        {
+            var sql = @"delete from dbo.TastingBeer where TastingBeerId = @tastingBeerId";
+            return _db.SaveData(sql, new { tastingBeerId = id });
+        }
+        
+        public Task RemoveVotes(int tastingId, int beerId)
+        {
+            var sql = @"delete from dbo.Vote where TastingId = @tastingId and BeerId = @beerId";
+
+            return _db.SaveData(sql, new { tastingId = tastingId, beerId = beerId });
+        }
+        
+        public Task RemoveTastingResult(int tastingId, int beerId)
+        {
+            var sql = @"delete from dbo.TastingResult where TastingId = @tastingId and BeerId = @beerId";
+
+            return _db.SaveData(sql, new { tastingId = tastingId, beerId = beerId });
+        }
+
         public Task<BeerModel> GetBeer(int id)
         {
             var sql = @"select * from dbo.Beer where BeerId = @beerId";
