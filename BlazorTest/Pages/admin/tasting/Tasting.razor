@@ -10,26 +10,27 @@
 
 <MudTable Items=@tastings Hover="true">
     <HeaderContent>
-        <MudTh></MudTh>
+        <MudTh><MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => OnAddEditPressed(null))">Add</MudButton></MudTh>
         <MudTh>Name</MudTh>
         <MudTh>Description</MudTh>
         <MudTh>TastingDate</MudTh>
         <MudTh>IsActive</MudTh>
         <MudTh>IsBlind</MudTh>
+        <MudTh></MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd>
-            <MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => OnAddEditPressed(context.TastingId))">Edit</MudButton>
-        </MudTd>
+        <MudTd><MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => OnAddEditPressed(context.TastingId))">Edit</MudButton></MudTd>
         <MudTd DataLabel=Name>@context.Name</MudTd>
         <MudTd DataLabel=Description>@context.Description</MudTd>
         <MudTd DataLabel=TastingDate>@context.TastingDate</MudTd>
         <MudTd DataLabel=IsActive>@context.IsActive</MudTd>
         <MudTd DataLabel=IsBlind>@context.IsBlind</MudTd>
+        <MudTd><MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => OnShowDetails(context.TastingId))">Show Details</MudButton></MudTd>
     </RowTemplate>
     <ChildRowContent Context="rowContext">
         @if (rowContext.ShowDetails)
         {
+            <p>Hei</p>
         }
     </ChildRowContent>
 
@@ -54,5 +55,9 @@
             _nav.NavigateTo("/admin/tasting/edit");
     }
 
-   
+    private void OnShowDetails(int id)
+    {
+        var tasting = tastings.Single(t => t.TastingId == id);
+        tasting.ShowDetails = !tasting.ShowDetails;
+    }
 }
