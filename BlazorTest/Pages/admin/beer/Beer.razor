@@ -62,18 +62,18 @@
 }
 else
 {
-    <MudTable Items="@beers" Dense="false" Hover="true" RowsPerPage=100 Bordered="true" Striped= "true" Filter="new Func<BeerModel,bool>(TableFilterFunction)" @bind-SelectedItem="SelectedBeer">
+    <MudTable Items="@beers" Dense="false" Hover="true" RowsPerPage=100 Bordered="true" Striped="true" Filter="new Func<BeerModel,bool>(TableFilterFunction)" @bind-SelectedItem="SelectedBeer">
         <ToolBarContent>
             <MudText Typo="Typo.h6">All beers</MudText>
             <MudSpacer />
             <MudTextField @bind-Value="tableSearchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
         </ToolBarContent>
         <HeaderContent>
-            <MudTh>Name</MudTh>
-            <MudTh>Brewery</MudTh>
-            <MudTh>ABV %</MudTh>
-            <MudTh>Style</MudTh>
-            <MudTh>Class</MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.Name)">Name</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.BreweryModel.Name)">Brewery</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.ABV)">ABV %</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.BeerStyleModel.Name)">Style</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.BeerclassModel.Name)">Style</MudTableSortLabel></MudTh>
             <MudTh>Ratebeer</MudTh>
         </HeaderContent>
         <RowTemplate>
@@ -82,17 +82,19 @@ else
             <MudTd DataLabel="ABV %">@context.ABV</MudTd>
             <MudTd DataLabel="Style">@(context.BeerStyleModel == null ? "" : context.BeerStyleModel.Name)</MudTd>
             <MudTd DataLabel="Class">@(context.BeerclassModel == null ? "" : context.BeerclassModel.Name)</MudTd>
-            <MudTd DataLabel="Ratebeer">@{
-            if (!string.IsNullOrEmpty(context?.RateBeerLink))
+            <MudTd DataLabel="Ratebeer">
+                @{
+                    if (!string.IsNullOrEmpty(context?.RateBeerLink))
                     {
-                        <a href="@context.RateBeerLink" target="_blank"><MudIcon Icon="@Icons.Material.Outlined.Link" Color="Color.Primary" /></a>
-                    }    
-            }</MudTd>
+                    <a href="@context.RateBeerLink" target="_blank"><MudIcon Icon="@Icons.Material.Outlined.Link" Color="Color.Primary" /></a>
+                    }
+                 }
+             </MudTd>
         </RowTemplate>
-        <PagerContent>
-            <MudTablePager />
-        </PagerContent>
-    </MudTable>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
 }
 
 @code {
