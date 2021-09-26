@@ -99,7 +99,7 @@ else
             <MudTd DataLabel="Ratebeer">@{
             if (!string.IsNullOrEmpty(context?.RateBeerLink))
                     {
-                        <MudIcon Icon="@Icons.Material.Outlined.Link" Color="Color.Primary" />
+                        <a href="@context.RateBeerLink" target="_blank"><MudIcon Icon="@Icons.Material.Outlined.Link" Color="Color.Primary" /></a>
                     }    
             }</MudTd>
         </RowTemplate>
