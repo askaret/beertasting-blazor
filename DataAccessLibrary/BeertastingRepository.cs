@@ -30,13 +30,6 @@ namespace DataAccessLibrary
             return _db.LoadData<BeerModel, dynamic>(query, new { });
         }
 
-        public Task<List<BeerModel>> GetBeersByTasting(int id)
-        {
-            var query = "select * from dbo.Beer where BeerId in (select BeerId from dbo.TastingBeer where TastingId = @tastingId)";
-
-            return _db.LoadData<BeerModel, dynamic>(query, new { tastingId = id });
-        }
-
         public Task<List<BreweryModel>> GetBreweries()
         {
             var query = "select * from dbo.Brewery";
@@ -81,6 +74,12 @@ namespace DataAccessLibrary
         {
             var sql = @"select * from dbo.Tasting where TastingId = @id";
             return _db.LoadSingle<TastingModel, dynamic>(sql, new { id });
+        }
+
+        public Task<List<TastingBeerModel>> GetTastingBeers(int id)
+        {
+            var sql = @"select * from dbo.TastingBeer where TastingId = @tastingId";
+            return _db.LoadData<TastingBeerModel, dynamic>(sql, new { tastingId = id });
         }
     }
 }

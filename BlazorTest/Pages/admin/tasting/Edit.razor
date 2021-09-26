@@ -43,17 +43,19 @@
         </MudCardActions>
     </MudCard>
 </EditForm>
-<MudTable Items="@beers">
+<MudTable Items="@tastingBeers">
     <HeaderContent>
         <MudTh>Name</MudTh>
+        <MudTh>Brewery</MudTh>
         <MudTh>ABV %</MudTh>
         <MudTh>Ratebeer</MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Name">@context.Name</MudTd>
-        <MudTd DataLabel="ABV %">@context.ABV</MudTd>
+        <MudTd DataLabel="Name">@context.BeerModel?.Name</MudTd>
+        <MudTd DataLabel="Brewery">@context.BeerModel?.BreweryModel?.Name</MudTd>
+        <MudTd DataLabel="ABV %">@context.BeerModel?.ABV</MudTd>
         <MudTd DataLabel="Ratebeer">@{
-        if (!string.IsNullOrEmpty(context.RateBeerLink))
+        if (!string.IsNullOrEmpty(context.BeerModel?.RateBeerLink))
                 {
                     <MudIcon Icon="@Icons.Material.Outlined.Link" Color="Color.Primary" />
                 }    
@@ -63,6 +65,7 @@
         <MudTablePager />
     </PagerContent>
 </MudTable>
+
 @code
 {
     [Parameter]
@@ -70,11 +73,26 @@
 
     private string headerTag = "Add";
     private TastingViewModel tasting = new TastingViewModel();
+    private List<TastingBeerViewModel> tastingBeers { get; set; } = new List<TastingBeerViewModel>();
     private List<BeerModel> beers { get; set; } = new List<BeerModel>();
-
+    private List<BreweryModel> breweries { get; set; } = new List<BreweryModel>();
+    private List<BeerstyleModel> beerStyles { get; set; } = new List<BeerstyleModel>();
+    private List<BeerclassModel> beerClasses { get; set; } = new List<BeerclassModel>();
 
     protected override async Task OnInitializedAsync()
     {
+        beers = await _db.GetBeers();
+        breweries = await _db.GetBreweries();
+        beerStyles = await _db.GetBeerstyles();
+        beerClasses = await _db.GetBeerclasses();
+
+        foreach (var beer in beers)
+        {
+            beer.BeerclassModel = beerClasses.SingleOrDefault(bc => bc.BeerClassId == beer.BeerClassId);
+            beer.BreweryModel = breweries.SingleOrDefault(b => b.BreweryId == beer.BreweryId);
+            beer.BeerStyleModel = beerStyles.SingleOrDefault(bs => bs.BeerStyleId == beer.BeerStyleId);
+        }
+
         if (Id is null)
         {
             headerTag = "Add";
@@ -84,7 +102,7 @@
         {
             headerTag = "Edit";
             tasting = new TastingViewModel(await _db.GetTasting(Id.Value));
-            beers = await _db.GetBeersByTasting(Id.Value);
+            tastingBeers = (await _db.GetTastingBeers(Id.Value)).Select(tb => new TastingBeerViewModel() {TastingBeerId = tb.TastingBeerId, TastingId = tb.TastingId, SortOrder = tb.SortOrder, BeerModel = beers.SingleOrDefault(b => b.BeerId == tb.BeerId)}).ToList();
         }
     }
 
