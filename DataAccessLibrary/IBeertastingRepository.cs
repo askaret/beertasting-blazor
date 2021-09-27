@@ -5,6 +5,8 @@ namespace DataAccessLibrary
     public interface IBeertastingRepository
     {
         Task AddBeer(BeerModel beer);
+        Task UpdateBeer(BeerModel beer);
+        Task DeleteBeer(BeerModel beer);
         Task<BeerModel> GetBeer(int id);
         Task<List<BeerModel>> GetBeers();
         Task<List<BreweryModel>> GetBreweries();

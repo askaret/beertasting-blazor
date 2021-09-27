@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-<MudThemeProvider />
+<MudThemeProvider Theme="bouvetTheme"/>
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -33,26 +33,28 @@
     {
         Palette = new Palette()
         {
-            Black = BouvetColors.Svart,
-            Background = BouvetColors.ZeroCoolBlå,
-            BackgroundGrey = BouvetColors.CollinsGrå,
-            Surface = BouvetColors.NerdyOffWhite,
-            DrawerBackground = BouvetColors.NetworkGreen,
-            DrawerText = BouvetColors.ColossusRgba,
-            DrawerIcon = BouvetColors.WorpBlåRgba,
-            AppbarBackground = BouvetColors.ZeroCoolBlå,
-            AppbarText = BouvetColors.BorisOransjRgba,
+            Background = BouvetColors.NerdyOffWhitePale,
+            DrawerBackground = BouvetColors.NerdyOffWhitePale,
+            Primary = BouvetColors.CloakBlå,
+            Secondary = BouvetColors.BorisOransj,
+            //Surface = BouvetColors.CollinsGrå,
+            //BackgroundGrey = BouvetColors.HotPink,
+            //Black = BouvetColors.Svart,
+            //DrawerText = BouvetColors.ColossusRgba,
+            //DrawerIcon = BouvetColors.WorpBlåRgba,
+            AppbarBackground = BouvetColors.Colossus,
+            //AppbarText = BouvetColors.BorisOransjRgba,
             TextPrimary = BouvetColors.ColossusRgba,
             TextSecondary = BouvetColors.Svart,
-            ActionDefault = "#adadb1",
-            ActionDisabled = "rgba(255,255,255, 0.26)",
-            ActionDisabledBackground = "rgba(255,255,255, 0.12)",
-            Divider = "rgba(255,255,255, 0.12)",
-            DividerLight = "rgba(255,255,255, 0.06)",
-            TableLines = "rgba(255,255,255, 0.12)",
-            LinesDefault = "rgba(255,255,255, 0.12)",
-            LinesInputs = "rgba(255,255,255, 0.3)",
-            TextDisabled = "rgba(255,255,255, 0.2)"
+            ActionDefault = BouvetColors.ColossusRgba,
+            //ActionDisabled = "rgba(255,0,0, 1)",
+            //ActionDisabledBackground = "rgba(255,255,255, 0.12)",
+            //Divider = BouvetColors.HotPinkRgba,
+            //DividerLight = "rgba(255,255,255, 0.06)",
+            TableLines = BouvetColors.CloakBlå,
+            LinesDefault = BouvetColors.ColossusRgba,
+            //LinesInputs = BouvetColors.BorisOransjRgba,
+            //TextDisabled = BouvetColors.HotPinkRgba,
         }
     };
 }
