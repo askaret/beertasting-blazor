@@ -7,6 +7,7 @@
 
 @inject IBeertastingRepository _db
 @inject NavigationManager _nav
+@inject IDialogService DialogService
 
 <EditForm Model="@tasting">
     <DataAnnotationsValidator />
@@ -54,8 +55,8 @@
     </HeaderContent>
     <RowTemplate>
         <MudTd>
-            <MudIconButton Icon="@Icons.Material.Outlined.ArrowUpward" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled" OnClick="@(() => SwitchBeerSortOrder(context.SortOrder, context.SortOrder-1))"></MudIconButton>
-            <MudIconButton Icon="@Icons.Material.Outlined.ArrowDownward" Color="Color.Secondary" Size="Size.Small" Variant="Variant.Filled" OnClick="@(() => SwitchBeerSortOrder(context.SortOrder, context.SortOrder+1))"></MudIconButton>
+            <MudIconButton Icon="@Icons.Material.Outlined.ArrowUpward" Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined" OnClick="@(() => SwitchBeerSortOrder(context.SortOrder, context.SortOrder-1))"></MudIconButton>
+            <MudIconButton Icon="@Icons.Material.Outlined.ArrowDownward" Color="Color.Secondary" Size="Size.Small" Variant="Variant.Outlined" OnClick="@(() => SwitchBeerSortOrder(context.SortOrder, context.SortOrder+1))"></MudIconButton>
         </MudTd>
         <MudTd DataLabel="Name">@context.BeerModel?.Name</MudTd>
         <MudTd DataLabel="Brewery">@context.BeerModel?.BreweryModel?.Name</MudTd>
@@ -63,10 +64,10 @@
         <MudTd DataLabel="Ratebeer">@{
         if (!string.IsNullOrEmpty(context.BeerModel?.RateBeerLink))
                 {
-                    <MudIcon Icon="@Icons.Material.Outlined.Link" Color="Color.Primary" />
+                    <MudIconButton Link="@context.BeerModel.RateBeerLink" Target="_blank" Icon="@Icons.Material.Outlined.Link" Color="Color.Primary" Size="Size.Small" />
                 }    
         }</MudTd>
-        <MudTd><MudButton Color="Color.Secondary" Size="Size.Small" Variant="Variant.Outlined" OnClick="@(() => RemoveBeer(context.TastingBeerId))">Remove</MudButton></MudTd>
+        <MudTd><MudIconButton Icon="@Icons.Material.Outlined.Delete" Variant="Variant.Outlined" Color="Color.Error" Size="Size.Small" OnClick="@(() => RemoveBeer(context.TastingBeerId))" /></MudTd>
     </RowTemplate>
     <PagerContent>
         <MudTablePager />
@@ -122,7 +123,7 @@
                 Description = tasting.Description,
                 IsActive = tasting.IsActive,
                 IsBlind = tasting.IsBlind,
-                TastingDate = new DateTime(tasting.TastingDate.Value.Year, tasting.TastingDate.Value.Month, tasting.TastingDate.Value.Day, tasting.TastingTime.Value.Hours, tasting.TastingTime.Value.Minutes, tasting.TastingTime.Value.Seconds)
+                TastingDate = tasting.TastingDate.GetValueOrDefault().Add(tasting.TastingTime.GetValueOrDefault())
             };
 
         if (editedTasting.TastingId == -1)
@@ -139,16 +140,43 @@
         if (tastingBeer is null)
             return;
 
+        var tasks = new List<Task>();
+
         await _db.RemoveTastingResult(tastingBeer.TastingId, tastingBeer.BeerModel.BeerId);
         await _db.RemoveVotes(tastingBeer.TastingId, tastingBeer.BeerModel.BeerId);
         await _db.RemoveTastingBeer(tastingBeerId);
         tastingBeers.Remove(tastingBeers.Single(tb => tb.TastingBeerId == tastingBeerId));
+        foreach(var otherTastingBeer in tastingBeers.Where(tb => tb.SortOrder > tastingBeer.SortOrder))
+        {
+            tasks.Add(_db.EditTastingBeer(new TastingBeerModel() { TastingBeerId = otherTastingBeer.TastingBeerId, BeerId = otherTastingBeer.BeerModel.BeerId, SortOrder = otherTastingBeer.SortOrder - 1, TastingId = otherTastingBeer.TastingId }));
+        }
+        await Task.WhenAll(tasks);
         StateHasChanged();
     }
 
-    private void AddBeer()
+    private async void AddBeer()
     {
-        _nav.NavigateTo(@"/admin/tasting/addbeer/{Id}");
+        if (Id is null) return;
+
+        var parameters = new DialogParameters();
+		parameters.Add("Beers", beers);
+        parameters.Add("TastingBeers", tastingBeers);
+
+        var dialog = DialogService.Show<AddBeerDialog>("Add Beers", parameters);
+        var result = await dialog.Result;
+
+		if (result.Cancelled) return;
+
+        var beerIds = (List<int>)result.Data;
+        var sortOrder = tastingBeers.Any() ? tastingBeers.Max(tb => tb.SortOrder) : 0;
+        
+        foreach (var beerId in beerIds)
+        {
+            await _db.AddTastingBeer(Id.Value, beerId, ++sortOrder);
+        }
+
+        tastingBeers = (await _db.GetTastingBeers(Id.Value)).Select(tb => new TastingBeerViewModel() {TastingBeerId = tb.TastingBeerId, TastingId = tb.TastingId, SortOrder = tb.SortOrder, BeerModel = beers.SingleOrDefault(b => b.BeerId == tb.BeerId)}).OrderBy(tb => tb.SortOrder).ToList();
+        StateHasChanged();
     }
 
     private async void SwitchBeerSortOrder(int sortOrder, int otherSortOrder)

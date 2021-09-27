@@ -1,15 +1,25 @@
 ﻿using DataAccessLibrary.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlazorTest.ViewModels
 {
     public class TastingViewModel : IEquatable<TastingModel>
     {
+        
         public int TastingId { get; set; }
+
+        [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
+
+        [Required(ErrorMessage = "Description is required")]
         public string Description { get; set; }
         public bool IsActive { get; set; }
         public bool IsBlind { get; set; }
+
+        [Required(ErrorMessage = "Date is required")]
         public DateTime? TastingDate { get; set; }
+        
+        [Required(ErrorMessage = "Time is required")]
         public TimeSpan? TastingTime {  get; set; }
 
         public TastingViewModel()

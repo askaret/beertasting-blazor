@@ -6,34 +6,61 @@
 @inject IBeertastingRepository _db
 @inject NavigationManager _nav
 
-<h1>Tastings</h1>
+<MudText Typo="Typo.h3">Tastings</MudText>
+
+<EditForm Model="@newTasting" OnValidSubmit="AddTasting">
+    <DataAnnotationsValidator />
+    <MudCard Elevation="2" Outlined="true">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.body1">Add tasting</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent Class="pa-4">
+            <MudGrid>
+                <MudItem xs="6">
+                    <MudTextField Label=Name @bind-Value="newTasting.Name" For="@(() => newTasting.Name)"></MudTextField>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudTextField Label=Description @bind-Value="newTasting.Description" For="@(() => newTasting.Description)"></MudTextField>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudDatePicker Label=TastingDate @bind-Date="newTasting.TastingDate" For="@(() => newTasting.TastingDate)"></MudDatePicker>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudTimePicker Label=TastingTime @bind-Time="newTasting.TastingTime" For="@(() => newTasting.TastingTime)"></MudTimePicker>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudCheckBox Label=Active @bind-Checked="newTasting.IsActive" For="@(() => newTasting.IsActive)"></MudCheckBox>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudCheckBox Label=Blind @bind-Checked="newTasting.IsBlind" For="@(() => newTasting.IsBlind)"></MudCheckBox>
+                </MudItem>
+            </MudGrid>
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Outlined" Size="Size.Small" Color="Color.Primary" Class="ml-auto">SAVE</MudButton>
+        </MudCardActions>
+    </MudCard>
+</EditForm>
 
 <MudTable Items=@tastings Hover="true">
     <HeaderContent>
-        <MudTh><MudButton Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => OnAddEditPressed(null))">Add</MudButton></MudTh>
         <MudTh>Name</MudTh>
         <MudTh>Description</MudTh>
-        <MudTh>TastingDate</MudTh>
+        <MudTh>Tasting Date</MudTh>
         <MudTh>IsActive</MudTh>
         <MudTh>IsBlind</MudTh>
         <MudTh></MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd><MudButton Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => OnAddEditPressed(context.TastingId))">Edit</MudButton></MudTd>
         <MudTd DataLabel=Name>@context.Name</MudTd>
         <MudTd DataLabel=Description>@context.Description</MudTd>
         <MudTd DataLabel=TastingDate>@context.TastingDate</MudTd>
-        <MudTd DataLabel=IsActive>@context.IsActive</MudTd>
-        <MudTd DataLabel=IsBlind>@context.IsBlind</MudTd>
-        <MudTd><MudButton Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => OnShowDetails(context.TastingId))">Show Details</MudButton></MudTd>
+        <MudTd DataLabel=IsActive><MudCheckBox Checked="@context.IsActive" ReadOnly="true"></MudCheckBox></MudTd>
+        <MudTd DataLabel=IsBlind><MudCheckBox Checked="@context.IsBlind" ReadOnly="true"></MudCheckBox></MudTd>
+        <MudTd><MudIconButton Icon="@Icons.Material.Outlined.Edit" Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => OnEditPressed(context.TastingId))"></MudIconButton></MudTd>
     </RowTemplate>
-    <ChildRowContent Context="rowContext">
-        @if (rowContext.ShowDetails)
-        {
-            <p>Hei</p>
-        }
-    </ChildRowContent>
-
 </MudTable>
 
 
@@ -41,22 +68,34 @@
 {
     private List<TastingModel> tastings { get; set; }
 
+    private TastingViewModel newTasting = new TastingViewModel();
+
     protected override async Task OnInitializedAsync()
     {
         tastings = (await _db.GetTastings()).OrderByDescending(t => t.TastingDate).ToList();
+        newTasting = new TastingViewModel();
     }
 
-    private void OnAddEditPressed(int? id)
+    private void OnEditPressed(int id)
     {
-        if (id.HasValue)
-            _nav.NavigateTo($"/admin/tasting/edit/{id.Value}");
-        else
-            _nav.NavigateTo("/admin/tasting/edit");
+        _nav.NavigateTo($"/admin/tasting/edit/{id}");
     }
 
-    private void OnShowDetails(int id)
+    private async void AddTasting()
     {
-        var tasting = tastings.Single(t => t.TastingId == id);
-        tasting.ShowDetails = !tasting.ShowDetails;
+        var editedTasting = new TastingModel()
+            {
+                TastingId = newTasting.TastingId,
+                Name = newTasting.Name,
+                Description = newTasting.Description,
+                IsActive = newTasting.IsActive,
+                IsBlind = newTasting.IsBlind,
+                TastingDate = newTasting.TastingDate.GetValueOrDefault().Add(newTasting.TastingTime.GetValueOrDefault())
+            };
+
+        await _db.AddTasting(editedTasting);
+        tastings = (await _db.GetTastings()).OrderByDescending(t => t.TastingDate).ToList();
+        newTasting = new TastingViewModel();
+        StateHasChanged();
     }
 }

@@ -6,6 +6,7 @@ namespace DataAccessLibrary
     {
         Task AddBeer(BeerModel beer);
         Task AddTasting(TastingModel tasting);
+        Task AddTastingBeer(int tastingId, int beerId, int sortOrder);
         Task EditTasting(TastingModel tasting);
         Task EditTastingBeer(TastingBeerModel tastingBeer);
         Task RemoveTastingBeer(int id);

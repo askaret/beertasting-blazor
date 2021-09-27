@@ -51,6 +51,13 @@ namespace DataAccessLibrary
             return _db.SaveData(sql, tasting);
         }
 
+        public Task AddTastingBeer(int tastingId, int beerId, int sortOrder)
+        {
+            var sql = @"insert into dbo.TastingBeer (TastingId, BeerId, SortOrder) values (@tastingId, @beerId, @sortOrder)";
+
+            return _db.SaveData(sql, new { tastingId = tastingId, beerId = beerId, sortOrder = sortOrder });
+        }
+
         public Task EditTasting(TastingModel tasting)
         {
             var sql = @"update dbo.Tasting set Name = @Name, Description = @Description, IsActive = @IsActive, IsBlind = @IsBlind, TastingDate = @TastingDate where TastingId = @TastingId";
@@ -108,7 +115,6 @@ namespace DataAccessLibrary
             var sql = @"select * from dbo.TastingBeer where TastingId = @tastingId";
             return _db.LoadData<TastingBeerModel, dynamic>(sql, new { tastingId = id });
         }
-    }
 
         public Task DeleteBeer(BeerModel beer)
         {
