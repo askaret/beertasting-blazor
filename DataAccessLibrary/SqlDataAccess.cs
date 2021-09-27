@@ -9,7 +9,7 @@ namespace DataAccessLibrary
     {
         private readonly IConfiguration _configuration;
 
-        public string ConnectionStringName { get; set; } = "DevelopmentConnection";
+        public string ConnectionStringName { get; set; } = Environment.MachineName.ToUpperInvariant();
 
         public SqlDataAccess(IConfiguration configuration)
         {
