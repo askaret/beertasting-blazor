@@ -8,6 +8,10 @@ namespace BlazorTest
         public const string ColossusRgba = "rgba(17, 19, 60, 0.70)";
         public const string NerdyOffWhite = "#F9EAD4";
         public const string NerdyOffWhiteRgba = "rgba(249, 234, 212, 0.70)";
+
+        public const string NerdyOffWhitePale = "#FCF8F3";
+        public const string NerdyOffWhitePaleRgba = "rgba(252, 248, 243, 0.70)";
+
         public const string Svart = "#010203";
         public const string SvartRgba = "rgba(1, 2, 3, 0.70)";
         public const string HatWhite = "#FFFFFF";
@@ -27,5 +31,8 @@ namespace BlazorTest
         public const string ZeroCoolBlåRgba = "rgba(237, 245, 250, 0.70)";
         public const string CollinsGrå = "#F2F2F2";
         public const string CollinsGråRgba = "rgba(242, 242, 242, 0.70)";
+
+        public const string HotPink = "#ff69b4";
+        public const string HotPinkRgba = "rgba(255, 105, 180, 1)";
     }
 }

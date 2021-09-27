@@ -1,4 +1,3 @@
-using BlazorTest.Data;
 using DataAccessLibrary;
 using MudBlazor.Services;
 
@@ -8,7 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
-builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddTransient<IBeertastingRepository, BeertastingRepository>();
 
@@ -24,8 +22,7 @@ if (!app.Environment.IsDevelopment())
 
 if(app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();
-    
+    app.UseDeveloperExceptionPage();    
 }
 
 app.UseHttpsRedirection();

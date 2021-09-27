@@ -109,4 +109,25 @@ namespace DataAccessLibrary
             return _db.LoadData<TastingBeerModel, dynamic>(sql, new { tastingId = id });
         }
     }
+
+        public Task DeleteBeer(BeerModel beer)
+        {
+            var sql = @"delete from dbo.Beer where BeerId = @BeerId";
+            return _db.DeleteData<BeerModel>(sql, beer);             
+        }
+
+		public Task UpdateBeer(BeerModel beer)
+		{
+            var sql = @"update dbo.Beer 
+                        set     Name = @Name, 
+                                ABV = @ABV, 
+                                RateBeerLink = @RateBeerLink, 
+                                BeerStyleId = @BeerStyleId, 
+                                BreweryId = @BreweryId, 
+                                BeerClassId = @BeerClassId
+                        where   BeerId = @BeerId";
+
+            return _db.SaveData(sql, beer);
+		}
+	}
 }
