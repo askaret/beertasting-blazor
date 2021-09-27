@@ -75,8 +75,8 @@ else
 			<MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.BreweryModel.Name)">Brewery</MudTableSortLabel></MudTh>
 			<MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.ABV)">ABV %</MudTableSortLabel></MudTh>
 			<MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.BeerStyleModel.Name)">Style</MudTableSortLabel></MudTh>
-			<MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.BeerclassModel.Name)">Style</MudTableSortLabel></MudTh>
-			<MudTh>Ratebeer</MudTh>
+			<MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.BeerclassModel.Name)">Class</MudTableSortLabel></MudTh>
+			<MudTh>URL</MudTh>
 			<MudTh></MudTh>
 		</HeaderContent>
 		<RowTemplate>
@@ -88,14 +88,14 @@ else
 			<MudTd DataLabel="URL">
 				@{
 					if (!string.IsNullOrEmpty(context?.RateBeerLink))
-					{
-					<a href="@context.RateBeerLink" target="_blank"><MudIcon Icon="@Icons.Material.Outlined.Link" Color="Color.Primary" /></a>
+					{	
+						<a href="@context.RateBeerLink" target="_blank"><MudIconButton Icon="@Icons.Material.Outlined.Link" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small"/></a>
 					}
 			}
 		</MudTd>
 		<MudTd>
-			<MudButton Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="@(() => EditBeer(context))">EDIT</MudButton>
-			<MudButton Variant="Variant.Outlined" Color="Color.Warning" Size="Size.Small" OnClick="@(() => DeleteBeer(context))">DELETE</MudButton>
+			<MudIconButton Icon="@Icons.Material.Outlined.Edit" Variant="Variant.Outlined" Color="Color.Success" Size="Size.Small" OnClick="@(() => EditBeer(context))" />
+			<MudIconButton Icon="@Icons.Material.Outlined.Delete" Variant="Variant.Outlined" Color="Color.Error" Size="Size.Small" OnClick="@(() => DeleteBeer(context))" />
 		</MudTd>
 
 	</RowTemplate>
@@ -125,8 +125,6 @@ else
 		parameters.Add("ContentText", $"Confirm deletion of \"{beer.Name}\"");
 		parameters.Add("ButtonText", "DELETE");
 		parameters.Add("Color", Color.Error);
-
-		var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
 		var dialog = DialogService.Show<DeleteDialog>("Delete beer", parameters);
 		var result = await dialog.Result;
