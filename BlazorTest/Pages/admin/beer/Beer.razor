@@ -86,11 +86,11 @@ else
 			<MudTd DataLabel="Style">@(context.BeerStyleModel == null ? "" : context.BeerStyleModel.Name)</MudTd>
 			<MudTd DataLabel="Class">@(context.BeerclassModel == null ? "" : context.BeerclassModel.Name)</MudTd>
 			<MudTd DataLabel="URL">
-				@{
-					if (!string.IsNullOrEmpty(context?.RateBeerLink))
-					{	
-						<a href="@context.RateBeerLink" target="_blank"><MudIconButton Icon="@Icons.Material.Outlined.Link" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small"/></a>
-					}
+			@{
+				if (!string.IsNullOrEmpty(context?.RateBeerLink))
+				{
+					<MudIconButton Link="@context.RateBeerLink" Target="_blank" Icon="@Icons.Material.Outlined.Link" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small"  />
+				}
 			}
 		</MudTd>
 		<MudTd>
@@ -132,7 +132,7 @@ else
 		if (result.Cancelled) return;
 
 		await _db.DeleteBeer(beer);
-		
+
 		var localBeers = beers;
 		localBeers.Remove(beer);
 		beers = localBeers;
