@@ -5,6 +5,36 @@ namespace BlazorTest.ViewModels
 {
     public class BeerViewModel
     {
+		public BeerViewModel()
+		{
+
+		}
+
+        public BeerViewModel(BeerModel beer)
+		{
+            BeerId = beer.BeerId;
+            BeerStyleId = beer.BeerStyleId;
+            BreweryId = beer.BreweryId;
+            BeerClassId = beer.BeerClassId;
+            Name = beer.Name;
+            ABV = beer.ABV;
+            RateBeerLink = beer.RateBeerLink;
+		}
+
+        public BeerModel ToBeerModel()
+		{
+            return new BeerModel()
+            {
+                BeerId = BeerId,
+                BeerStyleId = BeerStyleId,
+                BreweryId = BreweryId,
+                BeerClassId = BeerClassId,
+                Name = Name,
+                ABV = ABV,
+                RateBeerLink = RateBeerLink
+            };
+		}
+
         public int BeerId { get; set; }
         [Required(ErrorMessage = "Beer style is required.")]
         [Range(1, int.MaxValue, ErrorMessage = "Beer style is required.")]
