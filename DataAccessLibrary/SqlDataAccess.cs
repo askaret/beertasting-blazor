@@ -40,5 +40,13 @@ namespace DataAccessLibrary
             using IDbConnection connection = new SqlConnection(connectionString);
             return await connection.QueryFirstOrDefaultAsync<T>(query, parameters);            
         }
+
+        public async Task DeleteData<T>(string sql, T parameters)
+        {
+            var connectionString = _configuration.GetConnectionString(ConnectionStringName);
+
+            using IDbConnection connection = new SqlConnection(connectionString);
+            await connection.ExecuteAsync(sql, parameters);
+        }
     }
 }

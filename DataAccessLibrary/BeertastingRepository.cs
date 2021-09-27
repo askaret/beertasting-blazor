@@ -48,5 +48,11 @@ namespace DataAccessLibrary
             var sql = @"select * from dbo.Beer where BeerId = @beerId";
             return _db.LoadSingle<BeerModel, dynamic>(sql, new { beerId = id });
         }
+
+        public Task DeleteBeer(BeerModel beer)
+        {
+            var sql = @"delete from dbo.Beer where BeerId = @BeerId";
+            return _db.DeleteData<BeerModel>(sql, beer);             
+        }
     }
 }
