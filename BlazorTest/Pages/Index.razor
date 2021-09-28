@@ -6,22 +6,3 @@
 <PageTitle>Index</PageTitle>
 
 <MudText Typo="Typo.h3">Beertasting </MudText>
-
-@if (!Env.IsDevelopment())
-{
-    <MudPaper>
-        <AuthorizeView>
-            <Authorized>
-                Hello, @context.User.Identity.Name!
-                <a href="MicrosoftIdentity/Account/SignOut">Log out</a>
-            </Authorized>
-            <NotAuthorized>
-                <a href="MicrosoftIdentity/Account/SignIn">Log in</a>
-            </NotAuthorized>
-        </AuthorizeView>
-    </MudPaper>
-}
-else
-{
-    <MudAlert Severity="Severity.Error">Authentication is disabled in environment <b>@Env.EnvironmentName</b></MudAlert>
-}
