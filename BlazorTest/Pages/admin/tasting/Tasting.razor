@@ -13,7 +13,7 @@
     <MudCard Elevation="2" Outlined="true">
         <MudCardHeader>
             <CardHeaderContent>
-                <MudText Typo="Typo.body1">Add tasting</MudText>
+                <MudText Typo="Typo.h6">Add tasting</MudText>
             </CardHeaderContent>
         </MudCardHeader>
         <MudCardContent Class="pa-4">
@@ -44,7 +44,12 @@
     </MudCard>
 </EditForm>
 
-<MudTable Items=@tastings Hover="true">
+<MudTable Items=@tastings Hover="true" Filter="new Func<TastingModel,bool>(TableFilterFunction)">
+    <ToolBarContent>
+		<MudText Typo="Typo.h6">All Tastings</MudText>
+		<MudSpacer />
+		<MudTextField @bind-Value="tableSearchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+	</ToolBarContent>
     <HeaderContent>
         <MudTh>Name</MudTh>
         <MudTh>Description</MudTh>
@@ -69,6 +74,10 @@
     private List<TastingModel> tastings { get; set; }
 
     private TastingViewModel newTasting = new TastingViewModel();
+
+    private string tableSearchString;
+
+    private bool TableFilterFunction(TastingModel tasting) => TableFilter(tasting, tableSearchString);
 
     protected override async Task OnInitializedAsync()
     {
@@ -98,4 +107,15 @@
         newTasting = new TastingViewModel();
         StateHasChanged();
     }
+
+    private bool TableFilter(TastingModel tasting, string searchString)
+	{
+		if (string.IsNullOrWhiteSpace(searchString))
+			return true;
+		if (tasting.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+			return true;
+		if (tasting.Description.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+			return true;
+		return false;
+	}
 }

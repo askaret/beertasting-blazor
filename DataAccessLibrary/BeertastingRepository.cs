@@ -72,10 +72,10 @@ namespace DataAccessLibrary
             return _db.SaveData(sql, tastingBeer);
         }
 
-        public Task RemoveTastingBeer(int id)
+        public Task RemoveTastingBeer(TastingBeerModel tastingBeer)
         {
             var sql = @"delete from dbo.TastingBeer where TastingBeerId = @tastingBeerId";
-            return _db.SaveData(sql, new { tastingBeerId = id });
+            return _db.SaveData(sql, new { tastingBeerId = tastingBeer.TastingBeerId });
         }
         
         public Task RemoveVotes(int tastingId, int beerId)

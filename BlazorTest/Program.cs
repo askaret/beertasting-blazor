@@ -1,4 +1,5 @@
 using DataAccessLibrary;
+using MudBlazor;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddMudServices();
+builder.Services.AddMudServices(config => config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.TopCenter);
 builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddTransient<IBeertastingRepository, BeertastingRepository>();
 
@@ -20,9 +21,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-if(app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();    
+    app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();

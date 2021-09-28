@@ -6,7 +6,12 @@
 
 <MudDialog>
     <DialogContent>
-        <MudTable Items="@beers" MultiSelection="true" @bind-SelectedItems="selectedBeers" Hover="true" Height="350px" FixedHeader="true" Dense="true">
+        <MudTable Items="@beers" MultiSelection="true" Filter="new Func<BeerModel,bool>(TableFilterFunction)" @bind-SelectedItems="selectedBeers" Hover="true" Height="350px" FixedHeader="true" Dense="true">
+            <ToolBarContent>
+			    <MudText Typo="Typo.h6">Beers</MudText>
+			    <MudSpacer />
+			    <MudTextField @bind-Value="tableSearchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+		    </ToolBarContent>
             <HeaderContent>
                 <MudTh>Name</MudTh>
                 <MudTh>Brewery</MudTh>
@@ -36,7 +41,10 @@
 
     [Parameter] public List<BeerModel> Beers { get; set; }
 
-    [Parameter] public List<TastingBeerViewModel> TastingBeers { get; set; }
+    [Parameter] public List<TastingBeerModel> TastingBeers { get; set; }
+
+    private string tableSearchString = "";
+    private bool TableFilterFunction(BeerModel beer) => TableFilter(beer, tableSearchString);
 
     private List<BeerModel> beers;
     private HashSet<BeerModel> selectedBeers;
@@ -50,4 +58,15 @@
 
     private async void Submit() => MudDialog.Close(DialogResult.Ok(selectedBeers.Select(b => b.BeerId).ToList()));
     void Cancel() => MudDialog.Cancel();
+
+    private bool TableFilter(BeerModel beer, string searchString)
+	{
+		if (string.IsNullOrWhiteSpace(searchString))
+			return true;
+		if (beer.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+			return true;
+		if (beer.BreweryModel.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+			return true;
+		return false;
+	}
 }
