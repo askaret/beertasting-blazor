@@ -1,8 +1,9 @@
 ﻿@inherits LayoutComponentBase
+
 <MudThemeProvider Theme="@_activeTheme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
-
+<BrowserStorageHelper @ref="_browserStorage"/>
 
 <MudLayout>
     <MudAppBar Elevation="1">
@@ -21,13 +22,41 @@
     </MudMainContent>
 </MudLayout>
 
-@code {
-    bool _drawerOpen = true;
-    private MudTheme _activeTheme;
 
-    protected override async Task OnInitializedAsync()
+
+@code {
+    private BrowserStorageHelper? _browserStorage;
+
+    bool _drawerOpen = true;
+    private MudTheme _activeTheme = bouvetThemeLight;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        _activeTheme = bouvetThemeLight;
+        if (firstRender)
+            await SetTheme();
+    }
+    private async Task SetTheme(string themeName = "")
+    {
+        if (_browserStorage is null)
+            return;
+
+        if(string.IsNullOrEmpty(themeName))
+        {
+            themeName = await _browserStorage.LoadFromLocalStorage("selected-theme");
+        }
+        
+        if(themeName.Equals("bouvetThemeLight"))
+        {
+            _activeTheme = bouvetThemeLight;
+        }
+        else if(themeName.Equals("bouvetThemeDark"))
+        {
+            _activeTheme = bouvetThemeDark;
+        }
+
+        _browserStorage.SaveToLocalStorage("selected-theme", themeName);
+
+        StateHasChanged();
     }
 
     void DrawerToggle()
@@ -35,21 +64,15 @@
         _drawerOpen = !_drawerOpen;
     }
 
-    private void ThemeToggle()
+    private async void ThemeToggle()
     {
-        if(_activeTheme == bouvetThemeDark)
-        {
-            _activeTheme = bouvetThemeLight;
-        }
+        if (_activeTheme == bouvetThemeDark)
+            await SetTheme("bouvetThemeLight");
         else
-        {
-            _activeTheme = bouvetThemeDark;
-        }
-
-        StateHasChanged();
+            await SetTheme("bouvetThemeDark");
     }
 
-    MudTheme bouvetThemeDark = new MudTheme()
+    static MudTheme bouvetThemeDark = new MudTheme()
     {
         Palette = new Palette()
         {
@@ -78,7 +101,7 @@
         }
     };
 
-    MudTheme bouvetThemeLight = new MudTheme()
+    static MudTheme bouvetThemeLight = new MudTheme()
     {
         Palette = new Palette()
         {
