@@ -9,8 +9,8 @@
 @inject IBeertastingRepository _db
 @inject NavigationManager _nav
 
-<MudText Typo="Typo.h1">Beer</MudText>
-<MudText Typo="Typo.h2">Edit beer</MudText>
+<MudText Typo="Typo.h3">Beer</MudText>
+<MudText Typo="Typo.h4">Edit beer</MudText>
 
 @if (editBeer is null)
 {
@@ -99,7 +99,9 @@ else
 
 	private async Task SaveEditBeer()
 	{
-		await _db.UpdateBeer(editBeer.ToBeerModel());
+		if(editBeer is not null)
+			await _db.UpdateBeer(editBeer.ToBeerModel());
+		
 		_nav.NavigateTo($"/admin/beer/");
 	}
 }

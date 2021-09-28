@@ -4,4 +4,12 @@
         <MudNavLink Icon="fas fa-beer" Href="/admin/beer">Beer</MudNavLink>
         <MudNavLink Icon="@Icons.Material.Outlined.CalendarToday" Href="/admin/tasting">Tastings</MudNavLink>
     </MudNavGroup>
+    <AuthorizeView>
+        <Authorized>
+            <MudNavLink Href="MicrosoftIdentity/Account/SignOut" Icon="@Icons.Material.Outlined.Logout">Logout @context.User.Identity.Name</MudNavLink>            
+        </Authorized>
+        <NotAuthorized>
+            <MudNavLink Href="MicrosoftIdentity/Account/SignIn" Icon="@Icons.Material.Outlined.Login">Login</MudNavLink>
+        </NotAuthorized>
+    </AuthorizeView>
 </MudNavMenu>

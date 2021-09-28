@@ -9,6 +9,6 @@ namespace DataAccessLibrary.Models
     public class BeerclassModel
     {
         public int BeerClassId { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
     }
 }
