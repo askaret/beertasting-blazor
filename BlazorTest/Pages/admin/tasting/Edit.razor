@@ -9,7 +9,7 @@
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
 
-<EditForm Model="@tasting">
+<EditForm Model="@tasting" OnValidSubmit="EditTasting">
     <DataAnnotationsValidator />
     <MudCard Elevation="2" Outlined="true">
         <MudCardHeader>
@@ -74,7 +74,7 @@
             <MudGrid>
                 <MudItem xs="12" md="12">
                     <MudContainer Class="d-flex flex-row-reverse py-2 px-1">
-                        <MudButton ButtonType="ButtonType.Submit" OnClick="@EditTasting" Variant="Variant.Filled" Color="Color.Primary" Class="pa-2 mx-2">SAVE</MudButton>
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="pa-2 mx-2">SAVE</MudButton>
                         <MudButton ButtonType="ButtonType.Button" Link="/admin/tasting" Variant="Variant.Outlined" Color="Color.Secondary" Class="pa-2 mx-2">BACK</MudButton>
                     </MudContainer>
                 </MudItem>
