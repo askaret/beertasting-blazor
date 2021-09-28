@@ -99,7 +99,9 @@ else
 
 	private async Task SaveEditBeer()
 	{
-		await _db.UpdateBeer(editBeer.ToBeerModel());
+		if(editBeer is not null)
+			await _db.UpdateBeer(editBeer.ToBeerModel());
+		
 		_nav.NavigateTo($"/admin/beer/");
 	}
 }

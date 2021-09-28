@@ -7,7 +7,7 @@ namespace BlazorTest.ViewModels
     {
 		public BeerViewModel()
 		{
-
+            Name = string.Empty;
 		}
 
         public BeerViewModel(BeerModel beer)
