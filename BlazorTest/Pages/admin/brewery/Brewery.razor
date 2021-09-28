@@ -1,0 +1,138 @@
+﻿@page "/admin/brewery"
+@using BlazorTest.ViewModels
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+@using System.Globalization
+@using System.ComponentModel.DataAnnotations
+
+@inject IBeertastingRepository _db
+@inject NavigationManager _nav
+@inject IDialogService DialogService
+
+<MudText Typo="Typo.h3">Breweries</MudText>
+<MudText Typo="Typo.h4">New brewery</MudText>
+
+<EditForm Model="@newBrewery" OnValidSubmit="InsertBrewery">
+	<DataAnnotationsValidator />
+	<MudCard>
+		<MudCardContent>
+			<MudGrid>
+				<MudItem xs="12" sm="5">
+					<MudTextField Label="Name" @bind-Value=".Name" For="@(() => newBeer.Name)" Variant="Variant.Outlined" />
+				</MudItem>
+			</MudGrid>
+		</MudCardContent>
+		<MudCardActions>
+			<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" Class="ml-auto">SAVE</MudButton>
+		</MudCardActions>
+	</MudCard>
+</EditForm>
+
+@if (!breweries.Any())
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<MudTable Items="@breweries" Dense="false" Hover="true" RowsPerPage=100 Bordered="true" Striped="true" Filter="new Func<BreweryModel,bool>(TableFilterFunction)" @bind-SelectedItem="SelectedBrewery">
+		<ToolBarContent>
+			<MudText Typo="Typo.h5">All breweries</MudText>
+			<MudSpacer />
+			<MudTextField @bind-Value="tableSearchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+		</ToolBarContent>
+		<HeaderContent>
+			<MudTh><MudTableSortLabel SortBy="new Func<BreweryModel, object>(x => x.Name)">Name</MudTableSortLabel></MudTh>
+			@*<MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.BreweryModel != null ? x.BreweryModel.Name : string.Empty)">Brewery</MudTableSortLabel></MudTh>
+			<MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.ABV)">ABV %</MudTableSortLabel></MudTh>
+			<MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.BeerStyleModel != null ? x.BeerStyleModel.Name : string.Empty)">Style</MudTableSortLabel></MudTh>
+			<MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.BeerclassModel != null ? x.BeerclassModel.Name : string.Empty)">Class</MudTableSortLabel></MudTh>
+			<MudTh>URL</MudTh>*@
+			<MudTh></MudTh>
+		</HeaderContent>
+		<RowTemplate>
+			<MudTd DataLabel="Name">@context.Name</MudTd>
+			@*<MudTd DataLabel="Brewery">@(context.BreweryModel == null ? "" : context.BreweryModel.Name)</MudTd>
+			<MudTd DataLabel="ABV %">@context.ABV</MudTd>
+			<MudTd DataLabel="Style">@(context.BeerStyleModel == null ? "" : context.BeerStyleModel.Name)</MudTd>
+			<MudTd DataLabel="Class">@(context.BeerclassModel == null ? "" : context.BeerclassModel.Name)</MudTd>
+			<MudTd DataLabel="URL">
+				@{
+					if (!string.IsNullOrEmpty(context?.RateBeerLink))
+					{
+					<MudIconButton Link="@context.RateBeerLink" Target="_blank" Icon="@Icons.Material.Outlined.Link" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" />
+					}
+			}
+		</MudTd>
+		*@
+		<MudTd>
+			<MudIconButton Icon="@Icons.Material.Outlined.Edit" Variant="Variant.Outlined" Color="Color.Success" Size="Size.Small" OnClick="@(() => EditBrewery(context))" />
+			<MudIconButton Icon="@Icons.Material.Outlined.Delete" Variant="Variant.Outlined" Color="Color.Error" Size="Size.Small" OnClick="@(() => DeleteBrewery(context))" />
+		</MudTd>
+
+	</RowTemplate>
+	<PagerContent>
+		<MudTablePager />
+	</PagerContent>
+</MudTable>
+}
+
+@code {
+	public CultureInfo _nb = CultureInfo.GetCultureInfo("nb-NO");
+	private List<BreweryModel> breweries = new List<BreweryModel>();
+	public BreweryViewModel newBrewery = new BreweryViewModel();
+	private BreweryModel SelectedBrewery = new BreweryModel();
+	private string tableSearchString = "";
+	public bool showDeleteConfirm;
+
+	private bool TableFilterFunction(BreweryModel brewery) => TableFilter(brewery, tableSearchString);
+
+	private async void DeleteBrewery(BreweryModel brewery)
+	{
+		var parameters = new DialogParameters();
+		parameters.Add("ContentText", $"Confirm deletion of \"{brewery.Name}\"");
+		parameters.Add("ButtonText", "DELETE");
+		parameters.Add("Color", Color.Error);
+
+		var dialog = DialogService.Show<DeleteDialog>("Delete brewery", parameters);
+		var result = await dialog.Result;
+
+		if (result.Cancelled) return;
+
+		await _db.DeleteBrewery(brewery);
+		breweries.Remove(brewery);
+		StateHasChanged();
+	}
+
+	private bool TableFilter(BreweryModel brewery, string searchString)
+	{
+		if (string.IsNullOrWhiteSpace(searchString))
+			return true;
+		if (brewery.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+			return true;
+		return false;
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		breweries = await _db.GetBreweries();		
+	}
+
+	private void EditBrewery(BreweryModel? brewery)
+	{
+		_nav.NavigateTo($"/admin/brewery/edit/{brewery?.BreweryId}");
+	}
+
+	private async Task InsertBrewery()
+	{
+		var added = new BreweryModel()
+			{
+				Name = newBrewery.Name,
+				Website = newBrewery.Website,
+				Country = newBrewery.Country
+			};
+
+		await _db.AddBrewery(added);
+		breweries = await _db.GetBreweries();
+		newBrewery = new BreweryViewModel();
+	}
+}

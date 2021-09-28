@@ -7,7 +7,11 @@ namespace DataAccessLibrary
         Task AddBeer(BeerModel beer);
         Task UpdateBeer(BeerModel beer);
         Task DeleteBeer(BeerModel beer);
+        Task AddBrewery(BreweryModel brewery);
+        Task UpdateBrewery(BreweryModel brewery);
+        Task DeleteBrewery(BreweryModel brewery);
         Task<BeerModel> GetBeer(int id);
+        Task<BreweryModel> GetBrewery(int id);
         Task<List<BeerModel>> GetBeers();
         Task<List<BreweryModel>> GetBreweries();
         Task<List<BeerclassModel>> GetBeerclasses();
