@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-<MudThemeProvider Theme="bouvetTheme"/>
+<MudThemeProvider Theme="@_activeTheme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -9,7 +9,7 @@
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudText Typo="Typo.h5" Class="ml-3">Beertasting</MudText>
         <MudSpacer />
-        <MudIconButton Icon="@Icons.Material.Filled.LocalDrink" Color="Color.Inherit" Edge="Edge.End" />
+        <MudIconButton Icon="@Icons.Material.Outlined.Palette" Color="Color.Inherit" Edge="Edge.End" OnClick="@(() => ThemeToggle())"/>
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
         <NavMenu />
@@ -23,13 +23,62 @@
 
 @code {
     bool _drawerOpen = true;
-    
+    private MudTheme _activeTheme;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _activeTheme = bouvetThemeLight;
+    }
+
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
     }
 
-    MudTheme bouvetTheme = new MudTheme()
+    private void ThemeToggle()
+    {
+        if(_activeTheme == bouvetThemeDark)
+        {
+            _activeTheme = bouvetThemeLight;
+        }
+        else
+        {
+            _activeTheme = bouvetThemeDark;
+        }
+
+        StateHasChanged();
+    }
+
+    MudTheme bouvetThemeDark = new MudTheme()
+    {
+        Palette = new Palette()
+        {
+            Black = "#27272f",
+            Background = "#32333d",
+            BackgroundGrey = "#27272f",
+            Surface = "#373740",
+            DrawerBackground = "#27272f",
+            DrawerText = "rgba(255,255,255, 0.50)",
+            DrawerIcon = "rgba(255,255,255, 0.50)",
+            AppbarBackground = "#27272f",
+            AppbarText = "rgba(255,255,255, 0.70)",
+            TextPrimary = BouvetColors.NerdyOffWhitePaleRgba,
+            TextSecondary = BouvetColors.BorisOransjRgba,
+            Primary = BouvetColors.ZeroCoolBlå,
+            Secondary = BouvetColors.NetworkGreenRgba,
+            ActionDefault = "#adadb1",
+            ActionDisabled = "rgba(255,255,255, 0.26)",
+            ActionDisabledBackground = "rgba(255,255,255, 0.12)",
+            Divider = "rgba(255,255,255, 0.12)",
+            DividerLight = "rgba(255,255,255, 0.06)",
+            TableLines = "rgba(255,255,255, 0.12)",
+            LinesDefault = "rgba(255,255,255, 0.12)",
+            LinesInputs = "rgba(255,255,255, 0.3)",
+            TextDisabled = "rgba(255,255,255, 0.2)"
+        }
+    };
+
+    MudTheme bouvetThemeLight = new MudTheme()
     {
         Palette = new Palette()
         {
