@@ -72,10 +72,10 @@ else
 		</ToolBarContent>
 		<HeaderContent>
 			<MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.Name)">Name</MudTableSortLabel></MudTh>
-			<MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.BreweryModel.Name)">Brewery</MudTableSortLabel></MudTh>
+			<MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.BreweryModel != null ? x.BreweryModel.Name : string.Empty)">Brewery</MudTableSortLabel></MudTh>
 			<MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.ABV)">ABV %</MudTableSortLabel></MudTh>
-			<MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.BeerStyleModel.Name)">Style</MudTableSortLabel></MudTh>
-			<MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.BeerclassModel.Name)">Class</MudTableSortLabel></MudTh>
+			<MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.BeerStyleModel != null ? x.BeerStyleModel.Name : string.Empty)">Style</MudTableSortLabel></MudTh>
+			<MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.BeerclassModel != null ? x.BeerclassModel.Name : string.Empty)">Class</MudTableSortLabel></MudTh>
 			<MudTh>URL</MudTh>
 			<MudTh></MudTh>
 		</HeaderContent>
@@ -86,11 +86,11 @@ else
 			<MudTd DataLabel="Style">@(context.BeerStyleModel == null ? "" : context.BeerStyleModel.Name)</MudTd>
 			<MudTd DataLabel="Class">@(context.BeerclassModel == null ? "" : context.BeerclassModel.Name)</MudTd>
 			<MudTd DataLabel="URL">
-			@{
-				if (!string.IsNullOrEmpty(context?.RateBeerLink))
-				{
-					<MudIconButton Link="@context.RateBeerLink" Target="_blank" Icon="@Icons.Material.Outlined.Link" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small"  />
-				}
+				@{
+					if (!string.IsNullOrEmpty(context?.RateBeerLink))
+					{
+					<MudIconButton Link="@context.RateBeerLink" Target="_blank" Icon="@Icons.Material.Outlined.Link" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" />
+					}
 			}
 		</MudTd>
 		<MudTd>
@@ -142,7 +142,7 @@ else
 			return true;
 		if (beer.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
 			return true;
-		if (beer.BreweryModel.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+		if (beer.BreweryModel != null && beer.BreweryModel.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
 			return true;
 		return false;
 	}
@@ -165,7 +165,6 @@ else
 		beers = localBeers;
 	}
 
-	private bool success = false;
 	private void EditBeer(BeerModel? beer)
 	{
 		_nav.NavigateTo($"/admin/beer/edit/{beer?.BeerId}");
@@ -173,7 +172,6 @@ else
 
 	private async Task InsertBeer()
 	{
-		success = true;
 		var added = new BeerModel()
 			{
 				Name = newBeer.Name,

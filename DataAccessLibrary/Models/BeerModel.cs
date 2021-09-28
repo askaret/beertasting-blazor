@@ -12,7 +12,7 @@ namespace DataAccessLibrary.Models
         public int BeerStyleId { get; set; }
         public int BreweryId { get; set; }
         public int BeerClassId { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public float ABV { get; set; }
         public string? RateBeerLink { get; set; }
         public BeerstyleModel? BeerStyleModel { get; set; }
