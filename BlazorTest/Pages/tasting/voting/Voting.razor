@@ -13,6 +13,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        tastingBeers = await _db.GetTas
+        tastingBeers = await _db.GetTastingBeers(Id);
     }
 }
