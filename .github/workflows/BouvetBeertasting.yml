@@ -23,7 +23,9 @@ jobs:
       run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
     - name: Update secrets
       run: |
-        Set-Content "${{ env.WORKING_DIRECTORY }}"\BlazorTest\appsettings.json -Value '${{ secrets.AppsettingsJson }}'
+        dir
+        cd BlazorTest
+        Set-Content .\appsettings.json -Value '${{ secrets.AppsettingsJson }}'
       shell: pwsh      
     - name: Build
       run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
