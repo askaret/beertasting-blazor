@@ -1,0 +1,113 @@
+﻿@page "/profile"
+
+@using Microsoft.Identity.Web
+@using Microsoft.Graph
+@using BlazorTest.ViewModels
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+@using System.Globalization
+@using System.ComponentModel.DataAnnotations
+
+@inject Microsoft.Graph.GraphServiceClient GraphServiceClient
+@inject MicrosoftIdentityConsentAndConditionalAccessHandler ConsentHandler
+
+<MudText Typo="Typo.h3" Class="pa-4">User profile</MudText>
+
+@if (user == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <MudCard>
+        <MudCardHeader>
+            <CardHeaderAvatar>
+                <MudAvatar Color="Color.Secondary">@user.DisplayName.Substring(0, 1)</MudAvatar>
+            </CardHeaderAvatar>
+            <CardHeaderContent>
+                <MudText Typo="Typo.body1">@user.DisplayName</MudText>
+                <MudText Typo="Typo.body2">@user.JobTitle</MudText>
+                <MudText Typo="Typo.body2">@user.Mail</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent Style="align-content: center">
+            <img style="margin: 5px 0; height: 250px;" src="data:image/jpeg;base64, @photo" />
+        </MudCardContent>
+    </MudCard>
+
+    <EditForm Model="@bvm" OnValidSubmit="SaveDisplayName">
+        <DataAnnotationsValidator />
+        <MudCard>
+            <MudCardContent>
+                <MudGrid>
+                    <MudItem xs="12" sm="5">
+                        <MudTextField Label="Display name" @bind-Value="bvm.Name" For="@(() => bvm.Name)" Variant="Variant.Outlined" />
+                    </MudItem>
+                </MudGrid>
+            </MudCardContent>
+            <MudCardActions>
+                <MudGrid>
+                    <MudItem xs="12" md="5">
+                        <MudContainer Class="d-flex flex-row-reverse py-2 px-1">
+                            <MudButton ButtonType="ButtonType.Submit" Class="pa-2 mx-2" Variant="Variant.Outlined" Color="Color.Success" Size="Size.Small">SAVE</MudButton>
+                        </MudContainer>
+                    </MudItem>
+                </MudGrid>
+            </MudCardActions>
+        </MudCard>
+    </EditForm>
+
+
+    <MudText Typo="Typo.h4" Class="pa-4">My tastings</MudText>
+
+
+    <MudText Typo="Typo.h4" Class="pa-4">My favorite beers</MudText>
+
+}
+
+@code {
+    Microsoft.Graph.User? user;
+    string photo = "";
+    string displayname = "";
+    private BeerViewModel bvm = new BeerViewModel();
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            user = await GraphServiceClient.Me.Request().GetAsync();
+            photo = await GetPhoto();
+
+            bvm.Name = user.GivenName;
+        }
+        catch (Exception ex)
+        {
+            ConsentHandler.HandleException(ex);
+        }
+    }
+
+    private async Task SaveDisplayName()
+    {
+
+    }
+    protected async Task<string> GetPhoto()
+    {
+        string photo;
+
+        try
+        {
+            using (var photoStream = await GraphServiceClient.Me.Photo.Content.Request().GetAsync())
+            {
+                byte[] photoByte = ((System.IO.MemoryStream)photoStream).ToArray();
+                photo = Convert.ToBase64String(photoByte);
+                this.StateHasChanged();
+            }
+
+        }
+        catch (Exception)
+        {
+            photo = "";
+        }
+        return photo;
+    }
+
+}

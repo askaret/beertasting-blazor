@@ -1,9 +1,11 @@
 ﻿<MudNavMenu>
     <MudNavLink Href="/">Home</MudNavLink>
+    <MudNavLink Icon="@Icons.Material.Outlined.VerifiedUser" Href="/profile">Profile</MudNavLink>
     <MudNavGroup Icon="@Icons.Material.Outlined.AdminPanelSettings" Title="Admin" Expanded="true">
-        <MudNavLink Icon="@Icons.Material.Outlined.LocalDrink" Href="/admin/beer">Beer</MudNavLink>
-        <MudNavLink Icon="@Icons.Material.Outlined.Business" Href="/admin/brewery">Brewery</MudNavLink>
+        <MudNavLink Icon="@Icons.Material.Outlined.LocalDrink" Href="/admin/beer">Beers</MudNavLink>
+        <MudNavLink Icon="@Icons.Material.Outlined.Business" Href="/admin/brewery">Breweries</MudNavLink>
         <MudNavLink Icon="@Icons.Material.Outlined.CalendarToday" Href="/admin/tasting">Tastings</MudNavLink>
+        <MudNavLink Icon="@Icons.Material.Outlined.SupervisorAccount" Href="/admin/taster">Tasters</MudNavLink>
     </MudNavGroup>
     <AuthorizeView>
         <Authorized>
