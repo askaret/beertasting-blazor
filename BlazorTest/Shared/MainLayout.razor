@@ -1,14 +1,16 @@
 ﻿@inherits LayoutComponentBase
-<MudThemeProvider Theme="darkTheme" />
+
+<MudThemeProvider Theme="@_activeTheme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
+<BrowserStorageHelper @ref="_browserStorage"/>
 
 <MudLayout>
     <MudAppBar Elevation="1">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudText Typo="Typo.h5" Class="ml-3">Beertasting</MudText>
         <MudSpacer />
-        <MudIconButton Icon="@Icons.Material.Filled.LocalDrink" Color="Color.Inherit" Edge="Edge.End" />
+        <MudIconButton Icon="@Icons.Material.Outlined.Palette" Color="Color.Inherit" Edge="Edge.End" OnClick="@(() => ThemeToggle())"/>
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
         <NavMenu />
@@ -20,15 +22,57 @@
     </MudMainContent>
 </MudLayout>
 
+
+
 @code {
+    private BrowserStorageHelper? _browserStorage;
+
     bool _drawerOpen = true;
+    private MudTheme _activeTheme = bouvetThemeLight;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await SetTheme();
+    }
+    private async Task SetTheme(string themeName = "")
+    {
+        if (_browserStorage is null)
+            return;
+
+        if(string.IsNullOrEmpty(themeName))
+        {
+            themeName = await _browserStorage.LoadFromLocalStorage("selected-theme");
+        }
+        
+        if(themeName.Equals("bouvetThemeLight"))
+        {
+            _activeTheme = bouvetThemeLight;
+        }
+        else if(themeName.Equals("bouvetThemeDark"))
+        {
+            _activeTheme = bouvetThemeDark;
+        }
+
+        _browserStorage.SaveToLocalStorage("selected-theme", themeName);
+
+        StateHasChanged();
+    }
 
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
     }
 
-    MudTheme darkTheme = new MudTheme()
+    private async void ThemeToggle()
+    {
+        if (_activeTheme == bouvetThemeDark)
+            await SetTheme("bouvetThemeLight");
+        else
+            await SetTheme("bouvetThemeDark");
+    }
+
+    static MudTheme bouvetThemeDark = new MudTheme()
     {
         Palette = new Palette()
         {
@@ -41,8 +85,10 @@
             DrawerIcon = "rgba(255,255,255, 0.50)",
             AppbarBackground = "#27272f",
             AppbarText = "rgba(255,255,255, 0.70)",
-            TextPrimary = "rgba(255,255,255, 0.70)",
-            TextSecondary = "rgba(255,255,255, 0.50)",
+            TextPrimary = BouvetColors.NerdyOffWhitePaleRgba,
+            TextSecondary = BouvetColors.BorisOransjRgba,
+            Primary = BouvetColors.ZeroCoolBlå,
+            Secondary = BouvetColors.NetworkGreenRgba,
             ActionDefault = "#adadb1",
             ActionDisabled = "rgba(255,255,255, 0.26)",
             ActionDisabledBackground = "rgba(255,255,255, 0.12)",
@@ -52,6 +98,35 @@
             LinesDefault = "rgba(255,255,255, 0.12)",
             LinesInputs = "rgba(255,255,255, 0.3)",
             TextDisabled = "rgba(255,255,255, 0.2)"
+        }
+    };
+
+    static MudTheme bouvetThemeLight = new MudTheme()
+    {
+        Palette = new Palette()
+        {
+            Background = BouvetColors.NerdyOffWhitePale,
+            DrawerBackground = BouvetColors.NerdyOffWhitePale,
+            Primary = BouvetColors.CloakBlå,
+            Secondary = BouvetColors.BorisOransj,
+            //Surface = BouvetColors.CollinsGrå,
+            //BackgroundGrey = BouvetColors.HotPink,
+            //Black = BouvetColors.Svart,
+            //DrawerText = BouvetColors.ColossusRgba,
+            //DrawerIcon = BouvetColors.WorpBlåRgba,
+            AppbarBackground = BouvetColors.Colossus,
+            //AppbarText = BouvetColors.BorisOransjRgba,
+            TextPrimary = BouvetColors.ColossusRgba,
+            TextSecondary = BouvetColors.Svart,
+            ActionDefault = BouvetColors.ColossusRgba,
+            //ActionDisabled = "rgba(255,0,0, 1)",
+            //ActionDisabledBackground = "rgba(255,255,255, 0.12)",
+            //Divider = BouvetColors.HotPinkRgba,
+            //DividerLight = "rgba(255,255,255, 0.06)",
+            TableLines = BouvetColors.CloakBlå,
+            LinesDefault = BouvetColors.ColossusRgba,
+            //LinesInputs = BouvetColors.BorisOransjRgba,
+            //TextDisabled = BouvetColors.HotPinkRgba,
         }
     };
 }

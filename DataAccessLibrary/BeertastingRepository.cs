@@ -49,6 +49,58 @@ namespace DataAccessLibrary
             return _db.LoadSingle<BeerModel, dynamic>(sql, new { beerId = id });
         }
 
+        public Task DeleteBeer(BeerModel beer)
+        {
+            var sql = @"delete from dbo.Beer where BeerId = @BeerId";
+            return _db.DeleteData<BeerModel>(sql, beer);             
+        }
+
+		public Task UpdateBeer(BeerModel beer)
+		{
+            var sql = @"update dbo.Beer 
+                        set     Name = @Name, 
+                                ABV = @ABV, 
+                                RateBeerLink = @RateBeerLink, 
+                                BeerStyleId = @BeerStyleId, 
+                                BreweryId = @BreweryId, 
+                                BeerClassId = @BeerClassId
+                        where   BeerId = @BeerId";
+
+            return _db.SaveData(sql, beer);
+		}
+
+        public Task AddBrewery(BreweryModel brewery)
+        {
+            var sql = @"insert into dbo.Brewery 
+                               (Name,Country, Website)
+                        values (@Name, @Country, @Website)";
+
+            return _db.SaveData(sql, brewery);
+        }
+
+        public Task UpdateBrewery(BreweryModel brewery)
+        {
+            var sql = @"update  dbo.Brewery 
+                        set     Name = @Name,
+                                Country = @Country, 
+                                Website = @Website
+                        where   BreweryId = @BreweryId";
+
+            return _db.SaveData(sql, brewery);
+        }
+
+        public Task DeleteBrewery(BreweryModel brewery)
+        {
+            var sql = @"delete from dbo.Brewery where BreweryId = @BreweryId";
+            return _db.DeleteData<BreweryModel>(sql, brewery);
+        }
+
+        public Task<BreweryModel> GetBrewery(int id)
+        {
+            var sql = @"select * from dbo.Brewery where BreweryId = @breweryId";
+            return _db.LoadSingle<BreweryModel, dynamic>(sql, new { breweryId = id });
+        }
+
         public Task<List<TastingModel>> GetTastings()
         {
             var sql = @"select * from dbo.Tasting";
