@@ -5,7 +5,7 @@ namespace BlazorTest.ViewModels
 {
     public class TastingViewModel
     {
-        
+
         public int TastingId { get; set; }
 
         [Required(ErrorMessage = "Name is required")]
@@ -18,9 +18,9 @@ namespace BlazorTest.ViewModels
 
         [Required(ErrorMessage = "Date is required")]
         public DateTime? TastingDate { get; set; }
-        
+
         [Required(ErrorMessage = "Time is required")]
-        public TimeSpan? TastingTime {  get; set; }
+        public TimeSpan? TastingTime { get; set; }
 
         public TastingViewModel()
         {
@@ -38,6 +38,19 @@ namespace BlazorTest.ViewModels
             IsBlind = tasting.IsBlind;
             TastingDate = tasting.TastingDate;
             TastingTime = new TimeSpan(tasting.TastingDate.Hour, tasting.TastingDate.Minute, tasting.TastingDate.Second);
+        }
+
+        public TastingModel ToTastingModel()
+        {
+            return new TastingModel()
+            {
+                Description = this.Description,
+                IsActive = this.IsActive,
+                IsBlind = this.IsBlind,
+                Name = this.Name,
+                TastingId = this.TastingId,
+                TastingDate = this.TastingDate.GetValueOrDefault().Add(TastingTime.GetValueOrDefault())
+            };
         }
     }
 }

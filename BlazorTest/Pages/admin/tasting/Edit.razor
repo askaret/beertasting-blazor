@@ -16,11 +16,6 @@
 <EditForm Model="@tasting" OnValidSubmit="EditTasting">
     <DataAnnotationsValidator />
     <MudCard Elevation="2" Outlined="true">
-        <MudCardHeader>
-            <CardHeaderContent>
-                <MudText Typo="Typo.h4">Edit tasting</MudText>
-            </CardHeaderContent>
-        </MudCardHeader>
         <MudCardContent Class="pa-4">
             <MudGrid>
                 <MudItem xs="6">
@@ -124,17 +119,7 @@
 
     private async void EditTasting()
     {
-        var editedTasting = new TastingModel()
-            {
-                TastingId = tasting.TastingId,
-                Name = tasting.Name,
-                Description = tasting.Description,
-                IsActive = tasting.IsActive,
-                IsBlind = tasting.IsBlind,
-                TastingDate = tasting.TastingDate.GetValueOrDefault().Add(tasting.TastingTime.GetValueOrDefault())
-            };
-
-        await _db.EditTasting(editedTasting);
+        await _db.EditTasting(tasting.ToTastingModel());
 
         _nav.NavigateTo("/admin/tasting");
     }
@@ -153,18 +138,20 @@
 
             if (result.Cancelled) return;
         }
-        var tasks = new List<Task>();
 
         await _db.RemoveTastingResult(tastingBeer.TastingId, tastingBeer.BeerModel.BeerId);
         await _db.RemoveVotes(tastingBeer.TastingId, tastingBeer.BeerModel.BeerId);
         await _db.RemoveTastingBeer(tastingBeer);
         tastingBeers.Remove(tastingBeer);
-        int i = 1;
-        foreach (var otherTastingBeer in tastingBeers)
+        
+        var tasks = new List<Task>();
+        int sortOrder = 1;
+        foreach (var beer in tastingBeers)
         {
-            otherTastingBeer.SortOrder = i++;
-            tasks.Add(_db.EditTastingBeer(otherTastingBeer));
+            beer.SortOrder = sortOrder++;
+            tasks.Add(_db.EditTastingBeer(beer));
         }
+
         await Task.WhenAll(tasks);
         StateHasChanged();
     }
