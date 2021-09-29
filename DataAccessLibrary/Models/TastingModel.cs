@@ -15,6 +15,5 @@ namespace DataAccessLibrary.Models
         public bool IsBlind { get; set; }
         public DateTime TastingDate { get; set; }
         public bool ShowDetails {  get; set; }
-        public List<TastingResultModel> TastingResults {  get; set; }
     }
 }
