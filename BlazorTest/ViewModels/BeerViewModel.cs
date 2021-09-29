@@ -36,6 +36,7 @@ namespace BlazorTest.ViewModels
 		}
 
         public int BeerId { get; set; }
+        
         [Required(ErrorMessage = "Beer style is required.")]
         [Range(1, int.MaxValue, ErrorMessage = "Beer style is required.")]
         public int BeerStyleId { get; set; }
