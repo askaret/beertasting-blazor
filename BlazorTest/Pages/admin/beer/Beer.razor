@@ -9,8 +9,8 @@
 @inject NavigationManager _nav
 @inject IDialogService DialogService
 
-<MudText Typo="Typo.h1">Beer</MudText>
-<MudText Typo="Typo.h2">New beer</MudText>
+<MudText Typo="Typo.h3">Beer</MudText>
+<MudText Typo="Typo.h4">New beer</MudText>
 
 <EditForm Model="@newBeer" OnValidSubmit="InsertBeer">
 	<DataAnnotationsValidator />
@@ -132,10 +132,8 @@ else
 		if (result.Cancelled) return;
 
 		await _db.DeleteBeer(beer);
-
-		var localBeers = beers;
-		localBeers.Remove(beer);
-		beers = localBeers;
+		beers.Remove(beer);
+		StateHasChanged();
 	}
 
 	private bool TableFilter(BeerModel beer, string searchString)
