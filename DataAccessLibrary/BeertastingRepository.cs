@@ -11,21 +11,6 @@ namespace DataAccessLibrary
             _db = db;
         }
 
-        public Task AddUser(UserModel user)
-        {
-            var sql = @"insert into dbo.Taster (EmailAddress, DisplayName, IsAdmin)
-                        values (@Email,@DisplayName, @IsAdmin)";
-
-            return _db.SaveData(sql, user);
-        }
-
-        public Task<List<UserModel>> GetUsers()
-        {
-            var sql = "select * from dbo.Taster";
-
-            return _db.LoadData<UserModel, dynamic>(sql, new { });
-        }
-
         public Task<List<BeerstyleModel>> GetBeerstyles()
         {
             var query = "select * from dbo.Beerstyle";

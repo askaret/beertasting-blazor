@@ -4,8 +4,6 @@ namespace DataAccessLibrary
 {
     public interface IBeertastingRepository
     {
-        Task AddUser(UserModel user);
-        Task<List<UserModel>> GetUsers();
         Task AddBeer(BeerModel beer);
         Task AddTasting(TastingModel tasting);
         Task AddTastingBeer(int tastingId, int beerId, int sortOrder);
