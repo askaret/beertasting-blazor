@@ -64,9 +64,9 @@
 }
 else
 {
-	<MudTable Items="@beers" Dense="false" Hover="true" RowsPerPage=100 Bordered="true" Striped="true" Filter="new Func<BeerModel,bool>(TableFilterFunction)" @bind-SelectedItem="SelectedBeer">
+	<MudTable Items="@beers.OrderBy(x => x.Name)" Dense="false" Hover="true" RowsPerPage=100 Bordered="true" Striped="true" Filter="new Func<BeerModel,bool>(TableFilterFunction)" @bind-SelectedItem="SelectedBeer">
 		<ToolBarContent>
-			<MudText Typo="Typo.h6">All beers</MudText>
+			<MudText Typo="Typo.h4">All beers</MudText>
 			<MudSpacer />
 			<MudTextField @bind-Value="tableSearchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
 		</ToolBarContent>

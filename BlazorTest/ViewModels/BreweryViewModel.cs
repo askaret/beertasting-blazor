@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DataAccessLibrary.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlazorTest.ViewModels
 {
@@ -18,6 +19,25 @@ namespace BlazorTest.ViewModels
             Name = string.Empty;
             Country = string.Empty;
             Website = string.Empty; 
+        }
+
+        public BreweryViewModel(BreweryModel model)
+        {
+            BreweryId = model.BreweryId;
+            Name = model.Name;
+            Country = model.Country; 
+            Website = model.Website;
+        }
+
+        public BreweryModel ToBreweryModel()
+        {
+            return new BreweryModel()
+            {
+                BreweryId = BreweryId,
+                Name = Name,
+                Country = Country,
+                Website = Website
+            };
         }
     }
 }

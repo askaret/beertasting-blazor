@@ -17,8 +17,14 @@
 	<MudCard>
 		<MudCardContent>
 			<MudGrid>
-				<MudItem xs="12" sm="5">
-					<MudTextField Label="Name" @bind-Value=".Name" For="@(() => newBeer.Name)" Variant="Variant.Outlined" />
+				<MudItem xs="12" sm="4">
+					<MudTextField Label="Name" @bind-Value="newBrewery.Name" For="@(() => newBrewery.Name)" Variant="Variant.Outlined" />
+				</MudItem>
+				<MudItem xs="12" sm="4">
+					<MudTextField Label="Country" @bind-Value="newBrewery.Country" For="@(() => newBrewery.Country)" Variant="Variant.Outlined" />
+				</MudItem>
+				<MudItem xs="12" sm="4">
+					<MudTextField Label="Website" @bind-Value="newBrewery.Website" For="@(() => newBrewery.Website)" Variant="Variant.Outlined" />
 				</MudItem>
 			</MudGrid>
 		</MudCardContent>
@@ -34,41 +40,33 @@
 }
 else
 {
-	<MudTable Items="@breweries" Dense="false" Hover="true" RowsPerPage=100 Bordered="true" Striped="true" Filter="new Func<BreweryModel,bool>(TableFilterFunction)" @bind-SelectedItem="SelectedBrewery">
+	<MudTable Items="@breweries.OrderBy(x => x.Name)" Dense="false" Hover="true" RowsPerPage=100 Bordered="true" Striped="true" Filter="new Func<BreweryModel,bool>(TableFilterFunction)" @bind-SelectedItem="SelectedBrewery">
 		<ToolBarContent>
-			<MudText Typo="Typo.h5">All breweries</MudText>
+			<MudText Typo="Typo.h4">All breweries</MudText>
 			<MudSpacer />
 			<MudTextField @bind-Value="tableSearchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
 		</ToolBarContent>
 		<HeaderContent>
 			<MudTh><MudTableSortLabel SortBy="new Func<BreweryModel, object>(x => x.Name)">Name</MudTableSortLabel></MudTh>
-			@*<MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.BreweryModel != null ? x.BreweryModel.Name : string.Empty)">Brewery</MudTableSortLabel></MudTh>
-			<MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.ABV)">ABV %</MudTableSortLabel></MudTh>
-			<MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.BeerStyleModel != null ? x.BeerStyleModel.Name : string.Empty)">Style</MudTableSortLabel></MudTh>
-			<MudTh><MudTableSortLabel SortBy="new Func<BeerModel, object>(x => x.BeerclassModel != null ? x.BeerclassModel.Name : string.Empty)">Class</MudTableSortLabel></MudTh>
-			<MudTh>URL</MudTh>*@
+			<MudTh><MudTableSortLabel SortBy="new Func<BreweryModel, object>(x => x.Country)">Country</MudTableSortLabel></MudTh>
+			<MudTh><MudTableSortLabel SortBy="new Func<BreweryModel, object>(x => x.Website)">URL</MudTableSortLabel></MudTh>
 			<MudTh></MudTh>
 		</HeaderContent>
 		<RowTemplate>
 			<MudTd DataLabel="Name">@context.Name</MudTd>
-			@*<MudTd DataLabel="Brewery">@(context.BreweryModel == null ? "" : context.BreweryModel.Name)</MudTd>
-			<MudTd DataLabel="ABV %">@context.ABV</MudTd>
-			<MudTd DataLabel="Style">@(context.BeerStyleModel == null ? "" : context.BeerStyleModel.Name)</MudTd>
-			<MudTd DataLabel="Class">@(context.BeerclassModel == null ? "" : context.BeerclassModel.Name)</MudTd>
+			<MudTd DataLabel="Country">@context.Country</MudTd>
 			<MudTd DataLabel="URL">
 				@{
-					if (!string.IsNullOrEmpty(context?.RateBeerLink))
+					if (!string.IsNullOrEmpty(context.Website))
 					{
-					<MudIconButton Link="@context.RateBeerLink" Target="_blank" Icon="@Icons.Material.Outlined.Link" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" />
+					<MudIconButton Link="@context.Website" Target="_blank" Icon="@Icons.Material.Outlined.Link" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" />
 					}
-			}
-		</MudTd>
-		*@
+				}
+			</MudTd>
 		<MudTd>
 			<MudIconButton Icon="@Icons.Material.Outlined.Edit" Variant="Variant.Outlined" Color="Color.Success" Size="Size.Small" OnClick="@(() => EditBrewery(context))" />
 			<MudIconButton Icon="@Icons.Material.Outlined.Delete" Variant="Variant.Outlined" Color="Color.Error" Size="Size.Small" OnClick="@(() => DeleteBrewery(context))" />
 		</MudTd>
-
 	</RowTemplate>
 	<PagerContent>
 		<MudTablePager />
@@ -108,6 +106,8 @@ else
 		if (string.IsNullOrWhiteSpace(searchString))
 			return true;
 		if (brewery.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+			return true;
+		if (brewery.Country.Contains(searchString, StringComparison.OrdinalIgnoreCase))
 			return true;
 		return false;
 	}
