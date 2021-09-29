@@ -7,6 +7,7 @@
 @inject NavigationManager _nav
 
 <MudText Typo="Typo.h3">Tastings</MudText>
+<MudText Typo="Typo.h4">Add tasting</MudText>
 
 <EditForm Model="@newTasting" OnValidSubmit="AddTasting">
     <DataAnnotationsValidator />
@@ -46,7 +47,7 @@
 
 <MudTable Items=@tastings Hover="true" Filter="new Func<TastingModel,bool>(TableFilterFunction)">
     <ToolBarContent>
-		<MudText Typo="Typo.h6">All Tastings</MudText>
+		<MudText Typo="Typo.h4">All Tastings</MudText>
 		<MudSpacer />
 		<MudTextField @bind-Value="tableSearchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
 	</ToolBarContent>

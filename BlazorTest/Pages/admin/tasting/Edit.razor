@@ -1,5 +1,6 @@
 ﻿@page "/admin/tasting/edit/{Id:int}"
 
+@using BlazorTest.Pages.admin.Util
 @using BlazorTest.ViewModels
 @using DataAccessLibrary
 @using DataAccessLibrary.Models
@@ -8,6 +9,9 @@
 @inject NavigationManager _nav
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
+
+<MudText Typo="Typo.h3">Tasting</MudText>
+<MudText Typo="Typo.h4">Edit tasting</MudText>
 
 <EditForm Model="@tasting" OnValidSubmit="EditTasting">
     <DataAnnotationsValidator />
@@ -44,24 +48,22 @@
                     <MudTh>Name</MudTh>
                     <MudTh>Brewery</MudTh>
                     <MudTh>ABV %</MudTh>
-                    <MudTh>Ratebeer</MudTh>
+                    <MudTh>URL</MudTh>
                     <MudTh><MudButton Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined" OnClick="@(() => AddBeer())">Add Beer</MudButton></MudTh>
                 </HeaderContent>
                 <RowTemplate Context="tbContext">
                     <MudTd>
-                        <MudIconButton Icon="@Icons.Material.Outlined.ArrowUpward" Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined" OnClick="@(() => SwitchBeerSortOrder(tbContext.SortOrder, tbContext.SortOrder-1))"></MudIconButton>
-                        <MudIconButton Icon="@Icons.Material.Outlined.ArrowDownward" Color="Color.Secondary" Size="Size.Small" Variant="Variant.Outlined" OnClick="@(() => SwitchBeerSortOrder(tbContext.SortOrder, tbContext.SortOrder+1))"></MudIconButton>
+                        <MudIconButton Icon="@Icons.Material.Outlined.ArrowUpward" Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined" OnClick="@(() => SwitchBeerSortOrder(tbContext, SortOrderChange.Up))"></MudIconButton>
+                        <MudIconButton Icon="@Icons.Material.Outlined.ArrowDownward" Color="Color.Secondary" Size="Size.Small" Variant="Variant.Outlined" OnClick="@(() => SwitchBeerSortOrder(tbContext, SortOrderChange.Down))"></MudIconButton>
                     </MudTd>
                     <MudTd DataLabel="Name">@tbContext.BeerModel?.Name</MudTd>
                     <MudTd DataLabel="Brewery">@tbContext.BeerModel?.BreweryModel?.Name</MudTd>
                     <MudTd DataLabel="ABV %">@tbContext.BeerModel?.ABV</MudTd>
-                    <MudTd DataLabel="Ratebeer">
-                        @{
-                            if (!string.IsNullOrEmpty(tbContext.BeerModel?.RateBeerLink))
+                    <MudTd DataLabel="URL">
+                        @if (!string.IsNullOrEmpty(tbContext.BeerModel?.RateBeerLink))
                             {
                                 <MudIconButton Link="@tbContext.BeerModel.RateBeerLink" Target="_blank" Icon="@Icons.Material.Outlined.Link" Color="Color.Primary" Size="Size.Small" />
                             }
-                        }
                     </MudTd>
                     <MudTd><MudIconButton Icon="@Icons.Material.Outlined.Delete" Variant="Variant.Outlined" Color="Color.Error" Size="Size.Small" OnClick="@(() => RemoveBeer(tbContext))" /></MudTd>
                 </RowTemplate>
@@ -98,6 +100,9 @@
 
     protected override async Task OnInitializedAsync()
     {
+        tasting = new TastingViewModel(await _db.GetTasting(Id));
+        tastingBeers = (await _db.GetTastingBeers(Id));
+
         beers = await _db.GetBeers();
         breweries = await _db.GetBreweries();
         beerStyles = await _db.GetBeerstyles();
@@ -110,8 +115,6 @@
             beer.BeerStyleModel = beerStyles.SingleOrDefault(bs => bs.BeerStyleId == beer.BeerStyleId);
         }
 
-        tasting = new TastingViewModel(await _db.GetTasting(Id));
-        tastingBeers = (await _db.GetTastingBeers(Id));
         foreach (var tastingBeer in tastingBeers)
         {
             tastingBeer.BeerModel = beers.SingleOrDefault(b => b.BeerId == tastingBeer.BeerId);
@@ -194,20 +197,19 @@
         StateHasChanged();
     }
 
-    private async void SwitchBeerSortOrder(int sortOrder, int otherSortOrder)
+    private async void SwitchBeerSortOrder(TastingBeerModel beerToSwitch, SortOrderChange sortOperation)
     {
-        var beerToSwitch = tastingBeers.SingleOrDefault(tb => tb.SortOrder == sortOrder);
-        var otherBeerToSwitch = tastingBeers.SingleOrDefault(tb => tb.SortOrder == otherSortOrder);
+        int sortOrderChange = sortOperation == SortOrderChange.Down ? 1 : -1;
+        var otherBeer = tastingBeers.SingleOrDefault(tb => tb.SortOrder == beerToSwitch.SortOrder + sortOrderChange);
 
-        if (beerToSwitch is null || otherBeerToSwitch is null)
+        if (otherBeer is null)
             return;
 
-        var tmpSortOrder = beerToSwitch.SortOrder;
-        beerToSwitch.SortOrder = otherBeerToSwitch.SortOrder;
-        otherBeerToSwitch.SortOrder = tmpSortOrder;
+        beerToSwitch.SortOrder = beerToSwitch.SortOrder + sortOrderChange;
+        otherBeer.SortOrder = otherBeer.SortOrder - sortOrderChange;
 
         await _db.EditTastingBeer(beerToSwitch);
-        await _db.EditTastingBeer(otherBeerToSwitch);
+        await _db.EditTastingBeer(otherBeer);
 
         tastingBeers = tastingBeers.OrderBy(tb => tb.SortOrder).ToList();
 
