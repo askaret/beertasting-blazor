@@ -6,7 +6,7 @@
 
 <MudDialog>
     <DialogContent>
-        <MudTable Items="@beers" MultiSelection="true" Filter="new Func<BeerModel,bool>(TableFilterFunction)" @bind-SelectedItems="selectedBeers" Hover="true" Height="350px" FixedHeader="true" Dense="true">
+        <MudTable Items="@beers" MultiSelection="true" Bordered="false" Striped="true" Filter="new Func<BeerModel,bool>(TableFilterFunction)" @bind-SelectedItems="selectedBeers" Hover="true" Height="350px" FixedHeader="true" Dense="true">
             <ToolBarContent>
 			    <MudText Typo="Typo.h6">Beers</MudText>
 			    <MudSpacer />

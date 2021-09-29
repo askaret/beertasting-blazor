@@ -9,8 +9,7 @@
 @inject IBeertastingRepository _db
 @inject NavigationManager _nav
 
-<MudText Typo="Typo.h3">Brewery</MudText>
-<MudText Typo="Typo.h4">Edit brewery</MudText>
+<MudText Typo="Typo.h3" Class="pa-4">Brewery</MudText>
 
 @if (editBrewery is null)
 {
@@ -22,6 +21,7 @@ else
 		<DataAnnotationsValidator />
 		<MudCard>
 			<MudCardContent>
+				<MudText Typo="Typo.h4" Class="pa-4">Edit brewery</MudText>
 				<MudGrid>
 					<MudItem xs="12" sm="4">
 						<MudTextField Label="Name" @bind-Value="editBrewery.Name" For="@(() => editBrewery.Name)" Variant="Variant.Outlined" />
