@@ -1,7 +1,18 @@
-﻿@page "/tasting/voting"
+﻿@page "/tasting/voting/{Id:int}"
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
 
-@*
-    
-*@
-@{
+@inject IBeertastingRepository _db
+
+@code
+{
+    [Parameter]
+    public int Id { get; set; }
+
+    private List<TastingBeerModel> tastingBeers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        tastingBeers = await _db.GetTas
+    }
 }

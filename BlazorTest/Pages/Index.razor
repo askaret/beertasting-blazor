@@ -1,8 +1,40 @@
 ﻿@page "/"
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
 @using Microsoft.AspNetCore.Hosting;
 @using Microsoft.Extensions.Hosting;
+@using Microsoft.Graph
+@using Microsoft.Identity.Web
+
+@inject Microsoft.Graph.GraphServiceClient GraphServiceClient
+@inject MicrosoftIdentityConsentAndConditionalAccessHandler ConsentHandler
 @inject IWebHostEnvironment Env
+@inject IBeertastingRepository _db
+@inject NavigationManager _nav
 
-<PageTitle>Index</PageTitle>
+@code
+{
+    Microsoft.Graph.User? user;
 
-<MudText Typo="Typo.h3">Beertasting </MudText>
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            user = await GraphServiceClient.Me.Request().GetAsync();
+        }
+        catch (Exception ex)
+        {
+            ConsentHandler.HandleException(ex);
+        }
+
+        if (user is not null)
+        {
+            var registeredUsers = await _db.GetUsers();
+            var me = new UserModel() { DisplayName = user.DisplayName, Email = user.Mail, IsAdmin = true };
+            if (!registeredUsers.Any(ru => ru.Email == me.Email))
+                await _db.AddUser(me);
+        }
+
+        _nav.NavigateTo("/tasting/");
+    }
+}

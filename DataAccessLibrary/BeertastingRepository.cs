@@ -11,6 +11,21 @@ namespace DataAccessLibrary
             _db = db;
         }
 
+        public Task AddUser(UserModel user)
+        {
+            var sql = @"insert into dbo.Taster (EmailAddress, DisplayName, IsAdmin)
+                        values (@Email,@DisplayName, @IsAdmin)";
+
+            return _db.SaveData(sql, user);
+        }
+
+        public Task<List<UserModel>> GetUsers()
+        {
+            var sql = "select * from dbo.Users";
+
+            return _db.LoadData<UserModel, dynamic>(sql, new { });
+        }
+
         public Task<List<BeerstyleModel>> GetBeerstyles()
         {
             var query = "select * from dbo.Beerstyle";
@@ -22,7 +37,7 @@ namespace DataAccessLibrary
             var query = "select * from dbo.Beerclass";
             return _db.LoadData<BeerclassModel, dynamic>(query, new { });
         }
-        
+
         public Task<List<BeerModel>> GetBeers()
         {
             var query = "select * from dbo.Beer";
@@ -52,11 +67,11 @@ namespace DataAccessLibrary
         public Task DeleteBeer(BeerModel beer)
         {
             var sql = @"delete from dbo.Beer where BeerId = @BeerId";
-            return _db.DeleteData<BeerModel>(sql, beer);             
+            return _db.DeleteData<BeerModel>(sql, beer);
         }
 
-		public Task UpdateBeer(BeerModel beer)
-		{
+        public Task UpdateBeer(BeerModel beer)
+        {
             var sql = @"update dbo.Beer 
                         set     Name = @Name, 
                                 ABV = @ABV, 
@@ -67,7 +82,7 @@ namespace DataAccessLibrary
                         where   BeerId = @BeerId";
 
             return _db.SaveData(sql, beer);
-		}
+        }
 
         public Task AddBrewery(BreweryModel brewery)
         {
@@ -116,7 +131,7 @@ namespace DataAccessLibrary
         public Task<int> GetParticipantCount(int tastingId)
         {
             var sql = @"select count(distinct TasterId) from dbo.Vote where TastingId = @id group by TastingId";
-            return _db.LoadSingle<int, dynamic>(sql, new {id = tastingId});
+            return _db.LoadSingle<int, dynamic>(sql, new { id = tastingId });
         }
     }
 }
