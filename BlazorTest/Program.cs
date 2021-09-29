@@ -15,26 +15,21 @@ builder.Services.AddMudServices();
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddTransient<IBeertastingRepository, BeertastingRepository>();
+var initialScopes = builder.Configuration.GetValue<string>("DownstreamApi:Scopes")?.Split(' ');
 
+builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
+        .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
+            .AddMicrosoftGraph(builder.Configuration.GetSection("DownstreamApi"))
+            .AddInMemoryTokenCaches();
+builder.Services.AddControllersWithViews()
+    .AddMicrosoftIdentityUI();
 
-//if (!builder.Environment.IsDevelopment())
-//{
-    var initialScopes = builder.Configuration.GetValue<string>("DownstreamApi:Scopes")?.Split(' ');
-
-    builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-        .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
-            .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
-                .AddMicrosoftGraph(builder.Configuration.GetSection("DownstreamApi"))
-                .AddInMemoryTokenCaches();
-    builder.Services.AddControllersWithViews()
-        .AddMicrosoftIdentityUI();
-
-    builder.Services.AddAuthorization(options =>
-    {
+builder.Services.AddAuthorization(options =>
+{
         // By default, all incoming requests will be authorized according to the default policy
         options.FallbackPolicy = options.DefaultPolicy;
-    });
-//}
+});
 
 var app = builder.Build();
 
@@ -46,9 +41,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-if(app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();    
+    app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();

@@ -44,8 +44,8 @@ else
 }
 
 @code {
-    Microsoft.Graph.User user;
-    string photo;
+    Microsoft.Graph.User? user;
+    string photo = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -76,7 +76,7 @@ else
         }
         catch (Exception)
         {
-            photo = null;
+            photo = "";
         }
         return photo;
     }

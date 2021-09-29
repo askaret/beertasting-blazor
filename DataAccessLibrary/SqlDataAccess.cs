@@ -9,11 +9,21 @@ namespace DataAccessLibrary
     {
         private readonly IConfiguration _configuration;
 
-        public string ConnectionStringName { get; set; } = Environment.MachineName.ToUpperInvariant();
+        public string ConnectionStringName { get; } = Environment.MachineName.ToUpperInvariant();
 
         public SqlDataAccess(IConfiguration configuration)
         {
             _configuration = configuration;
+
+            try
+            {
+                var connectionString = _configuration.GetConnectionString(ConnectionStringName);
+            }
+            catch (Exception)
+            {
+
+                ConnectionStringName = "AZURE";
+            }
         }
 
         public async Task<List<T>> LoadData<T, U>(string query, U parameters)
