@@ -7,6 +7,13 @@ namespace DataAccessLibrary
         Task AddUser(UserModel user);
         Task<List<UserModel>> GetUsers();
         Task AddBeer(BeerModel beer);
+        Task AddTasting(TastingModel tasting);
+        Task AddTastingBeer(int tastingId, int beerId, int sortOrder);
+        Task EditTasting(TastingModel tasting);
+        Task EditTastingBeer(TastingBeerModel tastingBeer);
+        Task RemoveTastingBeer(TastingBeerModel tastingBeer);
+        Task RemoveVotes(int tastingId, int beerId);
+        Task RemoveTastingResult(int tastingId, int beerId);
         Task UpdateBeer(BeerModel beer);
         Task DeleteBeer(BeerModel beer);
         Task AddBrewery(BreweryModel brewery);
@@ -19,7 +26,8 @@ namespace DataAccessLibrary
         Task<List<BeerclassModel>> GetBeerclasses();
         Task<List<BeerstyleModel>> GetBeerstyles();
         Task<List<TastingModel>> GetTastings();
+        Task<TastingModel> GetTasting(int id);
+        Task<List<TastingBeerModel>> GetTastingBeers(int id);
         Task<List<TastingResultModel>> GetTastingResults(int tastingId);
-        Task<int> GetParticipantCount(int tastingId);
     }
 }

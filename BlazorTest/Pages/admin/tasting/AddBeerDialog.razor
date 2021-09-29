@@ -1,0 +1,72 @@
+﻿@using BlazorTest.ViewModels
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+
+@inject IDialogService DialogService
+
+<MudDialog>
+    <DialogContent>
+        <MudTable Items="@beers" MultiSelection="true" Filter="new Func<BeerModel,bool>(TableFilterFunction)" @bind-SelectedItems="selectedBeers" Hover="true" Height="350px" FixedHeader="true" Dense="true">
+            <ToolBarContent>
+			    <MudText Typo="Typo.h6">Beers</MudText>
+			    <MudSpacer />
+			    <MudTextField @bind-Value="tableSearchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+		    </ToolBarContent>
+            <HeaderContent>
+                <MudTh>Name</MudTh>
+                <MudTh>Brewery</MudTh>
+                <MudTh>ABV</MudTh>
+                <MudTh>Style</MudTh>
+                <MudTh>Class</MudTh>
+                <MudTh></MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Name">@context.Name</MudTd>
+                <MudTd DataLabel="Brewery">@context.BreweryModel?.Name</MudTd>
+                <MudTd DataLabel="ABV">@context.ABV</MudTd>
+                <MudTd DataLabel="Style">@context.BeerStyleModel?.Name</MudTd>
+                <MudTd DataLabel="Class">@context.BeerclassModel?.Name</MudTd>
+                <MudTd><MudIconButton Icon="@Icons.Material.Outlined.Link" Link="@context.RateBeerLink" Target="_blank" Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined"></MudIconButton></MudTd>
+            </RowTemplate>
+        </MudTable>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Error" OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Submit">Add Beers</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public List<BeerModel> Beers { get; set; }
+
+    [Parameter] public List<TastingBeerModel> TastingBeers { get; set; }
+
+    private string tableSearchString = "";
+    private bool TableFilterFunction(BeerModel beer) => TableFilter(beer, tableSearchString);
+
+    private List<BeerModel> beers;
+    private HashSet<BeerModel> selectedBeers;
+    private List<TastingBeerModel> tastingBeers;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        beers = Beers.Where(b => !TastingBeers.Any(tb => tb.BeerModel?.BeerId == b.BeerId)).ToList();
+    }
+
+    private async void Submit() => MudDialog.Close(DialogResult.Ok(selectedBeers.Select(b => b.BeerId).ToList()));
+    void Cancel() => MudDialog.Cancel();
+
+    private bool TableFilter(BeerModel beer, string searchString)
+	{
+		if (string.IsNullOrWhiteSpace(searchString))
+			return true;
+		if (beer.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+			return true;
+		if (beer.BreweryModel.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+			return true;
+		return false;
+	}
+}
