@@ -21,7 +21,7 @@ namespace DataAccessLibrary
 
         public Task<List<UserModel>> GetUsers()
         {
-            var sql = "select * from dbo.Users";
+            var sql = "select * from dbo.Taster";
 
             return _db.LoadData<UserModel, dynamic>(sql, new { });
         }
@@ -181,12 +181,6 @@ namespace DataAccessLibrary
         {
             var sql = @"select * from dbo.Brewery where BreweryId = @breweryId";
             return _db.LoadSingle<BreweryModel, dynamic>(sql, new { breweryId = id });
-        }
-
-        public Task<List<TastingModel>> GetTastings()
-        {
-            var sql = @"select * from dbo.Tasting";
-            return _db.LoadData<TastingModel, dynamic>(sql, new { });
         }
 
         public Task<List<TastingResultModel>> GetTastingResults(int tastingId)

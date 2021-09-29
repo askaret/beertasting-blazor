@@ -4,29 +4,31 @@
 
 @inject IBeertastingRepository _db
 
-<h3>Tastings</h3>
+<MudText Typo="Typo.h3">Tastings</MudText>
 
 @if (activeTastings is not null && activeTastings.Any())
 {
-    <h4>Active Tastings</h4>
+    <MudText Typo="Typo.h4">Active tastings</MudText>
 
     <MudTable Items="@activeTastings" Hover="true">
         <HeaderContent>
             <MudTh>Name</MudTh>
             <MudTh>Description</MudTh>
             <MudTh>Date</MudTh>
+            <MudTh></MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Name">@context.Name</MudTd>
             <MudTd DataLabel="Description">@context.Description</MudTd>
             <MudTd DataLabel="Date">@context.TastingDate</MudTd>
+            <MudTd DataLabel="Voting"><MudIconButton Link=@string.Concat("/tasting/voting/", context.TastingId) Icon="@Icons.Material.Outlined.HowToVote" Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined"></MudIconButton></MudTd>
         </RowTemplate>
     </MudTable>
 
 }
 
-<h4>Old Tastings</h4>
-@if (tastings is null)
+<MudText Typo="Typo.h4">Old tastings</MudText>
+@if (oldTastings is null)
 {
     <p><em>Loading...</em></p>
 } 
@@ -34,31 +36,30 @@ else
 {
     <MudTable Items="@oldTastings" Hover="true">
         <HeaderContent>
-            <MudTh></MudTh>
             <MudTh>Name</MudTh>
             <MudTh>Description</MudTh>
             <MudTh>Date</MudTh>
+            <MudTh></MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTh></MudTh>
             <MudTd DataLabel="Name">@context.Name</MudTd>
             <MudTd DataLabel="Description">@context.Description</MudTd>
             <MudTd DataLabel="Date">@context.TastingDate</MudTd>
+            <MudTd DataLabel="Results"><MudIconButton Link=@string.Concat("/tasting/result/", context.TastingId) Icon="@Icons.Material.Outlined.ShowChart" Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined"></MudIconButton></MudTd>
         </RowTemplate>
     </MudTable>
 }
 
 @code
 {
-    private List<TastingModel> tastings = new List<TastingModel>();
-    private List<TastingModel> activeTastings = new List<TastingModel>();
-    private List<TastingModel> oldTastings = new List<TastingModel>();
+    private List<TastingModel>? activeTastings;
+    private List<TastingModel>? oldTastings;
 
     protected override async Task OnInitializedAsync()
     {
-        tastings = await _db.GetTastings();
+        var tastings = await _db.GetTastings();
 
-        activeTastings = tastings.Where(t => t.IsActive).ToList();
-        oldTastings = tastings.Where(t => !t.IsActive).ToList();
+        activeTastings = tastings.Where(t => t.IsActive).OrderByDescending(t => t.TastingDate).ToList();
+        oldTastings = tastings.Where(t => !t.IsActive).OrderByDescending(t => t.TastingDate).ToList();
     }
 }
