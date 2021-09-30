@@ -1,0 +1,21 @@
+﻿@page "/tasting/vote/{Id:int}"
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+
+@inject IBeertastingRepository _db
+
+<MudText Typo="Typo.h3">Beertasting</MudText>
+<MudText Typo="Typo.h4">@Id</MudText>
+
+@code
+{
+    [Parameter]
+    public int Id { get; set; }
+
+    private List<TastingBeerModel> tastingBeers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        tastingBeers = await _db.GetTastingBeers(Id);
+    }
+}

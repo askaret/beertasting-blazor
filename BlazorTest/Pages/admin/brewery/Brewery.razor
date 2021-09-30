@@ -9,13 +9,13 @@
 @inject NavigationManager _nav
 @inject IDialogService DialogService
 
-<MudText Typo="Typo.h3">Breweries</MudText>
-<MudText Typo="Typo.h4">New brewery</MudText>
+<MudText Typo="Typo.h3" Class="pa-4">Breweries</MudText>
 
 <EditForm Model="@newBrewery" OnValidSubmit="InsertBrewery">
 	<DataAnnotationsValidator />
 	<MudCard>
 		<MudCardContent>
+			<MudText Typo="Typo.h4" Class="pa-4">New brewery</MudText>
 			<MudGrid>
 				<MudItem xs="12" sm="4">
 					<MudTextField Label="Name" @bind-Value="newBrewery.Name" For="@(() => newBrewery.Name)" Variant="Variant.Outlined" />
@@ -40,9 +40,9 @@
 }
 else
 {
-	<MudTable Items="@breweries.OrderBy(x => x.Name)" Dense="false" Hover="true" RowsPerPage=100 Bordered="true" Striped="true" Filter="new Func<BreweryModel,bool>(TableFilterFunction)" @bind-SelectedItem="SelectedBrewery">
+	<MudTable Items="@breweries.OrderBy(x => x.Name)" Dense="false" Hover="true" RowsPerPage=100 Bordered="false" Striped="true" Filter="new Func<BreweryModel,bool>(TableFilterFunction)" @bind-SelectedItem="SelectedBrewery">
 		<ToolBarContent>
-			<MudText Typo="Typo.h4">All breweries</MudText>
+			<MudText Typo="Typo.h4" Class="pa-4">All breweries</MudText>
 			<MudSpacer />
 			<MudTextField @bind-Value="tableSearchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
 		</ToolBarContent>

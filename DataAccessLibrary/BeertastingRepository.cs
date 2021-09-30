@@ -22,7 +22,7 @@ namespace DataAccessLibrary
             var query = "select * from dbo.Beerclass";
             return _db.LoadData<BeerclassModel, dynamic>(query, new { });
         }
-        
+
         public Task<List<BeerModel>> GetBeers()
         {
             var query = "select * from dbo.Beer";
@@ -119,11 +119,11 @@ namespace DataAccessLibrary
         public Task DeleteBeer(BeerModel beer)
         {
             var sql = @"delete from dbo.Beer where BeerId = @BeerId";
-            return _db.DeleteData<BeerModel>(sql, beer);             
+            return _db.DeleteData<BeerModel>(sql, beer);
         }
 
-		public Task UpdateBeer(BeerModel beer)
-		{
+        public Task UpdateBeer(BeerModel beer)
+        {
             var sql = @"update dbo.Beer 
                         set     Name = @Name, 
                                 ABV = @ABV, 
@@ -134,7 +134,7 @@ namespace DataAccessLibrary
                         where   BeerId = @BeerId";
 
             return _db.SaveData(sql, beer);
-		}
+        }
 
         public Task AddBrewery(BreweryModel brewery)
         {

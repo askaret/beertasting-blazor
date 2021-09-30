@@ -1,8 +1,13 @@
 ﻿@page "/"
-@using Microsoft.AspNetCore.Hosting;
-@using Microsoft.Extensions.Hosting;
-@inject IWebHostEnvironment Env
 
-<PageTitle>Index</PageTitle>
+@inject NavigationManager _nav
 
-<MudText Typo="Typo.h3">Beertasting </MudText>
+@code
+{
+    Microsoft.Graph.User? user;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _nav.NavigateTo("/tasting/");
+    }
+}

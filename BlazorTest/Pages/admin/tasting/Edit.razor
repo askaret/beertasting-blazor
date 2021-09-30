@@ -10,13 +10,13 @@
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
 
-<MudText Typo="Typo.h3">Tasting</MudText>
-<MudText Typo="Typo.h4">Edit tasting</MudText>
+<MudText Typo="Typo.h3"  Class="pa-4">Tasting</MudText>
 
 <EditForm Model="@tasting" OnValidSubmit="EditTasting">
     <DataAnnotationsValidator />
     <MudCard Elevation="2" Outlined="true">
-        <MudCardContent Class="pa-4">
+        <MudCardContent>
+            <MudText Typo="Typo.h4" Class="pa-4">Edit tasting</MudText>
             <MudGrid>
                 <MudItem xs="6">
                     <MudTextField Label=Name @bind-Value="tasting.Name" For="@(() => tasting.Name)"></MudTextField>
@@ -37,7 +37,7 @@
                     <MudCheckBox Label=Blind @bind-Checked="tasting.IsBlind" For="@(() => tasting.IsBlind)"></MudCheckBox>
                 </MudItem>
             </MudGrid>
-            <MudTable Items="@tastingBeers">
+            <MudTable Items="@tastingBeers" Bordered="false" Striped="true" Hover="true">
                 <HeaderContent>
                     <MudTh></MudTh>
                     <MudTh>Name</MudTh>

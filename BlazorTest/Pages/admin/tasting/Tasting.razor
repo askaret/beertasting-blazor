@@ -6,18 +6,17 @@
 @inject IBeertastingRepository _db
 @inject NavigationManager _nav
 
-<MudText Typo="Typo.h3">Tastings</MudText>
-<MudText Typo="Typo.h4">Add tasting</MudText>
+<MudText Typo="Typo.h3" Class="pa-4">Tastings</MudText>
 
 <EditForm Model="@newTasting" OnValidSubmit="AddTasting">
     <DataAnnotationsValidator />
     <MudCard Elevation="2" Outlined="true">
         <MudCardHeader>
             <CardHeaderContent>
-                <MudText Typo="Typo.h6">Add tasting</MudText>
+                <MudText Typo="Typo.h4" Class="pa-4">Add tasting</MudText>
             </CardHeaderContent>
         </MudCardHeader>
-        <MudCardContent Class="pa-4">
+        <MudCardContent>
             <MudGrid>
                 <MudItem xs="6">
                     <MudTextField Label=Name @bind-Value="newTasting.Name" For="@(() => newTasting.Name)"></MudTextField>
@@ -45,9 +44,9 @@
     </MudCard>
 </EditForm>
 
-<MudTable Items=@tastings Hover="true" Filter="new Func<TastingModel,bool>(TableFilterFunction)">
+<MudTable Items=@tastings Hover="true" Bordered="false" Striped="true" Filter="new Func<TastingModel,bool>(TableFilterFunction)">
     <ToolBarContent>
-		<MudText Typo="Typo.h4">All Tastings</MudText>
+		<MudText Typo="Typo.h4" Class="pa-4">All Tastings</MudText>
 		<MudSpacer />
 		<MudTextField @bind-Value="tableSearchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
 	</ToolBarContent>
