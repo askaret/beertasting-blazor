@@ -36,6 +36,12 @@ namespace DataAccessLibrary
             return _db.LoadData<BreweryModel, dynamic>(query, new { });
         }
 
+        public Task<List<TastingResultModel>> GetTastingResults()
+        {
+            var sql = @"select TastingBeerResultId, TastingId, BeerId, ScoreTaste, ScoreAppearance, ScoreOverall, ScoreFinal from dbo.TastingResult";
+            return _db.LoadData<TastingResultModel, dynamic>(sql, new {});
+        }
+
         public Task AddBeer(BeerModel beer)
         {
             var sql = @"insert into dbo.Beer (Name, ABV, RateBeerLink, BeerStyleId, BreweryId, BeerClassId)

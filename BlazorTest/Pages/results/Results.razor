@@ -1,0 +1,56 @@
+﻿@page "/tasting/result"
+
+@using BlazorTest.ViewModels
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+
+@inject IBeertastingRepository _db
+
+<MudText Typo="Typo.h3" Class="pa-4">Tasting results</MudText>
+
+<MudTable Items="@beerResults" Bordered="false" Striped="true" Hover="true" Dense="false">
+    <ToolBarContent>
+        <MudText Typo="Typo.h4" Class="pa-4">Beers</MudText>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortBy="new Func<BeerResultViewModel, object>(x => x.BeerModel.Name)">Name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<BeerResultViewModel, object>(x => x.BeerModel?.BreweryModel?.Name ?? string.Empty)">Brewery</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<BeerResultViewModel, object>(x => x.AverageFinal)">Final Score</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Name">@context.BeerModel.Name</MudTd>
+        <MudTd DataLabel="Brewery">@context.BeerModel.BreweryModel.Name</MudTd>
+        <MudTd DataLabel="Final Score">@context.AverageFinal</MudTd>
+    </RowTemplate>
+</MudTable>
+
+@code
+{
+    private List<TastingModel>? tastings;
+    private List<BeerResultViewModel> beerResults = new List<BeerResultViewModel>();
+    private List<BeerModel> beers;
+    private List<BreweryModel> breweries;
+    private List<BeerclassModel> beerclasses;
+    private List<BeerstyleModel> beerstyles;
+    private List<TastingResultModel> tastingResults;
+
+    protected override async Task OnInitializedAsync()
+    {
+        tastings = await _db.GetTastings();
+        beers = await _db.GetBeers();
+        breweries = await _db.GetBreweries();
+        beerclasses = await _db.GetBeerclasses();
+        beerstyles = await _db.GetBeerstyles();
+        tastingResults = await _db.GetTastingResults();
+
+        foreach (var beer in beers)
+        {
+            beer.BreweryModel = breweries.SingleOrDefault(b => b.BreweryId == beer.BreweryId);
+            beer.BeerclassModel = beerclasses.SingleOrDefault(b => b.BeerClassId == beer.BeerClassId);
+            beer.BeerStyleModel = beerstyles.SingleOrDefault(b => b.BeerStyleId == beer.BeerStyleId);
+
+            beerResults.Add(new BeerResultViewModel() { BeerModel = beer, TastingResults = new List<TastingResultModel>(tastingResults.Where(tr => tr.BeerId == beer.BeerId)) });
+        }
+        StateHasChanged();
+    }
+}
