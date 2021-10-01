@@ -913,7 +913,7 @@ SET IDENTITY_INSERT [dbo].[RandomFact] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Taster] ON 
 GO
-INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (1, N'andreas.skaret@costco.com', N'Andreas', NULL, 1)
+INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (1, N'andreas.skaret@bouvet.no', N'Andreas', NULL, 1)
 GO
 INSERT [dbo].[Taster] ([TasterId], [EmailAddress], [DisplayName], [Password], [IsAdmin]) VALUES (2, N'andreas.skaret@poomail.com', N'Andreas', NULL, 0)
 GO

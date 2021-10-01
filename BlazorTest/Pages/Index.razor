@@ -1,13 +1,20 @@
 ﻿@page "/"
+@using Microsoft.Identity.Web
+@using Microsoft.Graph
+@using BlazorTest.ViewModels
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+@using System.Globalization
+@using System.ComponentModel.DataAnnotations
 
 @inject NavigationManager _nav
 
 @code
 {
-    Microsoft.Graph.User? user;
-
-    protected override async Task OnInitializedAsync()
+    protected override Task OnAfterRenderAsync(bool firstRender)
     {
-        _nav.NavigateTo("/tasting/");
+        if(firstRender)
+            _nav.NavigateTo("/profile/");
+        return base.OnAfterRenderAsync(firstRender);
     }
 }

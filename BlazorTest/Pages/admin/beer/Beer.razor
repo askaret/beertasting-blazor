@@ -89,9 +89,9 @@ else
 				@{
 					if (!string.IsNullOrEmpty(context?.RateBeerLink))
 					{
-					<MudIconButton Link="@context.RateBeerLink" Target="_blank" Icon="@Icons.Material.Outlined.Link" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" />
+						<MudIconButton Link="@context.RateBeerLink" Target="_blank" Icon="@Icons.Material.Outlined.Link" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" />
 					}
-			}
+				}	
 		</MudTd>
 		<MudTd>
 			<MudIconButton Icon="@Icons.Material.Outlined.Edit" Variant="Variant.Outlined" Color="Color.Success" Size="Size.Small" OnClick="@(() => EditBeer(context))" />

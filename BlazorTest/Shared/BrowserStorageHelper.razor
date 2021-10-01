@@ -4,55 +4,46 @@
 
 @code {
 
-	public async Task<string?> LoadFromSessionStorage(string key)
-	{
-		try
-		{
-			var res = await _sessionStorage.GetAsync<string>(key);
-			return res.Value;		
-		}
-		catch(Exception e)
-		{
-			Console.WriteLine(e.Message);
-			return null;
-		}
-	}
+    //public async Task<T> LoadFromSessionStorage<T>(string key)
+    //{
+    //    //return _sessionStorage.GetAsync<T>(key);        
+    //}
 
-	public async void SaveToSessionStorage(string key, string value)
-	{
-		try
-		{
-			await _sessionStorage.SetAsync(key, value);			
-		}
-		catch(Exception e)
-		{
-			Console.WriteLine(e.Message);			
-		}
-	}
+    public async void SaveToSessionStorage(string key, object value)
+    {
+        try
+        {
+            await _sessionStorage.SetAsync(key, value);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+    }
 
-	public async Task<string> LoadFromLocalStorage(string key)
-	{
-		try
-		{
-			var res = await _localStorage.GetAsync<string>(key);
-			return res.Success && res.Value != null ? res.Value : string.Empty;		
-		}
-		catch(Exception e)
-		{
-			Console.WriteLine(e.Message);
-			return string.Empty;
-		}
-	}
+    public async Task<string> LoadFromLocalStorage(string key)
+    {
+        try
+        {
+            var res = await _localStorage.GetAsync<string>(key);
+            return res.Success && res.Value != null ? res.Value : string.Empty;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return string.Empty;
+        }
+    }
 
-	public async void SaveToLocalStorage(string key, string value)
-	{
-		try
-		{
-			await _localStorage.SetAsync(key, value);			
-		}
-		catch(Exception e)
-		{
-			Console.WriteLine(e.Message);			
-		}
-	}
+    public async void SaveToLocalStorage(string key, string value)
+    {
+        try
+        {
+            await _localStorage.SetAsync(key, value);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+    }
 }

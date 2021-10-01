@@ -10,10 +10,11 @@
 
 @inject Microsoft.Graph.GraphServiceClient GraphServiceClient
 @inject MicrosoftIdentityConsentAndConditionalAccessHandler ConsentHandler
+@inject IBeertastingRepository _db;
 
 <MudText Typo="Typo.h3" Class="pa-4">User profile</MudText>
 
-@if (user == null)
+@if (user == null || currentTaster == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -28,6 +29,10 @@ else
                 <MudText Typo="Typo.body1">@user.DisplayName</MudText>
                 <MudText Typo="Typo.body2">@user.JobTitle</MudText>
                 <MudText Typo="Typo.body2">@user.Mail</MudText>
+                @if (currentTaster.IsAdmin)
+                {
+                    <MudText Typo="Typo.body1" Color="Color.Error">ADMIN</MudText>
+                }
             </CardHeaderContent>
         </MudCardHeader>
         <MudCardContent Style="align-content: center">
@@ -35,41 +40,84 @@ else
         </MudCardContent>
     </MudCard>
 
-    <EditForm Model="@bvm" OnValidSubmit="SaveDisplayName">
+    <EditForm Model="@currentTaster" OnValidSubmit="SaveDisplayName">
         <DataAnnotationsValidator />
         <MudCard>
             <MudCardContent>
                 <MudGrid>
-                    <MudItem xs="12" sm="5">
-                        <MudTextField Label="Display name" @bind-Value="bvm.Name" For="@(() => bvm.Name)" Variant="Variant.Outlined" />
+                    <MudItem xs="12" sm="6">
+                        <MudTextField Label="Display name" @bind-Value="currentTaster.DisplayName" For="@(() => currentTaster.DisplayName)" Variant="Variant.Outlined" />
+                    </MudItem>
+                    <MudItem xs="12" sm="6">
+                        <MudCardActions>
+                            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Outlined" Color="Color.Success">SAVE</MudButton>
+                        </MudCardActions>
                     </MudItem>
                 </MudGrid>
             </MudCardContent>
-            <MudCardActions>
-                <MudGrid>
-                    <MudItem xs="12" md="5">
-                        <MudContainer Class="d-flex flex-row-reverse py-2 px-1">
-                            <MudButton ButtonType="ButtonType.Submit" Class="pa-2 mx-2" Variant="Variant.Outlined" Color="Color.Success" Size="Size.Small">SAVE</MudButton>
-                        </MudContainer>
-                    </MudItem>
-                </MudGrid>
-            </MudCardActions>
         </MudCard>
     </EditForm>
 
+    <MudTable Items=@tastings.OrderBy(x => x.TastingDate) Hover="true" Bordered="false" Striped="true">
+        <ToolBarContent>
+            <MudText Typo="Typo.h4" Class="pa-4">My tastings</MudText>
+            <MudSpacer />
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh>Description</MudTh>
+            <MudTh>Tasting Date</MudTh>
+            <MudTh>Results</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel=Name>@context.Name</MudTd>
+            <MudTd DataLabel=Description>@context.Description</MudTd>
+            <MudTd DataLabel=TastingDate>@context.TastingDate</MudTd>
+            <MudTd><MudIconButton Link=@string.Concat("/tasting/result/", context.TastingId) Icon="@Icons.Material.Outlined.ShowChart" Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined"></MudIconButton></MudTd>
+        </RowTemplate>
+    </MudTable>
 
-    <MudText Typo="Typo.h4" Class="pa-4">My tastings</MudText>
-
-
-    <MudText Typo="Typo.h4" Class="pa-4">My favorite beers</MudText>
-
+    <MudTable Items=@votedBeers Hover="true" Bordered="false" Striped="true">
+        <ToolBarContent>
+            <MudText Typo="Typo.h4" Class="pa-4">My favorite beers</MudText>
+            <MudSpacer />
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh>ABV %</MudTh>
+            <MudTh>Brewery</MudTh>
+            <MudTh>Taste</MudTh>
+            <MudTh>Appearance</MudTh>
+            <MudTh>Overall</MudTh>
+            <MudTh>URL</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel=Name>@context.BeerName</MudTd>
+            <MudTd DataLabel=Name>@context.ABV %</MudTd>
+            <MudTd DataLabel=Brewery>@context.BreweryName</MudTd>
+            <MudTd DataLabel=Taste>@context.Taste</MudTd>
+            <MudTd DataLabel=Appearance>@context.Appearance</MudTd>
+            <MudTd DataLabel=Overall>@context.Overall</MudTd>
+            <MudTd DataLabel="URL">
+                @{
+                    if (!string.IsNullOrEmpty(context?.RateBeerLink))
+                    {
+                    <MudIconButton Link="@context.RateBeerLink" Target="_blank" Icon="@Icons.Material.Outlined.Link" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" />
+                    }
+                }
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
 }
 
 @code {
     Microsoft.Graph.User? user;
     string photo = "";
     string displayname = "";
-    private BeerViewModel bvm = new BeerViewModel();
+    private TasterModel? currentTaster;
+    private List<TastingModel> tastings = new List<TastingModel>();
+    private List<TasterBeerModelVotes> votedBeers = new List<TasterBeerModelVotes>();
+
     protected override async Task OnInitializedAsync()
     {
         try
@@ -77,7 +125,23 @@ else
             user = await GraphServiceClient.Me.Request().GetAsync();
             photo = await GetPhoto();
 
-            bvm.Name = user.GivenName;
+            currentTaster = await _db.GetTaster(user.Mail);
+
+            if (currentTaster is null)
+            {
+                currentTaster = new TasterModel()
+                    {
+                        DisplayName = user.DisplayName,
+                        EmailAddress = user.Mail,
+                        IsAdmin = false
+                    };
+                await _db.AddTaster(currentTaster);
+
+                currentTaster = await _db.GetTaster(user.Mail);
+            }
+
+            tastings = await _db.GetTastingsForTaster(currentTaster.TasterId);
+            votedBeers = await _db.GetTasterBeerVotes(currentTaster.TasterId);
         }
         catch (Exception ex)
         {
@@ -87,7 +151,8 @@ else
 
     private async Task SaveDisplayName()
     {
-
+        await _db.UpdateTaster(currentTaster);
+        StateHasChanged();
     }
     protected async Task<string> GetPhoto()
     {
