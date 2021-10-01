@@ -5,6 +5,8 @@
 @using DataAccessLibrary.Models
 @using System.Globalization
 @using System.ComponentModel.DataAnnotations
+@inject ILogger<NavMenu> _logger;    
+@inject ProtectedSessionStorage ProtectedSessionStore
 
 <MudNavMenu>
     <MudNavLink Href="/">Home</MudNavLink>
@@ -29,24 +31,33 @@
     </AuthorizeView>
 </MudNavMenu>
 
+@if(ProtectedSessionStore is not null && _taster is null)
+{
+    InitializeTaster();
+}
+
 @code {
-    private BrowserStorageHelper? _browserStorage = new BrowserStorageHelper();
     private TasterModel? _taster;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override void OnInitialized()
     {
-        //if(_taster is null)
-        //{
-        //    var t = await _browserStorage?.LoadFromSessionStorage<TasterModel>("taster");
-        //    _taster = t;
-        //    //StateHasChanged();
-        //}
-
-        await base.OnAfterRenderAsync(firstRender);
+        if (ProtectedSessionStore is not null && _taster is null)
+            InitializeTaster();
     }
 
-    protected override async Task OnInitializedAsync()
+    private async void InitializeTaster()
     {
-        
+        var t = await ProtectedSessionStore.GetAsync<TasterModel>("taster");
+
+        if(!t.Success)
+        {                
+            _logger.LogError("Taster read from session is null");
+        }
+        else
+        {
+            _taster = t.Value;
+            _logger.LogInformation($"Taster is initialized ({t.Value.EmailAddress}, admin: {t.Value.IsAdmin})");
+            StateHasChanged();
+        } 
     }
 }

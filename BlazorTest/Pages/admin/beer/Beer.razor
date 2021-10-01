@@ -161,7 +161,7 @@ else
 			beer.BeerStyleModel = styles.FirstOrDefault(x => x.BeerStyleId == beer.BeerStyleId);
 			beer.BreweryModel = breweries.FirstOrDefault(x => x.BreweryId == beer.BreweryId);
 		}
-
+		
 		beers = localBeers;
 	}
 
@@ -189,4 +189,6 @@ else
 		beers.Add(added);
 		newBeer = new BeerViewModel();
 	}
+
+
 }

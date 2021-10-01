@@ -7,14 +7,22 @@
 @using System.Globalization
 @using System.ComponentModel.DataAnnotations
 
+@inject ILogger<Index> _logger;
 @inject NavigationManager _nav
+@inject IBeertastingRepository _db
+@inject ProtectedSessionStorage ProtectedSessionStore
+@inject MicrosoftIdentityConsentAndConditionalAccessHandler ConsentHandler
 
 @code
 {
-    protected override Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if(firstRender)
-            _nav.NavigateTo("/profile/");
-        return base.OnAfterRenderAsync(firstRender);
+        var mail = ConsentHandler.User.Identity?.Name;
+
+        if (string.IsNullOrEmpty(mail))
+            throw new UnauthorizedAccessException("no dice");
+
+        var tasterTask = await _db.GetTaster(mail);        
+        await ProtectedSessionStore.SetAsync("taster", tasterTask);
     }
 }

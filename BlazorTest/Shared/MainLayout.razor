@@ -7,13 +7,14 @@
 @using System.Globalization
 @using System.ComponentModel.DataAnnotations
 
+@inject ProtectedSessionStorage ProtectedSessionStore
 @inject MicrosoftIdentityConsentAndConditionalAccessHandler ConsentHandler
 @inject IBeertastingRepository _db
+@inject ILogger<MainLayout> _logger
 
 <MudThemeProvider Theme="@_activeTheme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
-<BrowserStorageHelper @ref="_browserStorage"/>
 
 <MudLayout>
     <MudAppBar Elevation="1">
@@ -33,20 +34,25 @@
 </MudLayout>
 
 @code {
-    private BrowserStorageHelper? _browserStorage;
-
     bool _drawerOpen = true;
     private MudTheme _activeTheme = bouvetThemeLight;
 
     protected override async Task OnInitializedAsync()
     {
-        var mail = ConsentHandler.User.Identity?.Name;
+        _logger.LogInformation("OnInitializedAsync fired");
 
-        if (string.IsNullOrEmpty(mail))
-            throw new UnauthorizedAccessException("no dice");
+        if (ProtectedSessionStore is null)
+            _logger.LogWarning("Storage us null");
+        else
+            _logger.LogInformation("Storage is initialized");
 
-        var taster = await _db.GetTaster(mail);
-        _browserStorage.SaveToSessionStorage("taster", taster);
+        //var mail = ConsentHandler.User.Identity?.Name;
+
+        //if (string.IsNullOrEmpty(mail))
+        //    throw new UnauthorizedAccessException("no dice");
+
+        //var taster = await _db.GetTaster(mail);
+        //await ProtectedSessionStore.SetAsync("taster", taster);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -54,14 +60,15 @@
         if (firstRender)
             await SetTheme();
     }
-    private async Task SetTheme(string themeName = "")
+    private async Task SetTheme(string? themeName = null)
     {
-        if (_browserStorage is null)
+        if (ProtectedSessionStore is null)
             return;
 
         if(string.IsNullOrEmpty(themeName))
         {
-            themeName = await _browserStorage.LoadFromLocalStorage("selected-theme");
+            var res = await ProtectedSessionStore.GetAsync<string>("selected-theme");
+            themeName = res.Success ? res.Value : "bouveThemeLight";
         }
         
         if(themeName.Equals("bouvetThemeLight"))
@@ -72,9 +79,7 @@
         {
             _activeTheme = bouvetThemeDark;
         }
-
-        _browserStorage.SaveToLocalStorage("selected-theme", themeName);
-
+        await ProtectedSessionStore.SetAsync("selected-theme", themeName);
         StateHasChanged();
     }
 
