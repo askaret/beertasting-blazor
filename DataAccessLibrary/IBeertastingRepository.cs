@@ -41,6 +41,7 @@ namespace DataAccessLibrary
         Task UpdateTastingBeer(TastingBeerModel tastingBeer);
         Task RemoveTastingBeer(TastingBeerModel tastingBeer);
         Task<List<TastingBeerModel>> GetTastingBeers(int id);
+        Task<List<TastingResultModel>> GetTastingResults();
         #endregion
 
         #region Other accessors
