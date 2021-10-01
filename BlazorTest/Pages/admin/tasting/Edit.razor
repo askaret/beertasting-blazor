@@ -10,6 +10,7 @@
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
 
+<AdminGate />
 <MudText Typo="Typo.h3"  Class="pa-4">Tasting</MudText>
 
 <EditForm Model="@tasting" OnValidSubmit="EditTasting">
@@ -79,7 +80,6 @@
         </MudCardActions>
     </MudCard>
 </EditForm>
-
 
 @code
 {

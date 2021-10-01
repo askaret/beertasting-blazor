@@ -9,6 +9,7 @@
 @inject NavigationManager _nav
 @inject IDialogService DialogService
 
+<AdminGate />
 <MudText Typo="Typo.h3" Class="pa-4">Beer</MudText>
 
 <EditForm Model="@newBeer" OnValidSubmit="InsertBeer">
@@ -189,6 +190,4 @@ else
 		beers.Add(added);
 		newBeer = new BeerViewModel();
 	}
-
-
 }

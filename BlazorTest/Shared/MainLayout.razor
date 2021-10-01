@@ -37,16 +37,6 @@
     bool _drawerOpen = true;
     private MudTheme _activeTheme = bouvetThemeLight;
 
-    protected override async Task OnInitializedAsync()
-    {
-        _logger.LogInformation("OnInitializedAsync fired");
-
-        if (ProtectedSessionStore is null)
-            _logger.LogWarning("Storage us null");
-        else
-            _logger.LogInformation("Storage is initialized");
-    }
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)

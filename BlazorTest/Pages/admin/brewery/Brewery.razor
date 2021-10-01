@@ -9,6 +9,8 @@
 @inject NavigationManager _nav
 @inject IDialogService DialogService
 
+<AdminGate />
+
 <MudText Typo="Typo.h3" Class="pa-4">Breweries</MudText>
 
 <EditForm Model="@newBrewery" OnValidSubmit="InsertBrewery">

@@ -1,0 +1,48 @@
+﻿@using Microsoft.Identity.Web
+@using Microsoft.Graph
+@using BlazorTest.ViewModels
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+@using System.Globalization
+@using System.ComponentModel.DataAnnotations
+
+@inject ProtectedSessionStorage ProtectedSessionStore
+@inject NavigationManager _nav
+@inject ILogger<AdminGate> _logger
+
+@code {
+
+    private int retryCount = 10;
+    private TasterModel? _taster;
+
+    protected override async void OnParametersSet()
+    {   
+        TasterModel? _taster = null;
+        bool isAdmin = false;
+
+        while (_taster is null && retryCount-- > 0)
+        {   
+            if(ProtectedSessionStore is null)
+            {
+                Thread.Sleep(50);
+                continue;
+            }
+
+            var t = await ProtectedSessionStore.GetAsync<TasterModel>("taster");
+
+            if (t.Success)
+            {
+                isAdmin = t.Value.IsAdmin;
+                break;
+            }
+
+            Thread.Sleep(50);
+        }
+
+        if (!isAdmin)
+        {
+            _logger.LogWarning("Rickroll");
+            _nav.NavigateTo("/lolzors");            
+        }
+    }
+}
