@@ -11,22 +11,22 @@
 
 <AdminGate />
 
-<MudText Typo="Typo.h3">Breweries</MudText>
-<MudText Typo="Typo.h4">New brewery</MudText>
+<MudText Typo="Typo.h3">Tasters</MudText>
+<MudText Typo="Typo.h4">New Taster</MudText>
 
-<EditForm Model="@newBrewery" OnValidSubmit="InsertBrewery">
+<EditForm Model="@newTaster" OnValidSubmit="InsertTaster">
 	<DataAnnotationsValidator />
 	<MudCard>
 		<MudCardContent>
 			<MudGrid>
 				<MudItem xs="12" sm="4">
-					<MudTextField Label="Name" @bind-Value="newBrewery.Name" For="@(() => newBrewery.Name)" Variant="Variant.Outlined" />
+					<MudTextField Label="Email address" @bind-Value="newTaster.EmailAddress" For="@(() => newTaster.EmailAddress)" Variant="Variant.Outlined" />
 				</MudItem>
 				<MudItem xs="12" sm="4">
-					<MudTextField Label="Country" @bind-Value="newBrewery.Country" For="@(() => newBrewery.Country)" Variant="Variant.Outlined" />
+					<MudTextField Label="Display name" @bind-Value="newTaster.DisplayName" For="@(() => newTaster.DisplayName)" Variant="Variant.Outlined" />
 				</MudItem>
 				<MudItem xs="12" sm="4">
-					<MudTextField Label="Website" @bind-Value="newBrewery.Website" For="@(() => newBrewery.Website)" Variant="Variant.Outlined" />
+					<MudCheckBox Label="Is administrator" @bind-Value="newTaster.IsAdmin" For="@(() => newTaster.IsAdmin)" Variant="Variant.Outlined" />
 				</MudItem>
 			</MudGrid>
 		</MudCardContent>
@@ -36,105 +36,90 @@
 	</MudCard>
 </EditForm>
 
-@if (!breweries.Any())
+@if (!tasters.Any())
 {
 	<p><em>Loading...</em></p>
 }
 else
 {
-	<MudTable Items="@breweries.OrderBy(x => x.Name)" Dense="false" Hover="true" RowsPerPage=100 Bordered="true" Striped="true" Filter="new Func<BreweryModel,bool>(TableFilterFunction)" @bind-SelectedItem="SelectedBrewery">
+	<MudTable Items="@tasters.OrderBy(x => x.EmailAddress)" Dense="false" Hover="true" RowsPerPage=100 Bordered="true" Striped="true" Filter="new Func<TasterModel,bool>(TableFilterFunction)" @bind-SelectedItem="SelectedTaster">
 		<ToolBarContent>
 			<MudText Typo="Typo.h4">All breweries</MudText>
 			<MudSpacer />
 			<MudTextField @bind-Value="tableSearchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
 		</ToolBarContent>
 		<HeaderContent>
-			<MudTh><MudTableSortLabel SortBy="new Func<BreweryModel, object>(x => x.Name)">Name</MudTableSortLabel></MudTh>
-			<MudTh><MudTableSortLabel SortBy="new Func<BreweryModel, object>(x => x.Country)">Country</MudTableSortLabel></MudTh>
-			<MudTh><MudTableSortLabel SortBy="new Func<BreweryModel, object>(x => x.Website)">URL</MudTableSortLabel></MudTh>
+			<MudTh><MudTableSortLabel SortBy="new Func<TasterModel, object>(x => x.DisplayName)">Display name</MudTableSortLabel></MudTh>
+			<MudTh><MudTableSortLabel SortBy="new Func<TasterModel, object>(x => x.EmailAddress)">E-mail address</MudTableSortLabel></MudTh>
+			<MudTh><MudTableSortLabel SortBy="new Func<TasterModel, object>(x => x.IsAdmin)">Administrator</MudTableSortLabel></MudTh>
 			<MudTh></MudTh>
 		</HeaderContent>
 		<RowTemplate>
-			<MudTd DataLabel="Name">@context.Name</MudTd>
-			<MudTd DataLabel="Country">@context.Country</MudTd>
-			<MudTd DataLabel="URL">
-				@{
-					if (!string.IsNullOrEmpty(context.Website))
-					{
-					<MudIconButton Link="@context.Website" Target="_blank" Icon="@Icons.Material.Outlined.Link" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" />
-					}
-				}
-			</MudTd>
+			<MudTd DataLabel="Display name">@context.DisplayName</MudTd>
+			<MudTd DataLabel="E-mail address">@context.EmailAddress</MudTd>
+			<MudTd DataLabel="Administrator"><MudCheckBox Checked="@context.IsAdmin" Disabled="true" ReadOnly="true" /></MudTd>
 		<MudTd>
-			<MudIconButton Icon="@Icons.Material.Outlined.Edit" Variant="Variant.Outlined" Color="Color.Success" Size="Size.Small" OnClick="@(() => EditBrewery(context))" />
-			<MudIconButton Icon="@Icons.Material.Outlined.Delete" Variant="Variant.Outlined" Color="Color.Error" Size="Size.Small" OnClick="@(() => DeleteBrewery(context))" />
+			<MudIconButton Icon="@Icons.Material.Outlined.Edit" Variant="Variant.Outlined" Color="Color.Success" Size="Size.Small" OnClick="@(() => EditTaster(context))" />
+			<MudIconButton Icon="@Icons.Material.Outlined.Delete" Variant="Variant.Outlined" Color="Color.Error" Size="Size.Small" OnClick="@(() => DeleteTaster(context))" />
 		</MudTd>
 	</RowTemplate>
-	<PagerContent>
-		<MudTablePager />
-	</PagerContent>
 </MudTable>
 }
 
 @code {
 	public CultureInfo _nb = CultureInfo.GetCultureInfo("nb-NO");
-	private List<BreweryModel> breweries = new List<BreweryModel>();
-	public BreweryViewModel newBrewery = new BreweryViewModel();
-	private BreweryModel SelectedBrewery = new BreweryModel();
+	private List<TasterModel> tasters = new List<TasterModel>();
+	public TasterViewModel newTaster = new TasterViewModel();
+	private TasterModel SelectedTaster;
 	private string tableSearchString = "";
 	public bool showDeleteConfirm;
 
-	private bool TableFilterFunction(BreweryModel brewery) => TableFilter(brewery, tableSearchString);
+	private bool TableFilterFunction(TasterModel taster) => TableFilter(taster, tableSearchString);
 
-	private async void DeleteBrewery(BreweryModel brewery)
+	private async void DeleteTaster(TasterModel taster)
 	{
 		var parameters = new DialogParameters();
-		parameters.Add("ContentText", $"Confirm deletion of \"{brewery.Name}\"");
+		parameters.Add("ContentText", $"Confirm deletion of \"{taster.EmailAddress} \\ {taster.DisplayName}\"");
 		parameters.Add("ButtonText", "DELETE");
 		parameters.Add("Color", Color.Error);
 
-		var dialog = DialogService.Show<DeleteDialog>("Delete brewery", parameters);
+		var dialog = DialogService.Show<DeleteDialog>("Delete taster", parameters);
 		var result = await dialog.Result;
 
 		if (result.Cancelled) return;
 
-		await _db.DeleteBrewery(brewery);
-		breweries.Remove(brewery);
+		await _db.DeleteTaster(taster);
+		tasters.Remove(taster);
 		StateHasChanged();
 	}
 
-	private bool TableFilter(BreweryModel brewery, string searchString)
+	private bool TableFilter(TasterModel taster, string searchString)
 	{
 		if (string.IsNullOrWhiteSpace(searchString))
 			return true;
-		if (brewery.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+		if (taster.DisplayName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
 			return true;
-		if (brewery.Country.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+		if (taster.EmailAddress.Contains(searchString, StringComparison.OrdinalIgnoreCase))
 			return true;
 		return false;
 	}
 
 	protected override async Task OnInitializedAsync()
 	{
-		breweries = await _db.GetBreweries();		
+		tasters = await _db.GetTasters();		
 	}
 
-	private void EditBrewery(BreweryModel? brewery)
+	private void EditTaster(TasterModel? taster)
 	{
-		_nav.NavigateTo($"/admin/brewery/edit/{brewery?.BreweryId}");
+		_nav.NavigateTo($"/admin/taster/edit/{taster?.TasterId}");
 	}
 
-	private async Task InsertBrewery()
+	private async Task InsertTaster()
 	{
-		var added = new BreweryModel()
-			{
-				Name = newBrewery.Name,
-				Website = newBrewery.Website,
-				Country = newBrewery.Country
-			};
+		var added = newTaster.ToTasterModel();
 
-		await _db.AddBrewery(added);
-		breweries = await _db.GetBreweries();
-		newBrewery = new BreweryViewModel();
+		await _db.AddTaster(added);
+		tasters = await _db.GetTasters();
+		newTaster = new TasterViewModel();
 	}
 }
