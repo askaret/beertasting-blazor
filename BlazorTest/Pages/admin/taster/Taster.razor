@@ -11,13 +11,13 @@
 
 <AdminGate />
 
-<MudText Typo="Typo.h3">Tasters</MudText>
-<MudText Typo="Typo.h4">New Taster</MudText>
+<MudText Typo="Typo.h3" Class="pa-4">Tasters</MudText>
 
 <EditForm Model="@newTaster" OnValidSubmit="InsertTaster">
 	<DataAnnotationsValidator />
 	<MudCard>
 		<MudCardContent>
+			<MudText Typo="Typo.h4" Class="pa-4">New Taster</MudText>
 			<MudGrid>
 				<MudItem xs="12" sm="4">
 					<MudTextField Label="Email address" @bind-Value="newTaster.EmailAddress" For="@(() => newTaster.EmailAddress)" Variant="Variant.Outlined" />
@@ -44,7 +44,7 @@ else
 {
 	<MudTable Items="@tasters.OrderBy(x => x.EmailAddress)" Dense="false" Hover="true" RowsPerPage=100 Bordered="true" Striped="true" Filter="new Func<TasterModel,bool>(TableFilterFunction)" @bind-SelectedItem="SelectedTaster">
 		<ToolBarContent>
-			<MudText Typo="Typo.h4">All breweries</MudText>
+			<MudText Typo="Typo.h4" Class="pa-4">All tasters</MudText>
 			<MudSpacer />
 			<MudTextField @bind-Value="tableSearchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
 		</ToolBarContent>
