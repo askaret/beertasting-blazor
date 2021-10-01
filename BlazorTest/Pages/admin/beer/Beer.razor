@@ -148,7 +148,7 @@ else
 	}
 
 	protected override async Task OnInitializedAsync()
-	{
+	{	
 		styles = await _db.GetBeerstyles();
 		classes = await _db.GetBeerclasses();
 		breweries = await _db.GetBreweries();

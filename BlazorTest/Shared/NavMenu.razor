@@ -5,59 +5,63 @@
 @using DataAccessLibrary.Models
 @using System.Globalization
 @using System.ComponentModel.DataAnnotations
-@inject ILogger<NavMenu> _logger;    
+@inject ILogger<NavMenu> _logger;
 @inject ProtectedSessionStorage ProtectedSessionStore
 
-<MudNavMenu>
-    <MudNavLink Href="/">Home</MudNavLink>
-    <MudNavLink Icon="@Icons.Material.Outlined.VerifiedUser" Href="/profile">Profile</MudNavLink>
-    <MudNavLink Icon="@Icons.Material.Outlined.HowToVote" Href="/tasting">Beertasting</MudNavLink>
-    @if (_taster is not null && _taster.IsAdmin)
-    {
-        <MudNavGroup Icon="@Icons.Material.Outlined.AdminPanelSettings" Title="Admin" Expanded="true">
-            <MudNavLink Icon="@Icons.Material.Outlined.LocalDrink" Href="/admin/beer">Beers</MudNavLink>
-            <MudNavLink Icon="@Icons.Material.Outlined.Business" Href="/admin/brewery">Breweries</MudNavLink>
-            <MudNavLink Icon="@Icons.Material.Outlined.CalendarToday" Href="/admin/tasting">Tastings</MudNavLink>
-            <MudNavLink Icon="@Icons.Material.Outlined.SupervisorAccount" Href="/admin/taster">Tasters</MudNavLink>
-        </MudNavGroup>
-    }
-    <AuthorizeView>
-        <Authorized>
-            <MudNavLink Href="MicrosoftIdentity/Account/SignOut" Icon="@Icons.Material.Outlined.Logout">Logout</MudNavLink>
-        </Authorized>
-        <NotAuthorized>
-            <MudNavLink Href="MicrosoftIdentity/Account/SignIn" Icon="@Icons.Material.Outlined.Login">Login</MudNavLink>
-        </NotAuthorized>
-    </AuthorizeView>
-</MudNavMenu>
-
-@if(ProtectedSessionStore is not null && _taster is null)
+@if (_taster is not null)
 {
-    InitializeTaster();
+    <MudNavMenu>
+        <MudNavLink Href="/">Home</MudNavLink>
+        <MudNavLink Icon="@Icons.Material.Outlined.VerifiedUser" Href="/profile">Profile</MudNavLink>
+        <MudNavLink Icon="@Icons.Material.Outlined.HowToVote" Href="/tasting">Beertasting</MudNavLink>
+        @if (_taster.IsAdmin)
+        {
+            <MudNavGroup Icon="@Icons.Material.Outlined.AdminPanelSettings" Title="Admin" Expanded="true">
+                <MudNavLink Icon="@Icons.Material.Outlined.LocalDrink" Href="/admin/beer">Beers</MudNavLink>
+                <MudNavLink Icon="@Icons.Material.Outlined.Business" Href="/admin/brewery">Breweries</MudNavLink>
+                <MudNavLink Icon="@Icons.Material.Outlined.CalendarToday" Href="/admin/tasting">Tastings</MudNavLink>
+                <MudNavLink Icon="@Icons.Material.Outlined.SupervisorAccount" Href="/admin/taster">Tasters</MudNavLink>
+            </MudNavGroup>
+        }
+        <AuthorizeView>
+            <Authorized>
+                <MudNavLink Href="MicrosoftIdentity/Account/SignOut" Icon="@Icons.Material.Outlined.Logout">Logout</MudNavLink>
+            </Authorized>
+            <NotAuthorized>
+                <MudNavLink Href="MicrosoftIdentity/Account/SignIn" Icon="@Icons.Material.Outlined.Login">Login</MudNavLink>
+            </NotAuthorized>
+        </AuthorizeView>
+    </MudNavMenu>
 }
 
 @code {
     private TasterModel? _taster;
 
-    protected override void OnInitialized()
+    protected override async Task OnParametersSetAsync()
     {
         if (ProtectedSessionStore is not null && _taster is null)
-            InitializeTaster();
+            await InitializeTaster();
     }
 
-    private async void InitializeTaster()
+    private async Task InitializeTaster()
     {
-        var t = await ProtectedSessionStore.GetAsync<TasterModel>("taster");
+        var retryCount = 3;
+        while (_taster is null && retryCount-- > 0)
+        {   
+            var t = await ProtectedSessionStore.GetAsync<TasterModel>("taster");
 
-        if(!t.Success)
-        {                
-            _logger.LogError("Taster read from session is null");
+            if (!t.Success)
+            {
+                _logger.LogError("Taster read from session is null");
+            }
+            else
+            {
+                _taster = t.Value;
+                _logger.LogInformation($"Taster is initialized ({t.Value.EmailAddress}, admin: {t.Value.IsAdmin})");
+                StateHasChanged();
+            }
+
+            Thread.Sleep(50);
         }
-        else
-        {
-            _taster = t.Value;
-            _logger.LogInformation($"Taster is initialized ({t.Value.EmailAddress}, admin: {t.Value.IsAdmin})");
-            StateHasChanged();
-        } 
     }
 }

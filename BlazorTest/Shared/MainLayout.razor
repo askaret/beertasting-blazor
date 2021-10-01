@@ -45,14 +45,6 @@
             _logger.LogWarning("Storage us null");
         else
             _logger.LogInformation("Storage is initialized");
-
-        //var mail = ConsentHandler.User.Identity?.Name;
-
-        //if (string.IsNullOrEmpty(mail))
-        //    throw new UnauthorizedAccessException("no dice");
-
-        //var taster = await _db.GetTaster(mail);
-        //await ProtectedSessionStore.SetAsync("taster", taster);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
