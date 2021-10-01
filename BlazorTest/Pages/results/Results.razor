@@ -12,7 +12,7 @@
         <MudGrid>
             <MudItem xs="12" sm="12">
                 <MudSelect T="int" Label="Tastings" HelperText="Select tastings to include" MultiSelection="true" SelectedValuesChanged="SelectedValuesChanged" SelectedValues="selectedTastings" SelectAll="true" MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))">
-                    @foreach(var tasting in tastings)
+                    @foreach(var tasting in tastings.OrderByDescending(t => t.TastingDate)
                     {
                         <MudSelectItem T="int" Value="tasting.TastingId">@tasting.Name</MudSelectItem>
                     }
@@ -20,7 +20,7 @@
             </MudItem>
             <MudItem xs="12" sm="4">
                 <MudSelect T="int" Label="Class" HelperText="Select classes to include" MultiSelection="true" @bind-SelectedValues="selectedClasses" SelectAll="true" MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))">
-                    @foreach(var beerclass in beerclasses)
+                    @foreach(var beerclass in beerclasses.OrderBy(bc => bc.Name)
                     {
                         <MudSelectItem T="int" Value="beerclass.BeerClassId">@beerclass.Name</MudSelectItem>
                     }
@@ -28,7 +28,7 @@
             </MudItem>
             <MudItem xs="12" sm="4">
                 <MudSelect T="int" Label="Style" HelperText="Select styles to include" MultiSelection="true" @bind-SelectedValues="selectedStyles" SelectAll="true" MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))">
-                    @foreach(var beerstyle in beerstyles)
+                    @foreach(var beerstyle in beerstyles.OrderBy(bs => bs.Name)
                     {
                         <MudSelectItem T="int" Value="beerstyle.BeerStyleId">@beerstyle.Name</MudSelectItem>
                     }
@@ -36,7 +36,7 @@
             </MudItem>
             <MudItem xs="12" sm="4">
                 <MudSelect T="int" Label="Brewery" HelperText="Select breweries to include" MultiSelection="true" @bind-SelectedValues="selectedBreweries" SelectAll="true" MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))">
-                    @foreach(var brewery in breweries)
+                    @foreach(var brewery in breweries.OrderBy(b => b.Name)
                     {
                         <MudSelectItem T="int" Value="brewery.BreweryId">@brewery.Name</MudSelectItem>
                     }
