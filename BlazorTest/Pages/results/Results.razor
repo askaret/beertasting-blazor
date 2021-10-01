@@ -154,9 +154,9 @@
         return true;
     }
 
-    private void SelectedValuesChanged(HashSet<int> e)
+    private void SelectedValuesChanged(HashSet<int> selectedIds)
     {
-        selectedTastings = e;
+        selectedTastings = selectedIds;
         foreach (var beerResult in beerResults)
         {
             beerResult.TastingResults = new List<TastingResultModel>(tastingResults.Where(tr => tr.BeerId == beerResult.BeerModel.BeerId && selectedTastings.Contains(tr.TastingId)));
