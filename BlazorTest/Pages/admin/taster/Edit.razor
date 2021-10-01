@@ -1,4 +1,4 @@
-﻿@page "/admin/brewery/edit/{Id:int}"
+﻿@page "/admin/taster/edit/{Id:int}"
 
 @using BlazorTest.ViewModels
 @using DataAccessLibrary
@@ -11,29 +11,29 @@
 
 <AdminGate />
 
-<MudText Typo="Typo.h3" Class="pa-4">Brewery</MudText>
+<MudText Typo="Typo.h3" Class="pa-4">Taster</MudText>
 
-@if (editBrewery is null)
+@if (editTaster is null)
 {
 	<p><em>Loading...</em></p>
 }
 else
 {
-	<EditForm Model="@editBrewery" OnValidSubmit="SaveEditBrewery">
+	<EditForm Model="@editTaster" OnValidSubmit="SaveEditTaster">
 		<DataAnnotationsValidator />
 		<MudCard>
 			<MudCardContent>
-				<MudText Typo="Typo.h4" Class="pa-4">Edit brewery</MudText>
+				<MudText Typo="Typo.h4" Class="pa-4">Edit taster</MudText>
 				<MudGrid>
 					<MudItem xs="12" sm="4">
-						<MudTextField Label="Name" @bind-Value="editBrewery.Name" For="@(() => editBrewery.Name)" Variant="Variant.Outlined" />
+						<MudTextField Label="Name" @bind-Value="editTaster.DisplayName" For="@(() => editTaster.DisplayName)" Variant="Variant.Outlined" />
 					</MudItem>
 					<MudItem xs="12" sm="4">
-						<MudTextField Label="Country" @bind-Value="editBrewery.Country" For="@(() => editBrewery.Country)" Variant="Variant.Outlined" />
+						<MudTextField Label="Country" @bind-Value="editTaster.EmailAddress" For="@(() => editTaster.EmailAddress)" Variant="Variant.Outlined" />
 					</MudItem>
 					<MudItem xs="12" sm="4">
-						<MudTextField Label="Website" @bind-Value="editBrewery.Website" For="@(() => editBrewery.Website)" Variant="Variant.Outlined" />
-					</MudItem>					
+						<MudCheckBox Label="Is administrator" @bind-Checked="editTaster.IsAdmin" For="@(() => editTaster.IsAdmin)" Variant="Variant.Outlined" />
+					</MudItem>				
 				</MudGrid>
 			</MudCardContent>
 			<MudCardActions>
@@ -53,26 +53,26 @@ else
 	[Parameter]
 	public int Id { get; set; }
 
-	private BreweryViewModel? editBrewery;
+	private TasterViewModel? editTaster;
 	public CultureInfo _nb = CultureInfo.GetCultureInfo("nb-NO");
 
 	
 	protected override async Task OnInitializedAsync()
 	{
-		var b = await _db.GetBrewery(Id);
-		editBrewery = new BreweryViewModel(b);
+		var b = await _db.GetTaster(Id);
+		editTaster = new TasterViewModel(b);
 	}
 
 	private void Cancel()
 	{
-		_nav.NavigateTo($"/admin/brewery/");
+		_nav.NavigateTo($"/admin/taster/");
 	}
 
-	private async Task SaveEditBrewery()
+	private async Task SaveEditTaster()
 	{
-		if(editBrewery is not null)
-			await _db.UpdateBrewery(editBrewery.ToBreweryModel());
+		if(editTaster is not null)
+			await _db.UpdateTaster(editTaster.ToTasterModel());
 		
-		_nav.NavigateTo($"/admin/brewery/");
+		_nav.NavigateTo($"/admin/taster/");
 	}
 }
