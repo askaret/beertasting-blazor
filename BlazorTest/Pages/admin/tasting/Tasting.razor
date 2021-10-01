@@ -57,6 +57,7 @@
         <MudTh>IsActive</MudTh>
         <MudTh>IsBlind</MudTh>
         <MudTh></MudTh>
+        <MudTh></MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel=Name>@context.Name</MudTd>
@@ -65,6 +66,7 @@
         <MudTd DataLabel=IsActive><MudCheckBox Checked="@context.IsActive" ReadOnly="true"></MudCheckBox></MudTd>
         <MudTd DataLabel=IsBlind><MudCheckBox Checked="@context.IsBlind" ReadOnly="true"></MudCheckBox></MudTd>
         <MudTd><MudIconButton Icon="@Icons.Material.Outlined.Edit" Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => OnEditPressed(context.TastingId))"></MudIconButton></MudTd>
+        <MudTd><MudIconButton Icon="@Icons.Material.Outlined.Calculate" Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => Calculate(context))"></MudIconButton></MudTd>
     </RowTemplate>
 </MudTable>
 
@@ -118,4 +120,9 @@
 			return true;
 		return false;
 	}
+
+    private void Calculate(TastingModel tasting)
+    {
+        
+    }
 }
