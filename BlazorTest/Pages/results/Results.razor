@@ -1,4 +1,5 @@
 ﻿@page "/tasting/result"
+@page "/tasting/result/{Id:int}"
 
 @using BlazorTest.ViewModels
 @using DataAccessLibrary
@@ -12,7 +13,7 @@
         <MudGrid>
             <MudItem xs="12" sm="12">
                 <MudSelect T="int" Label="Tastings" HelperText="Select tastings to include" MultiSelection="true" SelectedValuesChanged="SelectedValuesChanged" SelectedValues="selectedTastings" SelectAll="true" MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))">
-                    @foreach(var tasting in tastings.OrderByDescending(t => t.TastingDate)
+                    @foreach(var tasting in tastings.OrderByDescending(t => t.TastingDate))
                     {
                         <MudSelectItem T="int" Value="tasting.TastingId">@tasting.Name</MudSelectItem>
                     }
@@ -20,7 +21,7 @@
             </MudItem>
             <MudItem xs="12" sm="4">
                 <MudSelect T="int" Label="Class" HelperText="Select classes to include" MultiSelection="true" @bind-SelectedValues="selectedClasses" SelectAll="true" MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))">
-                    @foreach(var beerclass in beerclasses.OrderBy(bc => bc.Name)
+                    @foreach(var beerclass in beerclasses.OrderBy(bc => bc.Name))
                     {
                         <MudSelectItem T="int" Value="beerclass.BeerClassId">@beerclass.Name</MudSelectItem>
                     }
@@ -28,7 +29,7 @@
             </MudItem>
             <MudItem xs="12" sm="4">
                 <MudSelect T="int" Label="Style" HelperText="Select styles to include" MultiSelection="true" @bind-SelectedValues="selectedStyles" SelectAll="true" MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))">
-                    @foreach(var beerstyle in beerstyles.OrderBy(bs => bs.Name)
+                    @foreach(var beerstyle in beerstyles.OrderBy(bs => bs.Name))
                     {
                         <MudSelectItem T="int" Value="beerstyle.BeerStyleId">@beerstyle.Name</MudSelectItem>
                     }
@@ -36,7 +37,7 @@
             </MudItem>
             <MudItem xs="12" sm="4">
                 <MudSelect T="int" Label="Brewery" HelperText="Select breweries to include" MultiSelection="true" @bind-SelectedValues="selectedBreweries" SelectAll="true" MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))">
-                    @foreach(var brewery in breweries.OrderBy(b => b.Name)
+                    @foreach(var brewery in breweries.OrderBy(b => b.Name))
                     {
                         <MudSelectItem T="int" Value="brewery.BreweryId">@brewery.Name</MudSelectItem>
                     }
@@ -80,6 +81,9 @@
 
 @code
 {
+    [Parameter]
+    public int? Id { get; set; }
+
     private bool showTastings;
 
     private HashSet<int> selectedTastings = new HashSet<int>();
@@ -110,7 +114,14 @@
         beerstyles.ForEach(s => selectedStyles.Add(s.BeerStyleId));
         
         tastings = await _db.GetTastings();
-        tastings.ForEach(t => selectedTastings.Add(t.TastingId));
+        if (Id is null)
+        {
+            tastings.ForEach(t => selectedTastings.Add(t.TastingId));
+        }
+        else if (tastings.Any(t => t.TastingId == Id))
+        {
+            selectedTastings.Add(Id.Value);
+        }
 
         tastingResults = await _db.GetTastingResults();
 
