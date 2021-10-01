@@ -6,9 +6,9 @@ namespace BlazorTest.ViewModels
     {
         public BeerModel BeerModel { get;set;}
         public List<TastingResultModel>? TastingResults {  get; set; }
-        public Double AverageTaste => TastingResults is not null && TastingResults.Any() ? TastingResults.Average(tr => tr.ScoreTaste) : 0;
-        public Double AverageAppearance => TastingResults is not null && TastingResults.Any() ? TastingResults.Average(tr => tr.ScoreAppearance) : 0;
-        public Double AverageOverall => TastingResults is not null && TastingResults.Any() ? TastingResults.Average(tr => tr.ScoreOverall) : 0;
-        public Double AverageFinal => TastingResults is not null && TastingResults.Any() ? TastingResults.Average(tr => tr.ScoreFinal) : 0;
+        public double AverageTaste => TastingResults is not null && TastingResults.Any() ? TastingResults.Average(tr => tr.ScoreTaste) : 0;
+        public double AverageAppearance => TastingResults is not null && TastingResults.Any() ? TastingResults.Average(tr => tr.ScoreAppearance) : 0;
+        public double AverageOverall => TastingResults is not null && TastingResults.Any() ? TastingResults.Average(tr => tr.ScoreOverall) : 0;
+        public double AverageFinal => TastingResults is not null && TastingResults.Any() ? TastingResults.Average(tr => tr.ScoreFinal) : 0;
     }
 }
