@@ -1,12 +1,27 @@
 ﻿<CascadingAuthenticationState>
-    <Router AppAssembly="@typeof(Program).Assembly">
-        <Found Context="routeData">
-            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-        </Found>
-        <NotFound>
-            <LayoutView Layout="@typeof(MainLayout)">
-                <p>Sorry, there's nothing at this address.</p>
-            </LayoutView>
-        </NotFound>
-    </Router>
+	<Router AppAssembly="@typeof(Program).Assembly">
+		<Found Context="routeData">
+			<AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+		</Found>
+		<NotFound>
+			<LayoutView Layout="@typeof(MainLayout)">
+				<MudContainer MaxWidth="MaxWidth.Small">
+					<MudCard>
+						<MudCardHeader>
+							<CardHeaderAvatar>
+								<MudAvatar Color="Color.Error">X</MudAvatar>
+							</CardHeaderAvatar>
+							<CardHeaderContent>
+								<MudText Typo="Typo.body1">LOL</MudText>
+								<a href="mailto:404@tehinternetz.com"><MudText Typo="Typo.body2">404@tehinternetz.com</MudText></a>
+							</CardHeaderContent>
+						</MudCardHeader>
+						<MudCardContent Style="align-content: center">
+							<MudCardMedia Image="404.jpg" />
+						</MudCardContent>
+					</MudCard>
+				</MudContainer>
+			</LayoutView>
+		</NotFound>
+	</Router>
 </CascadingAuthenticationState>

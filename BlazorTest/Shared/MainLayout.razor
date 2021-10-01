@@ -1,9 +1,20 @@
 ﻿@inherits LayoutComponentBase
+@using Microsoft.Identity.Web
+@using Microsoft.Graph
+@using BlazorTest.ViewModels
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+@using System.Globalization
+@using System.ComponentModel.DataAnnotations
+
+@inject ProtectedSessionStorage ProtectedSessionStore
+@inject MicrosoftIdentityConsentAndConditionalAccessHandler ConsentHandler
+@inject IBeertastingRepository _db
+@inject ILogger<MainLayout> _logger
 
 <MudThemeProvider Theme="@_activeTheme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
-<BrowserStorageHelper @ref="_browserStorage"/>
 
 <MudLayout>
     <MudAppBar Elevation="1">
@@ -22,11 +33,7 @@
     </MudMainContent>
 </MudLayout>
 
-
-
 @code {
-    private BrowserStorageHelper? _browserStorage;
-
     bool _drawerOpen = true;
     private MudTheme _activeTheme = bouvetThemeLight;
 
@@ -35,14 +42,15 @@
         if (firstRender)
             await SetTheme();
     }
-    private async Task SetTheme(string themeName = "")
+    private async Task SetTheme(string? themeName = null)
     {
-        if (_browserStorage is null)
+        if (ProtectedSessionStore is null)
             return;
 
         if(string.IsNullOrEmpty(themeName))
         {
-            themeName = await _browserStorage.LoadFromLocalStorage("selected-theme");
+            var res = await ProtectedSessionStore.GetAsync<string>("selected-theme");
+            themeName = res.Success ? res.Value : "bouveThemeLight";
         }
         
         if(themeName.Equals("bouvetThemeLight"))
@@ -53,9 +61,7 @@
         {
             _activeTheme = bouvetThemeDark;
         }
-
-        _browserStorage.SaveToLocalStorage("selected-theme", themeName);
-
+        await ProtectedSessionStore.SetAsync("selected-theme", themeName);
         StateHasChanged();
     }
 

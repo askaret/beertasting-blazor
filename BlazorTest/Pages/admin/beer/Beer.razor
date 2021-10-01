@@ -9,6 +9,7 @@
 @inject NavigationManager _nav
 @inject IDialogService DialogService
 
+<AdminGate />
 <MudText Typo="Typo.h3" Class="pa-4">Beer</MudText>
 
 <EditForm Model="@newBeer" OnValidSubmit="InsertBeer">
@@ -89,9 +90,9 @@ else
 				@{
 					if (!string.IsNullOrEmpty(context?.RateBeerLink))
 					{
-					<MudIconButton Link="@context.RateBeerLink" Target="_blank" Icon="@Icons.Material.Outlined.Link" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" />
+						<MudIconButton Link="@context.RateBeerLink" Target="_blank" Icon="@Icons.Material.Outlined.Link" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" />
 					}
-			}
+				}	
 		</MudTd>
 		<MudTd>
 			<MudIconButton Icon="@Icons.Material.Outlined.Edit" Variant="Variant.Outlined" Color="Color.Success" Size="Size.Small" OnClick="@(() => EditBeer(context))" />
@@ -148,7 +149,7 @@ else
 	}
 
 	protected override async Task OnInitializedAsync()
-	{
+	{	
 		styles = await _db.GetBeerstyles();
 		classes = await _db.GetBeerclasses();
 		breweries = await _db.GetBreweries();
@@ -161,7 +162,7 @@ else
 			beer.BeerStyleModel = styles.FirstOrDefault(x => x.BeerStyleId == beer.BeerStyleId);
 			beer.BreweryModel = breweries.FirstOrDefault(x => x.BreweryId == beer.BreweryId);
 		}
-
+		
 		beers = localBeers;
 	}
 
