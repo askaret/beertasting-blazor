@@ -113,7 +113,7 @@
         beerstyles = await _db.GetBeerstyles();
         beerstyles.ForEach(s => selectedStyles.Add(s.BeerStyleId));
         
-        tastings = await _db.GetTastings();
+        tastings = (await _db.GetTastings()).Where(t => !t.IsActive).ToList();
         if (Id is null)
         {
             tastings.ForEach(t => selectedTastings.Add(t.TastingId));

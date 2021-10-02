@@ -123,8 +123,17 @@
 		return false;
 	}
 
-    private void Calculate(TastingModel tasting)
+    private async void Calculate(TastingModel tasting)
     {
-        
+        await _db.RemoveTastingResults(tasting.TastingId);
+        var resultTasks = new List<Task>();
+        var tastingVotes = await _db.GetVotes(tasting.TastingId);
+        foreach (var beerVotes in tastingVotes.GroupBy(tv => tv.BeerId))
+        {
+            var result = new TastingResultModel() { BeerId = beerVotes.Key, TastingId = tasting.TastingId };
+            result.CalculateResults(beerVotes.ToArray());
+            resultTasks.Add(_db.AddTastingResults(result));
+        }
+        await Task.WhenAll(resultTasks);
     }
 }

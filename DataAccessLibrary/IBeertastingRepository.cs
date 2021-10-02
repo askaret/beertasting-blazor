@@ -46,11 +46,14 @@ namespace DataAccessLibrary
 
         #region Other accessors
         Task RemoveVotes(int tastingId, int beerId);
+        Task AddTastingResults(TastingResultModel tastingResults);
         Task RemoveTastingResult(int tastingId, int beerId);
+        Task RemoveTastingResults(int tastingId);
         Task<List<BeerclassModel>> GetBeerclasses();
         Task<List<BeerstyleModel>> GetBeerstyles();
         Task<List<TastingModel>> GetTastingsForTaster(int tasterId);
         Task<List<TasterBeerModelVotes>> GetTasterBeerVotes(int tasterId);
+        Task<List<VoteModel>> GetVotes(int tastingId);
         #endregion
     }
 }

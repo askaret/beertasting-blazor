@@ -91,11 +91,24 @@ namespace DataAccessLibrary
             return _db.SaveData(sql, new { tastingId = tastingId, beerId = beerId });
         }
         
+        public Task AddTastingResults(TastingResultModel tastingResult)
+        {
+            var sql = @"insert into dbo.TastingResult (TastingId, BeerId, ScoreTaste, ScoreAppearance, ScoreOverall, ScoreFinal) values (@TastingId, @BeerId, @ScoreTaste, @ScoreAppearance, @ScoreOverall, @ScoreFinal)";
+            return _db.SaveData(sql, tastingResult);
+        }
+
         public Task RemoveTastingResult(int tastingId, int beerId)
         {
             var sql = @"delete from dbo.TastingResult where TastingId = @tastingId and BeerId = @beerId";
 
             return _db.SaveData(sql, new { tastingId = tastingId, beerId = beerId });
+        }
+
+        public Task RemoveTastingResults(int tastingId)
+        {
+            var sql = @"delete from dbo.TastingResult where TastingId = @tastingId";
+
+            return _db.SaveData(sql, new { tastingId = tastingId});
         }
 
         public Task<BeerModel> GetBeer(int id)
@@ -251,6 +264,15 @@ namespace DataAccessLibrary
                                         appearance DESC";
 
             return _db.LoadData<TasterBeerModelVotes, dynamic>(query, new { TasterId = tasterId });
+        }
+
+        public Task<List<VoteModel>> GetVotes(int tastingId)
+        {
+            var sql = @"
+                            SELECT  *
+                              FROM  dbo.Vote
+                             WHERE  TastingId = @TastingId";
+            return _db.LoadData<VoteModel, dynamic>(sql, new { TastingId = tastingId });
         }
     }
 }
