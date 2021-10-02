@@ -1,0 +1,28 @@
+﻿@page "/"
+@using Microsoft.Identity.Web
+@using Microsoft.Graph
+@using Beertasting.ViewModels
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+@using System.Globalization
+@using System.ComponentModel.DataAnnotations
+
+@inject ILogger<Index> _logger;
+@inject NavigationManager _nav
+@inject IBeertastingRepository _db
+@inject ProtectedSessionStorage ProtectedSessionStore
+@inject MicrosoftIdentityConsentAndConditionalAccessHandler ConsentHandler
+
+@code
+{
+    protected override async Task OnInitializedAsync()
+    {
+        var mail = ConsentHandler.User.Identity?.Name;
+
+        if (string.IsNullOrEmpty(mail))
+            throw new UnauthorizedAccessException("no dice");
+
+        var tasterTask = await _db.GetTaster(mail);        
+        await ProtectedSessionStore.SetAsync("taster", tasterTask);
+    }
+}

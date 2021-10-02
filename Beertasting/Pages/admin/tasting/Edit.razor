@@ -1,0 +1,205 @@
+﻿@page "/admin/tasting/edit/{Id:int}"
+
+@using Beertasting.Pages.admin.Util
+@using Beertasting.ViewModels
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+
+@inject IBeertastingRepository _db
+@inject NavigationManager _nav
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+
+<AdminGate />
+<MudText Typo="Typo.h3"  Class="pa-4">Tasting</MudText>
+
+<EditForm Model="@tasting" OnValidSubmit="EditTasting">
+    <DataAnnotationsValidator />
+    <MudCard Elevation="2" Outlined="true">
+        <MudCardContent>
+            <MudText Typo="Typo.h4" Class="pa-4">Edit tasting</MudText>
+            <MudGrid>
+                <MudItem xs="6">
+                    <MudTextField Label=Name @bind-Value="tasting.Name" For="@(() => tasting.Name)"></MudTextField>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudTextField Label=Description @bind-Value="tasting.Description" For="@(() => tasting.Description)"></MudTextField>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudDatePicker Label=TastingDate @bind-Date="tasting.TastingDate" For="@(() => tasting.TastingDate)"></MudDatePicker>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudTimePicker Label=TastingTime @bind-Time="tasting.TastingTime" For="@(() => tasting.TastingTime)"></MudTimePicker>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudCheckBox Label=Active @bind-Checked="tasting.IsActive" For="@(() => tasting.IsActive)"></MudCheckBox>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudCheckBox Label=Blind @bind-Checked="tasting.IsBlind" For="@(() => tasting.IsBlind)"></MudCheckBox>
+                </MudItem>
+            </MudGrid>
+            <MudTable Items="@tastingBeers" Bordered="false" Striped="true" Hover="true">
+                <HeaderContent>
+                    <MudTh></MudTh>
+                    <MudTh>Name</MudTh>
+                    <MudTh>Brewery</MudTh>
+                    <MudTh>ABV %</MudTh>
+                    <MudTh>URL</MudTh>
+                    <MudTh><MudButton Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined" OnClick="@(() => AddBeer())">Add Beer</MudButton></MudTh>
+                </HeaderContent>
+                <RowTemplate Context="tbContext">
+                    <MudTd>
+                        <MudIconButton Icon="@Icons.Material.Outlined.ArrowUpward" Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined" OnClick="@(() => SwitchBeerSortOrder(tbContext, SortOrderChange.Up))"></MudIconButton>
+                        <MudIconButton Icon="@Icons.Material.Outlined.ArrowDownward" Color="Color.Secondary" Size="Size.Small" Variant="Variant.Outlined" OnClick="@(() => SwitchBeerSortOrder(tbContext, SortOrderChange.Down))"></MudIconButton>
+                    </MudTd>
+                    <MudTd DataLabel="Name">@tbContext.BeerModel?.Name</MudTd>
+                    <MudTd DataLabel="Brewery">@tbContext.BeerModel?.BreweryModel?.Name</MudTd>
+                    <MudTd DataLabel="ABV %">@tbContext.BeerModel?.ABV</MudTd>
+                    <MudTd DataLabel="URL">
+                        @if (!string.IsNullOrEmpty(tbContext.BeerModel?.RateBeerLink))
+                            {
+                                <MudIconButton Link="@tbContext.BeerModel.RateBeerLink" Target="_blank" Icon="@Icons.Material.Outlined.Link" Color="Color.Primary" Size="Size.Small" />
+                            }
+                    </MudTd>
+                    <MudTd><MudIconButton Icon="@Icons.Material.Outlined.Delete" Variant="Variant.Outlined" Color="Color.Error" Size="Size.Small" OnClick="@(() => RemoveBeer(tbContext))" /></MudTd>
+                </RowTemplate>
+                <PagerContent>
+                    <MudTablePager />
+                </PagerContent>
+            </MudTable>
+        </MudCardContent>
+        <MudCardActions>
+            <MudGrid>
+                <MudItem xs="12" md="12">
+                    <MudContainer Class="d-flex flex-row-reverse py-2 px-1">
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="pa-2 mx-2">SAVE</MudButton>
+                        <MudButton ButtonType="ButtonType.Button" Link="/admin/tasting" Variant="Variant.Outlined" Color="Color.Secondary" Class="pa-2 mx-2">BACK</MudButton>
+                    </MudContainer>
+                </MudItem>
+            </MudGrid>
+        </MudCardActions>
+    </MudCard>
+</EditForm>
+
+@code
+{
+    [Parameter]
+    public int Id { get; set; }
+
+    private TastingViewModel tasting = new TastingViewModel();
+    private List<TastingBeerModel> tastingBeers { get; set; } = new List<TastingBeerModel>();
+    private List<BeerModel> beers { get; set; } = new List<BeerModel>();
+    private List<BreweryModel> breweries { get; set; } = new List<BreweryModel>();
+    private List<BeerstyleModel> beerStyles { get; set; } = new List<BeerstyleModel>();
+    private List<BeerclassModel> beerClasses { get; set; } = new List<BeerclassModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        tasting = new TastingViewModel(await _db.GetTasting(Id));
+        tastingBeers = (await _db.GetTastingBeers(Id));
+
+        beers = await _db.GetBeers();
+        breweries = await _db.GetBreweries();
+        beerStyles = await _db.GetBeerstyles();
+        beerClasses = await _db.GetBeerclasses();
+
+        foreach (var beer in beers)
+        {
+            beer.BeerclassModel = beerClasses.SingleOrDefault(bc => bc.BeerClassId == beer.BeerClassId);
+            beer.BreweryModel = breweries.SingleOrDefault(b => b.BreweryId == beer.BreweryId);
+            beer.BeerStyleModel = beerStyles.SingleOrDefault(bs => bs.BeerStyleId == beer.BeerStyleId);
+        }
+
+        foreach (var tastingBeer in tastingBeers)
+        {
+            tastingBeer.BeerModel = beers.SingleOrDefault(b => b.BeerId == tastingBeer.BeerId);
+        }
+        tastingBeers = tastingBeers.OrderBy(tb => tb.SortOrder).ToList();
+    }
+
+    private async void EditTasting()
+    {
+        await _db.UpdateTasting(tasting.ToTastingModel());
+
+        _nav.NavigateTo("/admin/tasting");
+    }
+
+    private async void RemoveBeer(TastingBeerModel tastingBeer)
+    {
+        if (tasting.TastingDate < DateTime.Today)
+        {
+            var parameters = new DialogParameters();
+            parameters.Add("ContentText", $"You are removing a beer from a closed tasting. Any results and votes for this tasting will be deleted for {tastingBeer.BeerModel?.Name}");
+            parameters.Add("ButtonText", "CONFIRM");
+            parameters.Add("Color", Color.Error);
+
+            var dialog = DialogService.Show<DeleteDialog>("Remove beer", parameters);
+            var result = await dialog.Result;
+
+            if (result.Cancelled) return;
+        }
+
+        await _db.RemoveTastingResult(tastingBeer.TastingId, tastingBeer.BeerModel.BeerId);
+        await _db.RemoveVotes(tastingBeer.TastingId, tastingBeer.BeerModel.BeerId);
+        await _db.RemoveTastingBeer(tastingBeer);
+        tastingBeers.Remove(tastingBeer);
+        
+        var tasks = new List<Task>();
+        int sortOrder = 1;
+        foreach (var beer in tastingBeers)
+        {
+            beer.SortOrder = sortOrder++;
+            tasks.Add(_db.UpdateTastingBeer(beer));
+        }
+
+        await Task.WhenAll(tasks);
+        StateHasChanged();
+    }
+
+    private async void AddBeer()
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("Beers", beers);
+        parameters.Add("TastingBeers", tastingBeers);
+
+        var dialog = DialogService.Show<AddBeerDialog>("Add Beers", parameters);
+        var result = await dialog.Result;
+
+        if (result.Cancelled) return;
+
+        var newBeerIds = (List<int>)result.Data;
+        var sortOrder = tastingBeers.Any() ? tastingBeers.Max(tb => tb.SortOrder) : 0;
+
+        foreach (var beerId in newBeerIds)
+        {
+            await _db.AddTastingBeer(Id, beerId, ++sortOrder);
+        }
+
+        tastingBeers = (await _db.GetTastingBeers(Id));
+        foreach (var tastingBeer in tastingBeers)
+        {
+            tastingBeer.BeerModel = beers.SingleOrDefault(b => b.BeerId == tastingBeer.BeerId);
+        }
+        tastingBeers = tastingBeers.OrderBy(tb => tb.SortOrder).ToList();
+        StateHasChanged();
+    }
+
+    private async void SwitchBeerSortOrder(TastingBeerModel beerToSwitch, SortOrderChange sortOperation)
+    {
+        int sortOrderChange = sortOperation == SortOrderChange.Down ? 1 : -1;
+        var otherBeer = tastingBeers.SingleOrDefault(tb => tb.SortOrder == beerToSwitch.SortOrder + sortOrderChange);
+
+        if (otherBeer is null)
+            return;
+
+        beerToSwitch.SortOrder = beerToSwitch.SortOrder + sortOrderChange;
+        otherBeer.SortOrder = otherBeer.SortOrder - sortOrderChange;
+
+        await _db.UpdateTastingBeer(beerToSwitch);
+        await _db.UpdateTastingBeer(otherBeer);
+
+        tastingBeers = tastingBeers.OrderBy(tb => tb.SortOrder).ToList();
+
+        StateHasChanged();
+    }
+}
