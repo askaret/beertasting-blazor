@@ -6,6 +6,8 @@
 @inject IBeertastingRepository _db
 @inject NavigationManager _nav
 
+<AdminGate />
+
 <MudText Typo="Typo.h3" Class="pa-4">Tastings</MudText>
 
 <EditForm Model="@newTasting" OnValidSubmit="AddTasting">
@@ -63,8 +65,8 @@
         <MudTd DataLabel=Name>@context.Name</MudTd>
         <MudTd DataLabel=Description>@context.Description</MudTd>
         <MudTd DataLabel=TastingDate>@context.TastingDate</MudTd>
-        <MudTd DataLabel=IsActive><MudCheckBox Checked="@context.IsActive" ReadOnly="true"></MudCheckBox></MudTd>
-        <MudTd DataLabel=IsBlind><MudCheckBox Checked="@context.IsBlind" ReadOnly="true"></MudCheckBox></MudTd>
+        <MudTd DataLabel=IsActive><MudCheckBox Checked="@context.IsActive" Disabled="true" ReadOnly="true"></MudCheckBox></MudTd>
+        <MudTd DataLabel=IsBlind><MudCheckBox Checked="@context.IsBlind" Disabled="true" ReadOnly="true"></MudCheckBox></MudTd>
         <MudTd><MudIconButton Icon="@Icons.Material.Outlined.Edit" Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => OnEditPressed(context.TastingId))"></MudIconButton></MudTd>
         <MudTd><MudIconButton Icon="@Icons.Material.Outlined.Calculate" Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => Calculate(context))"></MudIconButton></MudTd>
     </RowTemplate>

@@ -10,6 +10,7 @@
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
 
+<AdminGate />
 <MudText Typo="Typo.h3"  Class="pa-4">Tasting</MudText>
 
 <EditForm Model="@tasting" OnValidSubmit="EditTasting">
@@ -80,7 +81,6 @@
     </MudCard>
 </EditForm>
 
-
 @code
 {
     [Parameter]
@@ -119,7 +119,7 @@
 
     private async void EditTasting()
     {
-        await _db.EditTasting(tasting.ToTastingModel());
+        await _db.UpdateTasting(tasting.ToTastingModel());
 
         _nav.NavigateTo("/admin/tasting");
     }
@@ -149,7 +149,7 @@
         foreach (var beer in tastingBeers)
         {
             beer.SortOrder = sortOrder++;
-            tasks.Add(_db.EditTastingBeer(beer));
+            tasks.Add(_db.UpdateTastingBeer(beer));
         }
 
         await Task.WhenAll(tasks);
@@ -195,8 +195,8 @@
         beerToSwitch.SortOrder = beerToSwitch.SortOrder + sortOrderChange;
         otherBeer.SortOrder = otherBeer.SortOrder - sortOrderChange;
 
-        await _db.EditTastingBeer(beerToSwitch);
-        await _db.EditTastingBeer(otherBeer);
+        await _db.UpdateTastingBeer(beerToSwitch);
+        await _db.UpdateTastingBeer(otherBeer);
 
         tastingBeers = tastingBeers.OrderBy(tb => tb.SortOrder).ToList();
 

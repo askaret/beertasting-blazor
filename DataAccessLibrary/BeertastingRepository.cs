@@ -36,6 +36,12 @@ namespace DataAccessLibrary
             return _db.LoadData<BreweryModel, dynamic>(query, new { });
         }
 
+        public Task<List<TastingResultModel>> GetTastingResults()
+        {
+            var sql = @"select TastingBeerResultId, TastingId, BeerId, ScoreTaste, ScoreAppearance, ScoreOverall, ScoreFinal from dbo.TastingResult";
+            return _db.LoadData<TastingResultModel, dynamic>(sql, new {});
+        }
+
         public Task AddBeer(BeerModel beer)
         {
             var sql = @"insert into dbo.Beer (Name, ABV, RateBeerLink, BeerStyleId, BreweryId, BeerClassId)
@@ -58,14 +64,14 @@ namespace DataAccessLibrary
             return _db.SaveData(sql, new { tastingId = tastingId, beerId = beerId, sortOrder = sortOrder });
         }
 
-        public Task EditTasting(TastingModel tasting)
+        public Task UpdateTasting(TastingModel tasting)
         {
             var sql = @"update dbo.Tasting set Name = @Name, Description = @Description, IsActive = @IsActive, IsBlind = @IsBlind, TastingDate = @TastingDate where TastingId = @TastingId";
 
             return _db.SaveData(sql, tasting);
         }
 
-        public Task EditTastingBeer(TastingBeerModel tastingBeer)
+        public Task UpdateTastingBeer(TastingBeerModel tastingBeer)
         {
             var sql = @"update dbo.TastingBeer set TastingId = @TastingId, BeerId = @BeerId, SortOrder = @SortOrder where TastingBeerId = @TastingBeerId";
 
@@ -166,6 +172,85 @@ namespace DataAccessLibrary
         {
             var sql = @"select * from dbo.Brewery where BreweryId = @breweryId";
             return _db.LoadSingle<BreweryModel, dynamic>(sql, new { breweryId = id });
+        }
+
+        public Task AddTaster(TasterModel taster)
+        {
+            var sql = @"insert into dbo.Taster 
+                               (EmailAddress, DisplayName, IsAdmin)
+                        values (@EmailAddress, @DisplayName, @IsAdmin)";
+
+            return _db.SaveData(sql, taster);
+        }
+
+        public Task UpdateTaster(TasterModel taster)
+        {
+            var sql = @"update  dbo.Taster 
+                        set     EmailAddress = @EmailAddress,
+                                DisplayName = @DisplayName, 
+                                IsAdmin = @IsAdmin
+                        where   TasterId = @TasterId";
+
+            return _db.SaveData(sql, taster);
+        }
+
+        public Task DeleteTaster(TasterModel taster)
+        {
+            var sql = @"delete from dbo.Taster where TasterId = @TasterId";
+            return _db.DeleteData<TasterModel>(sql, taster);
+        }
+        public Task<TasterModel> GetTaster(string emailAddress)
+        {
+            var sql = @"select * from dbo.Taster where EmailAddress = @email";
+            return _db.LoadSingle<TasterModel, dynamic>(sql, new { email = emailAddress});
+        }
+
+        public Task<TasterModel> GetTaster(int id)
+        {
+            var sql = @"select * from dbo.Taster where TasterId = @tasterId";
+            return _db.LoadSingle<TasterModel, dynamic>(sql, new { tasterId = id });
+        }
+
+        public Task<List<TasterModel>> GetTasters()
+        {
+            var query = "select * from dbo.Taster";
+            return _db.LoadData<TasterModel, dynamic>(query, new { });
+        }
+
+        public Task<List<TastingModel>> GetTastingsForTaster(int tasterId)
+        {
+            var query = @"select *  from dbo.tasting 
+                         where      TastingId in 
+                                    (
+                                        select distinct TastingId from dbo.vote where TasterId = @TasterId
+                                    );";
+
+            return _db.LoadData<TastingModel, dynamic>(query, new { TasterId = tasterId });
+        }
+
+        public Task<List<TasterBeerModelVotes>> GetTasterBeerVotes(int tasterId)
+        {
+            var query = @"
+                             SELECT     TOP 10 
+                                        b.Name as BeerName,
+                                        b.ABV,
+                                        br.Name as BreweryName,
+                                        b.RateBeerLink,
+                                        Taste,
+                                        Appearance,
+                                        Overall,
+                                        ( taste + appearance + overall ) AS Score
+                            FROM        dbo.vote v
+                                   JOIN dbo.beer b
+                                     ON b.beerid = v.beerid
+                                   JOIN dbo.brewery br
+                                     ON br.breweryid = b.breweryid
+                            WHERE       tasterid = @TasterId
+                            ORDER BY    overall DESC,
+                                        taste DESC,
+                                        appearance DESC";
+
+            return _db.LoadData<TasterBeerModelVotes, dynamic>(query, new { TasterId = tasterId });
         }
     }
 }
