@@ -5,6 +5,7 @@
 
 @inject IBeertastingRepository _db
 @inject NavigationManager _nav
+@inject ISnackbar Snackbar
 
 <AdminGate />
 
@@ -48,17 +49,16 @@
 
 <MudTable Items=@tastings Hover="true" Bordered="false" Striped="true" Filter="new Func<TastingModel,bool>(TableFilterFunction)">
     <ToolBarContent>
-		<MudText Typo="Typo.h4" Class="pa-4">All Tastings</MudText>
-		<MudSpacer />
-		<MudTextField @bind-Value="tableSearchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-	</ToolBarContent>
+        <MudText Typo="Typo.h4" Class="pa-4">All Tastings</MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="tableSearchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
     <HeaderContent>
         <MudTh>Name</MudTh>
         <MudTh>Description</MudTh>
         <MudTh>Tasting Date</MudTh>
         <MudTh>IsActive</MudTh>
         <MudTh>IsBlind</MudTh>
-        <MudTh></MudTh>
         <MudTh></MudTh>
     </HeaderContent>
     <RowTemplate>
@@ -67,8 +67,10 @@
         <MudTd DataLabel=TastingDate>@context.TastingDate</MudTd>
         <MudTd DataLabel=IsActive><MudCheckBox Checked="@context.IsActive" Disabled="true" ReadOnly="true"></MudCheckBox></MudTd>
         <MudTd DataLabel=IsBlind><MudCheckBox Checked="@context.IsBlind" Disabled="true" ReadOnly="true"></MudCheckBox></MudTd>
-        <MudTd><MudIconButton Icon="@Icons.Material.Outlined.Edit" Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => OnEditPressed(context.TastingId))"></MudIconButton></MudTd>
-        <MudTd><MudIconButton Icon="@Icons.Material.Outlined.Calculate" Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => Calculate(context))"></MudIconButton></MudTd>
+        <MudTd>
+            <MudIconButton Icon="@Icons.Material.Outlined.Edit" Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => OnEditPressed(context.TastingId))"></MudIconButton>
+            <MudIconButton Icon="@Icons.Material.Outlined.Calculate" Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => Calculate(context))"></MudIconButton>
+        </MudTd>
     </RowTemplate>
 </MudTable>
 
@@ -113,15 +115,15 @@
     }
 
     private bool TableFilter(TastingModel tasting, string searchString)
-	{
-		if (string.IsNullOrWhiteSpace(searchString))
-			return true;
-		if (tasting.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-			return true;
-		if (tasting.Description.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-			return true;
-		return false;
-	}
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (tasting.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (tasting.Description.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
+    }
 
     private async void Calculate(TastingModel tasting)
     {
@@ -135,5 +137,7 @@
             resultTasks.Add(_db.AddTastingResults(result));
         }
         await Task.WhenAll(resultTasks);
+
+        Snackbar.Add($"Finished calculating tasting {tasting.Name}", Severity.Success);
     }
 }
