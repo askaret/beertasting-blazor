@@ -22,6 +22,7 @@
         <MudText Typo="Typo.h5" Class="ml-3">Beertasting</MudText>
         <MudSpacer />
         <MudIconButton Icon="@Icons.Material.Outlined.Palette" Color="Color.Inherit" Edge="Edge.End" OnClick="@(() => ThemeToggle())"/>
+        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Edge="Edge.End" Link="https://github.com/askaret/beertasting-blazor" Target="_blank"/>
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
         <NavMenu />
@@ -30,7 +31,7 @@
         <MudContainer MaxWidth="MaxWidth.Large">
             @Body
         </MudContainer>
-    </MudMainContent>
+    </MudMainContent>    
 </MudLayout>
 
 @code {
