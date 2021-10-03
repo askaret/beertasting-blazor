@@ -21,7 +21,7 @@ namespace DataAccessLibrary.Models
             var filteredVotes = votes.Where(v => v.TastingId == TastingId && v.BeerId == BeerId).ToArray();
 
             ScoreTaste = Math.Round(filteredVotes.Select(v => v.Taste).Average());
-            ScoreAppearance = Math.Round(filteredVotes.Select(v => v.Taste).Average());
+            ScoreAppearance = Math.Round(filteredVotes.Select(v => v.Appearance).Average());
             ScoreOverall = Math.Round(filteredVotes.Select(v => v.Overall).Average());
             ScoreFinal = Math.Round(((2 * ScoreTaste) + ScoreAppearance + ScoreOverall) / 4);
         }
