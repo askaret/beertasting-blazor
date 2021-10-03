@@ -137,10 +137,18 @@ CREATE TABLE [dbo].[TastingResult](
 	[TastingBeerResultId] [int] IDENTITY(1,1) NOT NULL,
 	[TastingId] [int] NOT NULL,
 	[BeerId] [int] NOT NULL,
+	[BeerClassId] [int] NOT NULL,
+	[BeerName] [nvarchar](max) NULL,
+	[BreweryName] [nvarchar](max) NULL,
+	[BeerStyle] [nvarchar](max) NULL,
+	[Abv] [float] NOT NULL,
+	[BreweryUrl] [nvarchar](max) NULL,
+	[RateBeerUrl] [nvarchar](max) NULL,
 	[ScoreTaste] [float] NOT NULL,
 	[ScoreAppearance] [float] NOT NULL,
 	[ScoreOverall] [float] NOT NULL,
 	[ScoreFinal] [float] NOT NULL,
+	[BeerClassName] [nvarchar](max) NULL,
  CONSTRAINT [PK_TastingResult] PRIMARY KEY CLUSTERED 
 (
 	[TastingBeerResultId] ASC
@@ -1341,227 +1349,227 @@ SET IDENTITY_INSERT [dbo].[TastingBeer] OFF
 GO
 SET IDENTITY_INSERT [dbo].[TastingResult] ON 
 GO
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (24, 7, 30, 4.25, 4.69, 4.5, 4.42)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (25, 7, 57, 4.06, 4.41, 4.06, 4.15)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (26, 7, 56, 4.56, 4.31, 4.38, 4.45)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (27, 7, 55, 4.69, 4.56, 4.5, 4.61)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (28, 7, 54, 4.81, 4.44, 4.75, 4.7)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (29, 7, 53, 2.53, 3.65, 2.65, 2.84)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (30, 7, 52, 2.06, 3.41, 2.29, 2.46)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (31, 7, 51, 3, 3.53, 3.29, 3.2)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (32, 7, 50, 3.47, 3.41, 3.47, 3.46)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (33, 7, 49, 3.24, 3.88, 3.41, 3.44)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (34, 7, 48, 3.12, 4.24, 3.59, 3.52)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (35, 7, 47, 2.41, 3.18, 2.71, 2.68)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (36, 7, 46, 3.94, 4.29, 4.06, 4.06)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (37, 7, 42, 3.69, 3.75, 3.69, 3.7)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (38, 7, 39, 2.29, 2.88, 2.47, 2.48)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (39, 7, 38, 3.29, 3.65, 3.47, 3.42)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (40, 7, 58, 4.06, 3.88, 4.06, 4.01)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (41, 7, 59, 3.71, 4.53, 3.76, 3.93)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (42, 6, 21, 6, 6.29, 6.12, 6.1)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (43, 6, 46, 2.79, 4.12, 3, 3.18)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (44, 6, 45, 3.92, 2.92, 3.17, 3.48)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (45, 6, 44, 3.71, 3.21, 3.33, 3.49)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (46, 6, 43, 3.75, 3.5, 3.58, 3.64)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (47, 6, 42, 4.08, 4.54, 3.88, 4.14)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (48, 6, 41, 4.33, 4.17, 4.08, 4.23)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (49, 6, 40, 3.67, 5.08, 4.42, 4.21)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (50, 6, 39, .62, 5.75, 4.67, 4.92)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (51, 6, 38,  5, 5.67, 5, 5.17)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (52, 6, 37, 5, 5.75, 5.25, 5.25)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (53, 6, 36, 5.46, 4.88, 5.58, 5.35)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (54, 6, 35, 5.25, 5.67, 5.54, 5.43)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (55, 6, 34, 7.6, 5.88, 6.29, 5.92, 5.99)
-GO                                                                                                                                                            
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (56, 6, 33, 6, 6.29, 6.38, 6.17)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (57, 6, 32, 6.42, 6.75, 6.75, 6.58)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (58, 6, 31, 6, 6.04, 6.04, 6.02)
-GO                                                                                                                                                                               
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (59, 6, 30, 6.71, 7.04, 6.83, 6.82)
-GO                                                                                                                                                                                  
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (60, 6, 47, 2.79, 4.12, 2.92, 3.16)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (61, 6, 48, 2.75, 3.29, 2.54, 2.83)
-GO                                                                                                                                                                                       
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (62, 1, 9, 5.69, 6.78, 6, 6.04)
-GO                                                                                                                                                                                       
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (63, 1, 29, 5.35, 5.39, 5.42, 5.38)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (64, 1, 28, 5.33, 6.8, 5.7, 5.79)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (65, 1, 27, 4.13, 5.58, 4.23, 4.52)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (66, 1, 26, 6.07, 6.17, 6.23, 6.14)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (67, 1, 25, 3.81, 4.52, 3.87, 4)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (68, 1, 24, 5.41, 5.97, 5.63, 5.6)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (69, 1, 23, 5.31, 6.13, 5.44, 5.55)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (70, 1, 22, 4.44, 5.91, 4.72, 4.88)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (71, 1, 21, 5.5, 5.7, 5.4, 5.52)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (72, 1, 30, 6.1, 6.4, 6.13, 6.18)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (73, 1, 20, 5.44, 6.88, 5.53, 5.82)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (74, 1, 18, 6.69, 6.63, 6.47, 6.62)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (75, 1, 17, 5.66, 5.38, 5.53, 5.56)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (76, 1, 16, 5, 6.35, 5.16, 5.38)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (77, 1, 15, 4.94, 4.45, 4.77, 4.78)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (78, 1, 14, 3.97, 3.94, 3.94, 3.96)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (79, 1, 13, 4.45, 6.15, 5.06, 5.03)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (80, 1, 12, 4.15, 4.36, 4.21, 4.22)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (81, 1, 11, 4.71, 5.06, 4.68, 4.79)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (82, 1, 10, 3.03, 5.19, 3.75, 3.75)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (83, 1, 19, 6.25, 6.66, 6.31, 6.37)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (84, 1, 31, 5.94, 6.52, 6.06, 6.12)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (85, 3, 15, 4.88, 4.83, 4.88, 4.87)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (86, 3, 72, 5.55, 6.78, 5.88, 5.94)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (87, 3, 71, 5.66, 6.11, 5.96, 5.85)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (88, 3, 70, 4.73, 5.84, 4.95, 5.06)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (89, 3, 69, 4.75, 5.88, 5.21, 5.15)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (90, 3, 68, 5.3, 5.62, 5.15, 5.34)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (91, 3, 67, 2.9, 2.9, 3.02, 2.93)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (92, 3, 66, 5.91, 6.12, 5.82, 5.94)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (93, 3, 65, 5.86, 6.11, 5.86, 5.92)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (94, 3, 64, 5.21, 4.88, 5.12, 5.11)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (95, 3, 62, 4.27, 5.7, 4.39, 4.66)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (96, 3, 61, 6.27, 6.12, 6.1, 6.19)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (97, 3, 60, 5.93, 6.27, 5.98, 6.03)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (98, 3, 57, 5.67, 6.1, 5.69, 5.78)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (99, 3, 48, 4.13, 5.63, 4.28, 4.55)
-GO                                                                                                                                                                                       
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (100, 3, 46, 4.23, 5.77, 4.48, 4.68)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (101, 3, 30, 5.98, 6.64, 6.44, 6.26)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (102, 3, 21, 6.79, 6.79, 6.72, 6.77)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (103, 3, 74, 5.52, 6.03, 5.35, 5.6)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (104, 3, 75, 5.23, 5.53, 5.36, 5.34)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (105, 13, 9, 4.21, 5.62, 4.47, 4.62)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (106, 13, 92, 5.89, 6.74, 5.91, 6.11)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (107, 13, 91, 4.33, 5.74, 4.34, 4.68)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (108, 13, 89, 5.85, 6, 5.77, 5.87)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (109, 13, 88, 5.76, 5.92, 5.63, 5.77)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (110, 13, 87, 6.54, 7.15, 6.5, 6.68)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (111, 13, 86, 6.74, 6.82, 6.71, 6.75)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (112, 13, 85, 6.31, 7, 6.38, 6.5)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (113, 13, 84, 6.13, 6.28, 5.97, 6.13)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (114, 13, 83, 4.69, 6.77, 5.03, 5.29)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (115, 13, 82, 5.18, 5.62, 5, 5.24)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (116, 13, 81, 3.56, 4.1, 3.72, 3.73)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (117, 13, 80, 5.22, 6.32, 5.51, 5.57)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (118, 13, 79, 5.42, 5.88, 5.46, 5.55)
-GO                                                                                                                                                                                    
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (119, 13, 78, 5.49, 5.92, 5.41, 5.58)
-GO                                                                                                                                                              
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (120, 13, 77, 5.49, 6.23, 5.59, 5.7)
-GO                                                                                                                                                              
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (121, 13, 76, 4.77, 6.03, 4.74, 5.08)
-GO                                                                                                                                                              
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (122, 13, 59, 5.56, 7.41, 5.87, 6.1)
-GO                                                                                                                                                              
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (123, 13, 48, 4.11, 6.37, 4.63, 4.8)
-GO                                                                                                                                                              
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (124, 13, 30, 6.51, 6.87, 6.56, 6.62)
-GO                                                                                                                                                              
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (125, 13, 93, 4.72, 5.45, 4.81, 4.93)
-GO                                                                                                                                                              
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (126, 13, 94,  6.18, 6.72, 6.24, 6.33)
-GO                                                                                                                                                               
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (127, 14, 39, 5.1, 6.58, 5.58, 5.59)
-GO                                                                                                                                                              
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (128, 14, 95, 5.4, 6.57, 5.69, 5.76)
-GO                                                                                                                                                              
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (129, 14, 96, 5.9, 6.75, 5.96, 6.12)
-GO                                                                                                                                                              
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (130, 14, 97, 6.22, 6.76, 6.14, 6.33)
-GO                                                                                                                                                              
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (131, 14, 99, 5.52, 6.54, 5.69, 5.81)
-GO                                                                                                                                                                  
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (132, 14, 100, 6.79, 7.14, 6.91, 6.91)
-GO                                                                                                                                                               
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (133, 14, 101, 6.19, 6.93, 6.33, 6.41)
-GO                                                                                                                                                               
-INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal]) VALUES (134, 14, 102, 4.82, 5.47, 4.82, 4.98)
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (24, 7, 30, 3, N'Corsendonk Christmas Ale', N'Brouwerij Corsendonk', N'Belgian Dark Strong Ale', 8.5, N'http://www.corsendonk.com/', N'https://www.ratebeer.com/beer/corsendonk-christmas-ale/996/', 4.25, 4.69, 4.5, 4.42, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (25, 7, 57, 3, N'Ringnes Julebokk', N'Ringnes Bryggeri', N'Doppelbock', 9, N'http://www.ringnes.no/', N'https://www.ratebeer.com/beer/ringnes-julebokk/18866/', 4.06, 4.41, 4.06, 4.15, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (26, 7, 56, 3, N'Austmann Vintersolverv', N'Austmann (Hansa Borg)', N'Spice, Herb, or Vegetable Beer', 6.9, N'http://www.austmann.no/', N'https://www.ratebeer.com/beer/austmann-vintersolverv/297219/', 4.56, 4.31, 4.38, 4.45, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (27, 7, 55, 3, N'Gauloise Du Bocq Christmas', N'Brasserie Du Bocq', N'Belgian Dubbel', 8.1, N'http://www.bocq.be/', N'https://www.ratebeer.com/beer/du-bocq-christmas/81054/', 4.69, 4.56, 4.5, 4.61, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (28, 7, 54, 3, N'Cuvée de Noël', N'Brasserie St. Feuilien', N'Belgian Golden Strong Ale', 9, N'http://www.st-feuillien.com/', N'https://www.ratebeer.com/beer/st-feuillien-cuvee-de-noel/2407/', 4.81, 4.44, 4.75, 4.7, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (29, 7, 53, 1, N'Nordlands Juleøl', N'Ringnes Bryggeri', N'Altbier', 4.5, N'http://www.ringnes.no/', N'https://www.ratebeer.com/beer/nordlands-juleol/113198/', 2.53, 3.65, 2.65, 2.84, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (30, 7, 52, 1, N'Lade Gaards Juleøl', N'Grans Bryggeri', N'Dunkles Bock', 4.7, N'http://www.grans.no/', N'https://www.ratebeer.com/beer/lade-gaards-juleol/132988/', 2.06, 3.41, 2.29, 2.46, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (31, 7, 51, 2, N'Godt Nytt År', N'Torgeir Kruke', N'Robust Porter', 6.5, NULL, NULL, 3, 3.53, 3.29, 3.2, N'Homebrew')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (32, 7, 50, 2, N'God Jul', N'Torgeir Kruke', N'American Amber Ale', 7.5, NULL, NULL, 3.47, 3.41, 3.47, 3.46, N'Homebrew')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (33, 7, 49, 3, N'Dahls Juleøl Sterk', N'E.C. Dahls Bryggeri', N'Vienna Lager', 6.5, N'https://www.ecdahls.no/', N'https://www.ratebeer.com/beer/dahls-juleol-6-5/11257/', 3.24, 3.88, 3.41, 3.44, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (34, 7, 48, 1, N'Dahls Julebrygg', N'E.C. Dahls Bryggeri', N'Vienna Lager', 4.5, N'https://www.ecdahls.no/', N'https://www.ratebeer.com/beer/dahls-julebrygg/11254/', 3.12, 4.24, 3.59, 3.52, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (35, 7, 47, 1, N'Ringnes Juleøl', N'Ringnes Bryggeri', N'Vienna Lager', 4.5, N'http://www.ringnes.no/', N'https://www.ratebeer.com/beer/ringnes-juleol-4-5/18297/', 2.41, 3.18, 2.71, 2.68, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (36, 7, 46, 1, N'Aass Juleøl', N'Aass Bryggeri', N'American Amber Ale', 4.5, N'http://www.aass.no/', N'https://www.ratebeer.com/beer/aass-juleol-4-5/1030/', 3.94, 4.29, 4.06, 4.06, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (37, 7, 42, 3, N'Hansa Ekstra Vellagret Julebrygg', N'Hansa Borg Bryggerier', N'Helles Bock', 6.5, N'http://www.hansaborg.no/', N'https://www.ratebeer.com/beer/hansa-ekstra-vellagret-julebrygg-6-5/52874/', 3.69, 3.75, 3.69, 3.7, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (38, 7, 39, 1, N'Dahls Juleøl', N'E.C. Dahls Bryggeri', N'Winter Seasonal Beer', 4.5, N'https://www.ecdahls.no/', N'https://www.ratebeer.com/beer/dahls-juleol-4-5/11255/', 2.29, 2.88, 2.47, 2.48, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (39, 7, 38, 3, N'Lade Gaards Juleøl Sterk Type', N'Grans Bryggeri', N'Traditional Bock', 6.5, N'http://www.grans.no/', N'https://www.ratebeer.com/beer/lade-gaards-juleol-sterk-type/157318/', 3.29, 3.65, 3.47, 3.42, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (40, 7, 58, 3, N'Haandbryggeriet Nissefar', N'Haandbryggeriet', N'Old Ale', 7, N'http://www.haandbryggeriet.net/', N'https://www.ratebeer.com/beer/haandbryggeriet-nissefar/52948/', 4.06, 3.88, 4.06, 4.01, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (41, 7, 59, 3, N'Het Anker Gouden Carolus Christmas', N'Brouwerij Het Anker', N'Belgian Dark Strong Ale', 10.5, N'http://www.hetanker.be/', N'https://www.ratebeer.com/beer/het-anker-gouden-carolus-christmas-noel/18375/', 3.71, 4.53, 3.76, 3.93, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (42, 6, 21, 3, N'Delirium Noël', N'Brouwerij Huyghe', N'Belgian Dark Strong Ale', 10, N'http://www.delirium.be/', N'https://www.ratebeer.com/beer/delirium-noel/5998/', 6, 6.29, 6.12, 6.1, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (43, 6, 46, 1, N'Aass Juleøl', N'Aass Bryggeri', N'American Amber Ale', 4.5, N'http://www.aass.no/', N'https://www.ratebeer.com/beer/aass-juleol-4-5/1030/', 2.79, 4.12, 3, 3.18, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (44, 6, 45, 1, N'Nøgne Ø Hvit Jul', N'Nøgne Ø (Hansa Borg)', N'Weissbier', 4.5, N'https://www.nogne-o.com/', N'https://www.ratebeer.com/beer/nogne-o-hvit-jul/369346/', 3.92, 2.92, 3.17, 3.48, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (45, 6, 44, 3, N'Meteor Bière de Noël', N'Brasserie Meteor', N'Premium American Lager', 5.8, N'http://www.brasserie-meteor.fr/', N'https://www.ratebeer.com/beer/meteor-biere-de-noel/9842/', 3.71, 3.21, 3.33, 3.49, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (46, 6, 43, 1, N'Gulating Julebjorr', N'Færder Mikrobryggeri', N'Spice, Herb, or Vegetable Beer', 4.7, N'http://faerdermikrobryggeri.com/', N'https://www.ratebeer.com/beer/gulating-julebjorr/373318/', 3.75, 3.5, 3.58, 3.64, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (47, 6, 42, 3, N'Hansa Ekstra Vellagret Julebrygg', N'Hansa Borg Bryggerier', N'Helles Bock', 6.5, N'http://www.hansaborg.no/', N'https://www.ratebeer.com/beer/hansa-ekstra-vellagret-julebrygg-6-5/52874/', 4.08, 4.54, 3.88, 4.14, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (48, 6, 41, 3, N'Økologisk Juleøl', N'Herslev Bryghus', N'Belgian Blond Ale', 6, N'http://www.herslevbryghus.dk/', N'https://www.ratebeer.com/beer/herslev-okologisk-juleol/112170/', 4.33, 4.17, 4.08, 4.23, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (49, 6, 40, 1, N'Vårres Jul', N'Stjørdalsbryggeriet', N'Traditional Bock', 4.7, N'http://stjordalsbryggeriet.no/', N'https://www.ratebeer.com/beer/stjordalsbryggeriet-varres-juleol/492807/', 3.67, 5.08, 4.42, 4.21, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (50, 6, 39, 1, N'Dahls Juleøl', N'E.C. Dahls Bryggeri', N'Winter Seasonal Beer', 4.5, N'https://www.ecdahls.no/', N'https://www.ratebeer.com/beer/dahls-juleol-4-5/11255/', 4.62, 5.75, 4.67, 4.92, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (51, 6, 38, 3, N'Lade Gaards Juleøl Sterk Type', N'Grans Bryggeri', N'Traditional Bock', 6.5, N'http://www.grans.no/', N'https://www.ratebeer.com/beer/lade-gaards-juleol-sterk-type/157318/', 5, 5.67, 5, 5.17, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (52, 6, 37, 1, N'Kringly Kris Juleporter', N'Lervig Aktiebryggeri', N'Winter Seasonal Beer', 4.7, N'http://lervig.no/', N'4.7', 5, 5.75, 5.25, 5.25, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (53, 6, 36, 2, N'Torgeir''s Juleale', N'Torgeir Kruke', N'American Brown Ale', 6.5, NULL, NULL, 5.46, 4.88, 5.58, 5.35, N'Homebrew')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (54, 6, 35, 2, N'Rød Svans', N'Unknown', N'Specialty Beer', 5.5, NULL, NULL, 5.25, 5.67, 5.54, 5.43, N'Homebrew')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (55, 6, 34, 3, N'Abundance Baltic Cherry Porter', N'Reneissance Brewing', N'Robust Porter', 7.6, N'http://www.renaissancebrewing.co.nz/', N'https://www.ratebeer.com/beer/renaissance-abundance-baltic-cherry-porter/240384/', 5.88, 6.29, 5.92, 5.99, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (56, 6, 33, 2, N'Dobbel Julebokk', N'Andreas Skaret', N'Specialty Beer', 8.9, NULL, NULL, 6, 6.29, 6.38, 6.17, N'Homebrew')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (57, 6, 32, 3, N'Santa''s Little Helper 2016', N'Mikkeller APS', N'Belgian Dark Strong Ale', 10.9, N'http://mikkeller.dk/', N'https://www.ratebeer.com/beer/mikkeller-santas-little-helper-2016/457785/', 6.42, 6.75, 6.75, 6.58, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (58, 6, 31, 3, N'St. Bernardus Christmas Ale', N'Brewery St.Bernard', N'Belgian Dark Strong Ale', 10, N'http://www.sintbernardus.be/', N'https://www.ratebeer.com/beer/st-bernardus-christmas-ale/65814/', 6, 6.04, 6.04, 6.02, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (59, 6, 30, 3, N'Corsendonk Christmas Ale', N'Brouwerij Corsendonk', N'Belgian Dark Strong Ale', 8.5, N'http://www.corsendonk.com/', N'https://www.ratebeer.com/beer/corsendonk-christmas-ale/996/', 6.71, 7.04, 6.83, 6.82, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (60, 6, 47, 1, N'Ringnes Juleøl', N'Ringnes Bryggeri', N'Vienna Lager', 4.5, N'http://www.ringnes.no/', N'https://www.ratebeer.com/beer/ringnes-juleol-4-5/18297/', 2.79, 4.12, 2.92, 3.16, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (61, 6, 48, 1, N'Dahls Julebrygg', N'E.C. Dahls Bryggeri', N'Vienna Lager', 4.5, N'https://www.ecdahls.no/', N'https://www.ratebeer.com/beer/dahls-julebrygg/11254/', 2.75, 3.29, 2.54, 2.83, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (62, 1, 9, 1, N'Tuftkall Juleøl', N'Bryggeriet Frøya', N'Vienna Lager', 4.7, N'http://bryggerietfroya.no/', N'https://www.ratebeer.com/beer/froya-tuftkall/575908/', 5.69, 6.78, 6, 6.04, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (63, 1, 29, 3, N'Dommpapp', N'Inderøy Gårdsbryggeri', N'Belgian Tripel', 10.2, N'http://www.igb.no/', N'https://www.ratebeer.com/beer/inderoy-dommpapp/563188/', 5.35, 5.39, 5.42, 5.38, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (64, 1, 28, 3, N'The Holy Bock', N'Berentsens Brygghus', N'Doppelbock', 7.5, N'https://www.berentsens.no/', N'https://www.ratebeer.com/beer/berentsens-the-holy-bock/561621/', 5.33, 6.8, 5.7, 5.79, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (65, 1, 27, 3, N'Helge', N'Hornbeer', N'Specialty Beer', 10, N'https://hornbeer.dk/', N'https://www.ratebeer.com/beer/hornbeer-helge/129784/', 4.13, 5.58, 4.23, 4.52, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (66, 1, 26, 2, N'Julebokk 2017', N'Andreas Skaret', N'Specialty Beer', 8.5, NULL, NULL, 6.07, 6.17, 6.23, 6.14, N'Homebrew')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (67, 1, 25, 3, N'Noel de Calabaza', N'Jolly Pumpkin Brewery', N'Belgian Dark Strong Ale', 9, N'http://brewery.jollypumpkin.com/', N'https://www.ratebeer.com/beer/jolly-pumpkin-noel-de-calabaza/80393/', 3.81, 4.52, 3.87, 4, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (68, 1, 24, 3, N'Baladin Nöel Liquirizia', N'Birra Baladin', N'Belgian Dark Strong Ale', 9, N'http://www.baladin.it/en/', N'https://www.ratebeer.com/beer/baladin-noeel-liquirizia/568889/', 5.41, 5.97, 5.63, 5.6, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (69, 1, 23, 2, N'Søt Jul', N'Torgeir Kruke', N'Sweet Stout', 5, NULL, NULL, 5.31, 6.13, 5.44, 5.55, N'Homebrew')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (70, 1, 22, 2, N'Dark Horse', N'Jarle Hildrum', N'Specialty Beer', 5.9, NULL, NULL, 4.44, 5.91, 4.72, 4.88, N'Homebrew')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (71, 1, 21, 3, N'Delirium Noël', N'Brouwerij Huyghe', N'Belgian Dark Strong Ale', 10, N'http://www.delirium.be/', N'https://www.ratebeer.com/beer/delirium-noel/5998/', 5.5, 5.7, 5.4, 5.52, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (72, 1, 30, 3, N'Corsendonk Christmas Ale', N'Brouwerij Corsendonk', N'Belgian Dark Strong Ale', 8.5, N'http://www.corsendonk.com/', N'https://www.ratebeer.com/beer/corsendonk-christmas-ale/996/', 6.1, 6.4, 6.13, 6.18, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (73, 1, 20, 3, N'Chocolate Salty Christmas Balls', N'Cervisiam Brewery', N'Imperial Stout', 10, N'https://www.cervisiam.no/', N'https://www.ratebeer.com/beer/cervisiam-chocolate-salty-christmas-balls/561626/', 5.44, 6.88, 5.53, 5.82, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (74, 1, 18, 2, N'BP2', N'Torgeir Kruke', N'Specialty Beer', 7.5, NULL, NULL, 6.69, 6.63, 6.47, 6.62, N'Homebrew')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (75, 1, 17, 3, N'Hoppy Lovin Christmas IPA', N'Mikkeller APS', N'American IPA', 7.8, N'http://mikkeller.dk/', N'https://www.ratebeer.com/beer/mikkeller-hoppy-happy-lovin-christmas/155165/', 5.66, 5.38, 5.53, 5.56, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (76, 1, 16, 3, N'Hvor er nisselua mi?', N'Little Brother Brewing', N'Imperial Stout', 10, N'https://www.littlebrotherbrew.com/', N'https://www.ratebeer.com/beer/little-brother-hvor-er-nisselua-mi/562874/', 5, 6.35, 5.16, 5.38, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (77, 1, 15, 3, N'Store Bjørn', N'E.C. Dahls Bryggeri', N'Belgian Tripel', 9, N'https://www.ecdahls.no/', N'https://www.ratebeer.com/beer/e-c-dahls-store-bjorn-juleol/464078/', 4.94, 4.45, 4.77, 4.78, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (78, 1, 14, 3, N'Santa Clausthaler', N'Binding Brauerei', N'Mild', 0, N'https://www.binding.de/', N'https://www.ratebeer.com/beer/santa-clausthaler/18656/', 3.97, 3.94, 3.94, 3.96, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (79, 1, 13, 1, N'Julekveld', N'Nøgne Ø (Hansa Borg)', N'Specialty Beer', 4.7, N'https://www.nogne-o.com/', N'https://www.ratebeer.com/beer/nogne-o-julekveld/369350/', 4.45, 6.15, 5.06, 5.03, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (80, 1, 12, 1, N'En Koselig Konjakk Juleøl', N'Reins Kloster', N'Specialty Beer', 4.7, N'https://reinskloster.no/reins-kloster-ol/', N'https://www.ratebeer.com/beer/reins-kloster-en-koselig-konjakk-juleol/570837/', 4.15, 4.36, 4.21, 4.22, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (81, 1, 11, 1, N'Hovmesteren Dark Christmas Ale', N'7 Fjell', N'British Brown Ale', 4.7, N'https://www.7fjellbryggeri.com/', N'https://www.ratebeer.com/beer/7-fjell-hovmesteren-dark-christmas-ale/458010/', 4.71, 5.06, 4.68, 4.79, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (82, 1, 10, 1, N'Vinterblot', N'Ølve på Egge Bryggeri', N'Specialty Beer', 4.5, N'http://www.olveegge.no/', N'https://www.ratebeer.com/beer/olve-vinterblot-olves-juleol-45/95552/', 3.03, 5.19, 3.75, 3.75, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (83, 1, 19, 3, N'Tannjul 2017', N'Sagene Bryggeri', N'Sweet Stout', 8, N'http://www.sagenebryggeri.com/', N'https://www.ratebeer.com/beer/sagene-tannjul/566173/', 6.25, 6.66, 6.31, 6.37, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (84, 1, 31, 3, N'St. Bernardus Christmas Ale', N'Brewery St.Bernard', N'Belgian Dark Strong Ale', 10, N'http://www.sintbernardus.be/', N'https://www.ratebeer.com/beer/st-bernardus-christmas-ale/65814/', 5.94, 6.52, 6.06, 6.12, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (85, 3, 15, 3, N'Store Bjørn', N'E.C. Dahls Bryggeri', N'Belgian Tripel', 9, N'https://www.ecdahls.no/', N'https://www.ratebeer.com/beer/e-c-dahls-store-bjorn-juleol/464078/', 4.88, 4.83, 4.88, 4.87, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (86, 3, 72, 1, N'Tuborg Juleøl', N'Ringnes Bryggeri', N'Vienna Lager', 4.6, N'http://www.ringnes.no/', N'https://www.ratebeer.com/beer/tuborg-juleol-4-5/52851/', 5.55, 6.78, 5.88, 5.94, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (87, 3, 71, 3, N'Vixen', N'Hogna Brygg', N'American Amber Ale', 7, N'https://hognabrygg.no/', N'https://www.ratebeer.com/beer/hogna-vixen/563923/', 5.66, 6.11, 5.96, 5.85, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (88, 3, 70, 3, N'Fireside', N'Edge Brewing', N'Brown Porter', 6.9, N'http://www.edgebrewing.com/', N'https://www.ratebeer.com/beer/edge-brewing-fireside/671168/', 4.73, 5.84, 4.95, 5.06, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (89, 3, 69, 3, N'Kerst Pater Special Christmas', N'Brouwerij Van Den Bossche', N'Belgian Dark Strong Ale', 9, N'https://www.paterlieven.be/', N'https://www.ratebeer.com/beer/kerst-pater-special-christmas/11808/', 4.75, 5.88, 5.21, 5.15, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (90, 3, 68, 3, N'Christmas Nights', N'Beerbliotek', N'Robust Porter', 7, N'http://beerbliotek.com/', N'https://www.ratebeer.com/beer/beerbliotek-christmas-nights/238236/', 5.3, 5.62, 5.15, 5.34, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (91, 3, 67, 3, N'Lusse Lelle', N'Brekeriet', N'Berliner Weisse', 6.5, N'http://www.brekeriet.se/', N'https://www.ratebeer.com/beer/brekeriet-lusse-lelle/559828/', 2.9, 2.9, 3.02, 2.93, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (92, 3, 66, 3, N'Tannjul 2018', N'Sagene Bryggeri', N'Robust Porter', 8, N'http://www.sagenebryggeri.com/', N'https://www.ratebeer.com/beer/sagene-tannjul/566173/', 5.91, 6.12, 5.82, 5.94, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (93, 3, 65, 3, N'Six Degrees North Snowy 2018', N'Six Degrees North', N'Belgian Dark Strong Ale', 7.5, N'http://sixdnorth.co.uk/', N'https://www.ratebeer.com/beer/six-degrees-north-snowy-2018-7-5/671851/', 5.86, 6.11, 5.86, 5.92, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (94, 3, 64, 3, N'Fattigmainn', N'Inderøy Gårdsbryggeri', N'American Barleywine', 10.2, N'http://www.igb.no/', N'https://www.ratebeer.com/beer/inderoy-fattigmainn/671838/', 5.21, 4.88, 5.12, 5.11, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (95, 3, 62, 3, N'Põhjala Leevike', N'Põhjala', N'Wild Specialty Beer', 6.5, N'https://pohjalabeer.com/', N'https://www.ratebeer.com/beer/pohjala-leevike/651055/', 4.27, 5.7, 4.39, 4.66, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (96, 3, 61, 3, N'Ølkymisten Gingerbread Maniac', N'7 Fjell', N'British Brown Ale', 7, N'https://www.7fjellbryggeri.com/', N'https://www.ratebeer.com/beer/olkymisten-gingerbread-maniac/671109/', 6.27, 6.12, 6.1, 6.19, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (97, 3, 60, 3, N'Egils Malt Jólabjór', N'Ölgerðin Egill Skallagrímsson', N'Sweet Stout', 5.7, N'http://www.olgerdin.is/en/', N'https://www.ratebeer.com/beer/egils-malt-jolabjor/28392/', 5.93, 6.27, 5.98, 6.03, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (98, 3, 57, 3, N'Ringnes Julebokk', N'Ringnes Bryggeri', N'Doppelbock', 9, N'http://www.ringnes.no/', N'https://www.ratebeer.com/beer/ringnes-julebokk/18866/', 5.67, 6.1, 5.69, 5.78, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (99, 3, 48, 1, N'Dahls Julebrygg', N'E.C. Dahls Bryggeri', N'Vienna Lager', 4.5, N'https://www.ecdahls.no/', N'https://www.ratebeer.com/beer/dahls-julebrygg/11254/', 4.13, 5.63, 4.28, 4.55, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (100, 3, 46, 1, N'Aass Juleøl', N'Aass Bryggeri', N'American Amber Ale', 4.5, N'http://www.aass.no/', N'https://www.ratebeer.com/beer/aass-juleol-4-5/1030/', 4.23, 5.77, 4.48, 4.68, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (101, 3, 30, 3, N'Corsendonk Christmas Ale', N'Brouwerij Corsendonk', N'Belgian Dark Strong Ale', 8.5, N'http://www.corsendonk.com/', N'https://www.ratebeer.com/beer/corsendonk-christmas-ale/996/', 5.98, 6.64, 6.44, 6.26, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (102, 3, 21, 3, N'Delirium Noël', N'Brouwerij Huyghe', N'Belgian Dark Strong Ale', 10, N'http://www.delirium.be/', N'https://www.ratebeer.com/beer/delirium-noel/5998/', 6.79, 6.79, 6.72, 6.77, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (103, 3, 74, 2, N'Grizzlybjørn', N'Torgeir Kruke', N'American Brown Ale', 5.8, NULL, NULL, 5.52, 6.03, 5.35, 5.6, N'Homebrew')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (104, 3, 75, 2, N'Humlerød Jul', N'Torgeir Kruke', N'Specialty IPA: Red IPA', 6.5, NULL, NULL, 5.23, 5.53, 5.36, 5.34, N'Homebrew')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (105, 13, 9, 1, N'Tuftkall Juleøl', N'Bryggeriet Frøya', N'Vienna Lager', 4.7, N'http://bryggerietfroya.no/', N'https://www.ratebeer.com/beer/froya-tuftkall/575908/', 4.21, 5.62, 4.47, 4.62, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (106, 13, 92, 3, N'Jule Mælk', N'To Øl', N'Russian Imperial Stout', 15, N'https://toolbeer.dk/', N'https://www.ratebeer.com/beer/to-ol-jule-maelk/235066/', 5.89, 6.74, 5.91, 6.11, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (107, 13, 91, 3, N'Hipster for Christmas', N'Lervig Aktiebryggeri', N'American Barleywine', 12, N'http://lervig.no/', N'https://www.ratebeer.com/beer/lervig-hipster-for-christmas/782172/', 4.33, 5.74, 4.34, 4.68, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (108, 13, 89, 3, N'Bush de Noël Premium', N'Dubussion', N'Belgian Golden Strong Ale', 12, N'http://www.br-dubuisson.com/', N'https://www.ratebeer.com/beer/dubuisson-scaldis-bush-de-noel-premium/54258/', 5.85, 6, 5.77, 5.87, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (109, 13, 88, 3, N'Christmas Break', N'The Piggy Brewing Company', N'American Strong Ale', 11, N'https://www.thepiggybrewingcompany.com/', N'https://www.ratebeer.com/beer/the-piggy-christmas-break/776052/', 5.76, 5.92, 5.63, 5.77, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (110, 13, 87, 3, N'Julequad (2016)', N'Nøgne Ø (Hansa Borg)', N'Trappist Single', 10, N'https://www.nogne-o.com/', N'https://www.ratebeer.com/beer/nogne-o-julequad/452135/', 6.54, 7.15, 6.5, 6.68, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (111, 13, 86, 3, N'Klaas Christmas', N'Kaapse Brouwers', N'American Barleywine', 9.8, N'https://www.kaapsebrouwers.nl/', N'https://www.ratebeer.com/beer/kaapse-klaas/310374/', 6.74, 6.82, 6.71, 6.75, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (112, 13, 85, 3, N'Sankt Olav', N'E.C. Dahls Bryggeri', N'Winter Seasonal Beer', 9.1, N'https://www.ecdahls.no/', N'https://www.ratebeer.com/beer/e-c-dahls-sankt-olav-juleol/785303/', 6.31, 7, 6.38, 6.5, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (113, 13, 84, 3, N'Nöel Chocolat', N'Birra Baladin', N'Belgian Golden Strong Ale', 9, N'http://www.baladin.it/en/', N'https://www.ratebeer.com/beer/baladin-noeel-chocolat/47894/', 6.13, 6.28, 5.97, 6.13, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (114, 13, 83, 3, N'Winter Ale', N'Einstök Ölgerð', N'Fruit and Spice Beer', 8, N'https://einstokbeer.com/', N'https://www.ratebeer.com/beer/einstoek-icelandic-winter-ale/564980/', 4.69, 6.77, 5.03, 5.29, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (115, 13, 82, 3, N'Blitzen Juleipa', N'Hogna Brygg', N'American IPA', 7.4, N'https://hognabrygg.no/', N'https://www.ratebeer.com/beer/hogna-blitzen-juleipa-2019/783932/', 5.18, 5.62, 5, 5.24, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (116, 13, 81, 3, N'Røyklagt', N'Stolt Bryggeri', N'Specialty Smoked Beer', 7, N'https://www.stoltbryggeri.com/', N'https://www.ratebeer.com/beer/stolt-royklagt/707043/', 3.56, 4.1, 3.72, 3.73, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (117, 13, 80, 3, N'Santa''s Malty Helper', N'Røros Bryggeri', N'Dunkles Bock', 7, N'https://rorosbryggeri.no/', N'https://www.ratebeer.com/beer/roros-santa-s-malty-helper/771454/', 5.22, 6.32, 5.51, 5.57, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (118, 13, 79, 3, N'Jul #1', N'Bøgedal Brew', N'Belgian Blond Ale', 5.9, N'https://www.boegedal.com/', N'https://www.ratebeer.com/beer/bogedal-nr-0579-jul-1/574419/', 5.42, 5.88, 5.46, 5.55, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (119, 13, 78, 3, N'Glühkriek', N'Brouwerij Liefmans', N'Fruit Beer', 6.5, N'https://www.liefmans.be/en', N'https://www.ratebeer.com/beer/liefmans-gluehkriek/6428/', 5.49, 5.92, 5.41, 5.58, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (120, 13, 77, 1, N'Mr. Winterbottom', N'7 Fjell', N'American Brown Ale', 4.7, N'https://www.7fjellbryggeri.com/', N'https://www.ratebeer.com/beer/7-fjell-mr-winterbottom/664702/', 5.49, 6.23, 5.59, 5.7, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (121, 13, 76, 1, N'Cappuccino Snøstorm Stout', N'Reins Kloster', N'Sweet Stout', 4.5, N'https://reinskloster.no/reins-kloster-ol/', NULL, 4.77, 6.03, 4.74, 5.08, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (122, 13, 59, 3, N'Het Anker Gouden Carolus Christmas', N'Brouwerij Het Anker', N'Belgian Dark Strong Ale', 10.5, N'http://www.hetanker.be/', N'https://www.ratebeer.com/beer/het-anker-gouden-carolus-christmas-noel/18375/', 5.56, 7.41, 5.87, 6.1, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (123, 13, 48, 1, N'Dahls Julebrygg', N'E.C. Dahls Bryggeri', N'Vienna Lager', 4.5, N'https://www.ecdahls.no/', N'https://www.ratebeer.com/beer/dahls-julebrygg/11254/', 4.11, 6.37, 4.63, 4.8, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (124, 13, 30, 3, N'Corsendonk Christmas Ale', N'Brouwerij Corsendonk', N'Belgian Dark Strong Ale', 8.5, N'http://www.corsendonk.com/', N'https://www.ratebeer.com/beer/corsendonk-christmas-ale/996/', 6.51, 6.87, 6.56, 6.62, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (125, 13, 93, 3, N'Juleøl 2019', N'Andreas Skaret', N'Belgian Dark Strong Ale', 9, NULL, NULL, 4.72, 5.45, 4.81, 4.93, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (126, 13, 94, 3, N'Rozhdevsto Brezhnev', N'Torgeir Kruke', N'Russian Imperial Stout', 8, NULL, NULL, 6.18, 6.72, 6.24, 6.33, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (127, 14, 39, 1, N'Dahls Juleøl', N'E.C. Dahls Bryggeri', N'Winter Seasonal Beer', 4.5, N'https://www.ecdahls.no/', N'https://www.ratebeer.com/beer/dahls-juleol-4-5/11255/', 5.1, 6.58, 5.58, 5.59, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (128, 14, 95, 1, N'Fairytale of Røros', N'Røros Bryggeri', N'Old Ale', 4.7, N'https://rorosbryggeri.no/', N'https://www.ratebeer.com/beer/roros-fairytale-of-roros/792186/', 5.4, 6.57, 5.69, 5.76, N'Regular')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (129, 14, 96, 3, N'Joule Winter Warmer', N'Monkey Brew', N'Winter Seasonal Beer', 6, N'https://www.monkeybrew.no/', N'https://www.ratebeer.com/beer/monkey-brew-joule/390485/', 5.9, 6.75, 5.96, 6.12, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (130, 14, 97, 3, N'Kong Vinter', N'E.C. Dahls Bryggeri', N'Dunkles Bock', 7, N'https://www.ecdahls.no/', N'https://www.ratebeer.com/beer/e-c-dahls-kong-vinter/870056/', 6.22, 6.76, 6.14, 6.33, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (131, 14, 99, 3, N'Gryla', N'Cervisiam Brewery', N'Sweet Stout', 12, N'https://www.cervisiam.no/', N'https://www.ratebeer.com/beer/cervisiam-gryla-2020/872338/', 5.52, 6.54, 5.69, 5.81, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (132, 14, 100, 3, N'Julebokk', N'Mack Bryggeri', N'Dunkles Bock', 9, N'https://www.mack.no/', N'https://www.ratebeer.com/beer/mack-julebokk/670508/', 6.79, 7.14, 6.91, 6.91, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (133, 14, 101, 3, N'Ashes to Ashes', N'Amundsen Bryggeri', N'Sweet Stout', 10.5, N'https://www.amundsenbrewery.com/', N'https://www.ratebeer.com/beer/amundsen-ashes-to-ashes/780557/', 6.19, 6.93, 6.33, 6.41, N'High ABV')
+GO
+INSERT [dbo].[TastingResult] ([TastingBeerResultId], [TastingId], [BeerId], [BeerClassId], [BeerName], [BreweryName], [BeerStyle], [Abv], [BreweryUrl], [RateBeerUrl], [ScoreTaste], [ScoreAppearance], [ScoreOverall], [ScoreFinal], [BeerClassName]) VALUES (134, 14, 102, 1, N'Mørk Juleøl', N'7 Fjell', N'British Brown Ale', 4.7, N'https://www.7fjellbryggeri.com/', N'https://www.ratebeer.com/beer/7-fjell-mork-juleol/875751/', 4.82, 5.47, 4.82, 4.98, N'Regular')
 GO
 SET IDENTITY_INSERT [dbo].[TastingResult] OFF
 GO
