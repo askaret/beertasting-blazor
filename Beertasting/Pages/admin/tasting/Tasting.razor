@@ -137,7 +137,7 @@
             resultTasks.Add(_db.AddTastingResults(result));
         }
         await Task.WhenAll(resultTasks);
-
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
         Snackbar.Add($"Finished calculating tasting {tasting.Name}", Severity.Success);
     }
 }
