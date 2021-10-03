@@ -1,0 +1,165 @@
+﻿@page "/tasting/result"
+@page "/tasting/result/{Id:int}"
+
+@using Beertasting.ViewModels
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+
+@inject IBeertastingRepository _db
+
+<MudText Typo="Typo.h3" Class="pa-4">Tasting results</MudText>
+<MudExpansionPanels>
+    <MudExpansionPanel Text="Filters">
+        <MudGrid>
+            <MudItem xs="12" sm="12">
+                <MudSelect T="int" Label="Tastings" HelperText="Select tastings to include" MultiSelection="true" SelectedValuesChanged="SelectedValuesChanged" SelectedValues="selectedTastings" SelectAll="true" MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))">
+                    @foreach(var tasting in tastings.OrderByDescending(t => t.TastingDate))
+                    {
+                        <MudSelectItem T="int" Value="tasting.TastingId">@tasting.Name</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="12" sm="4">
+                <MudSelect T="int" Label="Class" HelperText="Select classes to include" MultiSelection="true" @bind-SelectedValues="selectedClasses" SelectAll="true" MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))">
+                    @foreach(var beerclass in beerclasses.OrderBy(bc => bc.Name))
+                    {
+                        <MudSelectItem T="int" Value="beerclass.BeerClassId">@beerclass.Name</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="12" sm="4">
+                <MudSelect T="int" Label="Style" HelperText="Select styles to include" MultiSelection="true" @bind-SelectedValues="selectedStyles" SelectAll="true" MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))">
+                    @foreach(var beerstyle in beerstyles.OrderBy(bs => bs.Name))
+                    {
+                        <MudSelectItem T="int" Value="beerstyle.BeerStyleId">@beerstyle.Name</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="12" sm="4">
+                <MudSelect T="int" Label="Brewery" HelperText="Select breweries to include" MultiSelection="true" @bind-SelectedValues="selectedBreweries" SelectAll="true" MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))">
+                    @foreach(var brewery in breweries.OrderBy(b => b.Name))
+                    {
+                        <MudSelectItem T="int" Value="brewery.BreweryId">@brewery.Name</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+        </MudGrid>
+    </MudExpansionPanel>
+</MudExpansionPanels>
+
+
+<MudTable Items="@beerResults" Bordered="false" Striped="true" Hover="true" Dense="false" Filter="new Func<BeerResultViewModel,bool>(TableFilterFunction)">
+    <ToolBarContent>
+        <MudText Typo="Typo.h4" Class="pa-4">Beers</MudText>
+
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortBy="new Func<BeerResultViewModel, object>(x => x.BeerModel.Name)">Name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<BeerResultViewModel, object>(x => x.BeerModel.ABV)">ABV</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<BeerResultViewModel, object>(x => x.BeerModel?.BreweryModel?.Name ?? string.Empty)">Brewery</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<BeerResultViewModel, object>(x => x.BeerModel?.BeerclassModel?.Name ?? string.Empty)">Class</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<BeerResultViewModel, object>(x => x.BeerModel?.BeerStyleModel?.Name ?? string.Empty)">Style</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<BeerResultViewModel, object>(x => x.TastingResults?.Count ?? 0)">Nr of tastings</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<BeerResultViewModel, object>(x => x.AverageAppearance)">Appearance Score</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<BeerResultViewModel, object>(x => x.AverageTaste)">Taste Score</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<BeerResultViewModel, object>(x => x.AverageOverall)">Overall Score</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<BeerResultViewModel, object>(x => x.AverageFinal)">Final Score</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Name">@context.BeerModel.Name</MudTd>
+        <MudTd DataLabel="ABV">@context.BeerModel.ABV</MudTd>
+        <MudTd DataLabel="Brewery">@context.BeerModel.BreweryModel.Name</MudTd>
+        <MudTd DataLabel="Class">@context.BeerModel.BeerclassModel.Name</MudTd>
+        <MudTd DataLabel="Style">@context.BeerModel.BeerStyleModel.Name</MudTd>
+        <MudTd DataLabel="NR of tastings">@context.TastingResults.Count</MudTd>
+        <MudTd DataLabel="Appearance Score">@context.AverageAppearance.ToString("F2")</MudTd>
+        <MudTd DataLabel="Taste Score">@context.AverageTaste.ToString("F2")</MudTd>
+        <MudTd DataLabel="Overall Score">@context.AverageOverall.ToString("F2")</MudTd>
+        <MudTd DataLabel="Final Score">@context.AverageFinal.ToString("F2")</MudTd>
+    </RowTemplate>
+</MudTable>
+
+@code
+{
+    [Parameter]
+    public int? Id { get; set; }
+
+    private bool showTastings;
+
+    private HashSet<int> selectedTastings = new HashSet<int>();
+    private HashSet<int> selectedClasses = new HashSet<int>();
+    private HashSet<int> selectedStyles = new HashSet<int>();
+    private HashSet<int> selectedBreweries = new HashSet<int>();
+    private List<TastingModel>? tastings = new List<TastingModel>();
+    private List<BeerResultViewModel> beerResults = new List<BeerResultViewModel>();
+    private List<BeerModel> beers;
+    private List<BreweryModel> breweries = new List<BreweryModel>();
+    private List<BeerclassModel> beerclasses = new List<BeerclassModel>();
+    private List<BeerstyleModel> beerstyles = new List<BeerstyleModel>();
+    private List<TastingResultModel> tastingResults;
+
+    private bool TableFilterFunction(BeerResultViewModel tasting) => FilterResults(tasting);
+
+    protected override async Task OnInitializedAsync()
+    {
+        beers = await _db.GetBeers();
+
+        breweries = await _db.GetBreweries();
+        breweries.ForEach(b => selectedBreweries.Add(b.BreweryId));
+
+        beerclasses = await _db.GetBeerclasses();
+        beerclasses.ForEach(c => selectedClasses.Add(c.BeerClassId));
+
+        beerstyles = await _db.GetBeerstyles();
+        beerstyles.ForEach(s => selectedStyles.Add(s.BeerStyleId));
+        
+        tastings = (await _db.GetTastings()).Where(t => !t.IsActive).ToList();
+        if (Id is null)
+        {
+            tastings.ForEach(t => selectedTastings.Add(t.TastingId));
+        }
+        else if (tastings.Any(t => t.TastingId == Id))
+        {
+            selectedTastings.Add(Id.Value);
+        }
+
+        tastingResults = await _db.GetTastingResults();
+
+        foreach (var beer in beers)
+        {
+            beer.BreweryModel = breweries.SingleOrDefault(b => b.BreweryId == beer.BreweryId);
+            beer.BeerclassModel = beerclasses.SingleOrDefault(b => b.BeerClassId == beer.BeerClassId);
+            beer.BeerStyleModel = beerstyles.SingleOrDefault(b => b.BeerStyleId == beer.BeerStyleId);
+
+            beerResults.Add(new BeerResultViewModel() { BeerModel = beer, TastingResults = new List<TastingResultModel>(tastingResults.Where(tr => tr.BeerId == beer.BeerId)) });
+        }
+        beerResults = beerResults.OrderByDescending(br => br.AverageFinal).ToList();
+    }
+
+    private string GetMultiSelectionText(List<string> selectedTastings)
+    {
+        return $"{selectedTastings.Count} items selected";
+    }
+
+    private bool FilterResults(BeerResultViewModel tastingResult)
+    {
+        if (!selectedClasses.Contains(tastingResult.BeerModel.BeerClassId))
+            return false;
+        if (!selectedStyles.Contains(tastingResult.BeerModel.BeerStyleId))
+            return false;
+        if (!selectedBreweries.Contains(tastingResult.BeerModel.BreweryId))
+            return false;
+        if ((tastingResult.TastingResults?.Count ?? 0) < 1)
+            return false;
+        return true;
+    }
+
+    private void SelectedValuesChanged(HashSet<int> selectedIds)
+    {
+        selectedTastings = selectedIds;
+        foreach (var beerResult in beerResults)
+        {
+            beerResult.TastingResults = new List<TastingResultModel>(tastingResults.Where(tr => tr.BeerId == beerResult.BeerModel.BeerId && selectedTastings.Contains(tr.TastingId)));
+        }
+    }
+}

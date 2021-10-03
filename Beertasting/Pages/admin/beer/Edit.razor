@@ -1,0 +1,109 @@
+﻿@page "/admin/beer/edit/{Id:int}"
+
+@using Beertasting.ViewModels
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+@using System.Globalization
+@using System.ComponentModel.DataAnnotations
+
+@inject IBeertastingRepository _db
+@inject NavigationManager _nav
+
+<AdminGate />
+
+<MudText Typo="Typo.h3" Class="pa-4">Beer</MudText>
+
+@if (editBeer is null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<EditForm Model="@editBeer" OnValidSubmit="SaveEditBeer">
+		<DataAnnotationsValidator />
+		<MudCard>
+			<MudCardContent>
+				<MudText Typo="Typo.h4" Class="pa-4">Edit beer</MudText>
+				<MudGrid>
+					<MudItem xs="12" sm="5">
+						<MudTextField Label="Name" @bind-Value="editBeer.Name" For="@(() => editBeer.Name)" Variant="Variant.Outlined" />
+					</MudItem>
+					<MudItem xs="12" sm="2">
+						<MudNumericField T="float" @bind-Value="editBeer.ABV" For="@(() => editBeer.ABV)" Immediate="true" Label="ABV" Format="N2" Culture="@_nb" Variant="Variant.Outlined" />
+					</MudItem>
+					<MudItem xs="12" sm="5">
+						<MudTextField Label="Ratebeer" @bind-Value="editBeer.RateBeerLink" For="@(() => editBeer.RateBeerLink)" Variant="Variant.Outlined" />
+					</MudItem>
+					<MudItem xs="12" sm="4">
+						<MudSelect T="int" Label="Style" @bind-Value="editBeer.BeerStyleId" For="@(() => editBeer.BeerStyleId)" Strict="true" Variant="Variant.Outlined">
+							@foreach (var style in styles.OrderBy(x => x.Name))
+							{
+								<MudSelectItem Value="@style.BeerStyleId">@style.Name</MudSelectItem>
+							}
+						</MudSelect>
+					</MudItem>
+					<MudItem xs="12" sm="4">
+						<MudSelect T="int" Label="Class" @bind-Value="editBeer.BeerClassId" For="@(() => editBeer.BeerClassId)" Strict="true" Variant="Variant.Outlined">
+							@foreach (var beerclass in classes.OrderBy(x => x.Name))
+							{
+								<MudSelectItem Value="@beerclass.BeerClassId">@beerclass.Name</MudSelectItem>
+							}
+						</MudSelect>
+					</MudItem>
+					<MudItem xs="12" sm="4">
+						<MudSelect T="int" Label="Brewery" @bind-Value="editBeer.BreweryId" For="@(() => editBeer.BreweryId)" Strict="true" Variant="Variant.Outlined">
+							@foreach (var brewery in breweries.OrderBy(x => x.Name))
+							{
+								<MudSelectItem Value="@brewery.BreweryId">@brewery.Name (@brewery.Country)</MudSelectItem>
+							}
+						</MudSelect>
+					</MudItem>
+				</MudGrid>
+			</MudCardContent>
+			<MudCardActions>
+				<MudGrid>
+					<MudItem xs="12" md="12">
+						<MudContainer Class="d-flex flex-row-reverse py-2 px-1">
+							<MudButton ButtonType="ButtonType.Submit" Class="pa-2 mx-2" Variant="Variant.Outlined" Color="Color.Success" Size="Size.Small">SAVE</MudButton>
+							<MudButton ButtonType="ButtonType.Button" Class="pa-2 mx-2" Variant="Variant.Outlined" Color="Color.Info" Size="Size.Small" OnClick="@(() => Cancel())">CANCEL</MudButton>
+						</MudContainer>
+					</MudItem>
+				</MudGrid>
+			</MudCardActions>
+		</MudCard>
+	</EditForm>
+}
+
+@code {
+	[Parameter]
+	public int Id { get; set; }
+
+	private BeerViewModel? editBeer;
+	public CultureInfo _nb = CultureInfo.GetCultureInfo("nb-NO");
+
+	private List<BeerstyleModel> styles = new List<BeerstyleModel>();
+	private List<BeerclassModel> classes = new List<BeerclassModel>();
+	private List<BreweryModel> breweries = new List<BreweryModel>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		styles = await _db.GetBeerstyles();
+		classes = await _db.GetBeerclasses();
+		breweries = await _db.GetBreweries();
+		var b = await _db.GetBeer(Id);
+		editBeer = new BeerViewModel(b);
+	}
+
+	private void Cancel()
+	{
+		_nav.NavigateTo($"/admin/beer/");
+	}
+
+	private async Task SaveEditBeer()
+	{
+		if(editBeer is not null)
+			await _db.UpdateBeer(editBeer.ToBeerModel());
+		
+		_nav.NavigateTo($"/admin/beer/");
+	}
+}
