@@ -5,11 +5,11 @@ on:
     - master
 env:
   AZURE_WEBAPP_NAME: BouvetBeertasting
-  AZURE_WEBAPP_PACKAGE_PATH: BlazorTest/publish
+  AZURE_WEBAPP_PACKAGE_PATH: Beertasting/publish
   AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.BouvetBeertasting_8cbe }}
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 6.0.x
-  WORKING_DIRECTORY: BlazorTest
+  WORKING_DIRECTORY: Beertasting
 jobs:
   build-and-deploy:
     runs-on: windows-latest
@@ -24,7 +24,7 @@ jobs:
     - name: Update secrets
       run: |
         dir
-        cd BlazorTest
+        cd Beertasting
         Set-Content .\appsettings.json -Value '${{ secrets.AppsettingsJson }}'
       shell: pwsh      
     - name: Build
