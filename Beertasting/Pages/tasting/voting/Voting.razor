@@ -43,6 +43,7 @@ else
                 <MudText Typo="Typo.body2">@currentTasting.IsActive</MudText>
                 <MudText Typo="Typo.body2">@currentTasting.TastingDate</MudText>
                 <MudText Typo="Typo.body2">Number of beers: @tastingBeers?.Count</MudText>
+                <MudText Typo="Typo.body2">Your score: @CalculatedScore</MudText>
             </CardHeaderContent>
         </MudCardHeader>
     </MudCard>
@@ -72,7 +73,7 @@ else
     private Double ScoreTaste = 0.0f;
     private Double ScoreAppearance = 0.0f;
     private Double ScoreOverall = 0.0f;
-
+    private Double CalculatedScore => (ScoreTaste * 2 + ScoreAppearance + ScoreOverall) / 4;
     private async Task initializeTaster()
     {
         var retryCount = 10;
