@@ -44,31 +44,52 @@ else
                 <MudText Typo="Typo.body2">@currentTasting.IsActive</MudText>
                 <MudText Typo="Typo.body2">@currentTasting.TastingDate</MudText>
                 <MudText Typo="Typo.body2">Number of beers: @tastingBeers?.Count</MudText>
-                
-                <MudText Typo="Typo.body2">Your score: @CalculatedScore</MudText>
+
+
             </CardHeaderContent>
         </MudCardHeader>
     </MudCard>
+
     <MudPaper>
-        <MudGrid Class="pa-4"> 
-            <MudItem xs="12" sm="4"><MudText Style="font-style:oblique; text-align:right">Taste:</MudText></MudItem>
-            <MudItem xs="12" sm="8"><MudSlider @bind-Value="ScoreTaste" Min="0" Max="10" Step="0.5" Color="Color.Primary">Value: @ScoreTaste.ToString("F1")</MudSlider></MudItem>
+        <MudCarousel @ref="_carousel" ItemsSource="@tastingBeers" Style="height:600px;" ShowArrows="true" ShowDelimiters="false" AutoCycle="false" SelectedIndexChanged="@IndexChanged" ArrowsPosition="Position.Top">
+            <ItemTemplate>
+                <div class="d-flex flex-column flex-column justify-center" style="height:100%">
+                    <MudIcon Class="mx-auto" Icon="@Icons.Custom.Brands.MudBlazor" Size="@Size.Large" />
+                    <MudText Align="@Align.Center" Class="mx-auto">@context.BeerId</MudText>
+                    <MudGrid Class="pa-4">
+                        <MudItem xs="12" sm="4"><MudText Style="font-style:oblique; text-align:right">Taste:</MudText></MudItem>
+                        <MudItem xs="12" sm="8"><MudSlider @bind-Value="ScoreTaste" Min="0" Max="10" Step="0.5" Color="Color.Primary">Value: @ScoreTaste.ToString("F1")</MudSlider></MudItem>
 
-            <MudItem xs="12" sm="4"><MudText Style="font-style:oblique; text-align:right">Appearance:</MudText></MudItem>
-            <MudItem xs="12" sm="8"><MudSlider @bind-Value="ScoreAppearance" Min="0" Max="10" Step="0.5" Color="Color.Secondary">Value: @ScoreAppearance.ToString("F1")</MudSlider></MudItem>
+                        <MudItem xs="12" sm="4"><MudText Style="font-style:oblique; text-align:right">Appearance:</MudText></MudItem>
+                        <MudItem xs="12" sm="8"><MudSlider @bind-Value="ScoreAppearance" Min="0" Max="10" Step="0.5" Color="Color.Secondary">Value: @ScoreAppearance.ToString("F1")</MudSlider></MudItem>
 
-            <MudItem xs="12" sm="4"><MudText Style="font-style:oblique; text-align:right">Overall:</MudText></MudItem>
-            <MudItem xs="12" sm="8"><MudSlider @bind-Value="ScoreOverall" Min="0" Max="10" Step="0.5" Color="Color.Tertiary">Value: @ScoreOverall.ToString("F1")</MudSlider></MudItem>
-        </MudGrid>
+                        <MudItem xs="12" sm="4"><MudText Style="font-style:oblique; text-align:right">Overall:</MudText></MudItem>
+                        <MudItem xs="12" sm="8"><MudSlider @bind-Value="ScoreOverall" Min="0" Max="10" Step="0.5" Color="Color.Tertiary">Value: @ScoreOverall.ToString("F1")</MudSlider></MudItem>
+                    </MudGrid>
+                    <MudText Typo="Typo.body2">Your score: @CalculatedScore</MudText>
+                </div>
+            </ItemTemplate>
+        </MudCarousel>
+        
+        <br />
+
     </MudPaper>
 
 }
 
 @code
 {
+    private MudCarousel<TastingBeerModel> _carousel;
+    private bool _arrows = true;
+    private bool _delimiters = true;
+    private bool _autocycle = true;
+    private IList<string> _source = new List<string>() { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+
+    //public int SelectedIndex { get; set; }
+
     [Parameter]
     public int TastingId { get; set; }
-    
+
     [Parameter]
     public int BeerNumber { get; set; } = 0;
     private TastingModel? currentTasting = null;
@@ -79,6 +100,7 @@ else
     private Double ScoreAppearance = 0.0f;
     private Double ScoreOverall = 0.0f;
     private Double CalculatedScore => (ScoreTaste * 2 + ScoreAppearance + ScoreOverall) / 4;
+
     private async Task initializeTaster()
     {
         var retryCount = 10;
@@ -102,6 +124,11 @@ else
         }
         if (currentTaster is null)
             throw new Exception("Taster not found!");
+    }
+
+    private void IndexChanged(int index)
+    {
+        
     }
 
     protected override async Task OnInitializedAsync()
