@@ -36,29 +36,32 @@
 
 @code {
     private TasterModel? _taster;
+    private int retryCount = 10;
 
     protected override async Task OnParametersSetAsync()
     {
-        if (ProtectedSessionStore is not null && _taster is null)
+        if (_taster is null)
             await InitializeTaster();
     }
 
     private async Task InitializeTaster()
-    {
-        var retryCount = 3;
+    {   
         while (_taster is null && retryCount-- > 0)
         {   
+            if(ProtectedSessionStore is null)
+            {
+                Thread.Sleep(100);
+                continue;
+            }
+
             var t = await ProtectedSessionStore.GetAsync<TasterModel>("taster");
 
-            if (!t.Success)
-            {
-                _logger.LogError("Taster read from session is null");
-            }
-            else
+            if (t.Success)
             {
                 _taster = t.Value;
                 _logger.LogInformation($"Taster is initialized ({t.Value.EmailAddress}, admin: {t.Value.IsAdmin})");
                 StateHasChanged();
+                break;
             }
 
             Thread.Sleep(50);

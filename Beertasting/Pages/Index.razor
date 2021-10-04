@@ -15,6 +15,28 @@
 
 @code
 {
+    private static List<string> names = new List<string>()
+        {   
+            "Aardvark", "Abyssinian", "Addax", "Adelie Penguin", "Affenpinscher", "Afghan Hound", "African Bullfrog", "African Bush Elephant", "African Civet",
+            "African Clawed Frog", "African Forest Elephant", "African Palm Civet", "African Penguin", "African Tree Toad", "African Wild Dog", "Ainu", "Airedale Terrier", "Airedoodle",
+            "Akbash", "Akita", "Akita Shepherd", "Alabai", "Alaskan Husky", "Alaskan Klee Kai", "Alaskan Malamute", "Alaskan Shepherd", "Albacore Tuna", "Albatross", "Aldabra Giant Tortoise",
+            "Alligator", "Alligator Gar", "Alpaca", "Alpine Dachsbracke", "Alpine Goat", "Alusky", "Amazon River Dolphin", "American Alsatian", "American Bulldog", "American Cocker Spaniel",
+            "American Coonhound", "American Eskimo Dog", "American Foxhound", "American Hairless Terrier", "American Pit Bull Terrier", "American Pygmy Goat", "American Robin", "American Staffordshire Terrier",
+            "American Toad", "American Water Spaniel", "Amur Leopard", "Anatolian Shepherd Dog", "Anchovies", "Angelfish", "Anglerfish", "Angora Goat", "Ant", "Antarctic scale worm", "Anteater",
+            "Antelope", "Appenzeller Dog", "Apple Head Chihuahua", "Arapaima", "Arctic Fox", "Arctic Hare", "Arctic Wolf", "Armadillo", "Armyworm","Asian Elephant", "Asian Giant Hornet",
+            "Asian Palm Civet", "Asiatic Black Bear", "Aurochs", "Aussiedoodle", "Aussiedor", "Australian Bulldog", "Australian Cattle Dog", "Australian Kelpie Dog", "Australian Labradoodle",
+            "Australian Mist", "Australian Retriever", "Australian Shepherd", "Australian Terrier", "Avocet", "Axolotl" 
+        };
+
+    private static List<string> adjectives = new List<string>()
+        {
+            "Absurd", "Amusing", "Droll", "Entertaining", "Hilarious", "Ludicrous", "Playful", "Ridiculous", "Silly",
+            "Whimsical", "Gay", "Jolly", "Killing", "Rich", "Screaming", "Slapstick", "Blithe", "Capricious", "Clever",
+            "Diverting", "Facetious", "Farcical", "Gelastic", "Good-humored", "Hysterical", "Jocose", "Jocular",
+            "Joking", "Knee-slapping", "Laughable", "Merry", "Mirthful", "Priceless", "Riotous", "Risible",
+            "Side-splittingly", "Sportive", "Waggish", "Witty"
+        };
+
     protected override async Task OnInitializedAsync()
     {
         var mail = ConsentHandler.User.Identity?.Name;
@@ -22,7 +44,21 @@
         if (string.IsNullOrEmpty(mail))
             throw new UnauthorizedAccessException("no dice");
 
-        var tasterTask = await _db.GetTaster(mail);        
-        await ProtectedSessionStore.SetAsync("taster", tasterTask);
+        var taster = await _db.GetTaster(mail);
+        var addedTaster = false;
+        if (taster is null)
+        {
+            var adjective = adjectives[Random.Shared.Next(0, adjectives.Count - 1)];
+            var name = names[Random.Shared.Next(0, names.Count - 1)];
+
+            await _db.AddTaster(new TasterModel() { EmailAddress = mail, DisplayName = $"{adjective} {name}"});
+            addedTaster = true;
+            taster = await _db.GetTaster(mail);
+        }
+
+        await ProtectedSessionStore.SetAsync("taster", taster);
+
+        if (addedTaster)
+            _nav.NavigateTo("/profile");
     }
 }
