@@ -1,21 +1,110 @@
 ﻿@page "/tasting/vote/{Id:int}"
 @using DataAccessLibrary
 @using DataAccessLibrary.Models
+@using Beertasting.ViewModels
+@using System.Globalization
+@using System.ComponentModel.DataAnnotations
 
 @inject IBeertastingRepository _db
+@inject ProtectedSessionStorage ProtectedSessionStore
+@inject NavigationManager _nav
 
-<MudText Typo="Typo.h3">Beertasting</MudText>
-<MudText Typo="Typo.h4">@Id</MudText>
+<MudText Typo="Typo.h3" Class="pa-4">Beertasting</MudText>
+<MudText Typo="Typo.h4" Class="pa-4">Vote</MudText>
+
+
+@if (currentTaster == null || currentTasting == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <MudCard>
+        <MudCardHeader>
+            <CardHeaderAvatar>
+                <MudAvatar Color="Color.Secondary">𒍼</MudAvatar>
+            </CardHeaderAvatar>
+            <CardHeaderContent>
+                <MudText Typo="Typo.body1">@currentTaster.DisplayName</MudText>
+                <MudText Typo="Typo.body2">@currentTaster.EmailAddress</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+    </MudCard>
+
+    <MudCard>
+        <MudCardHeader>
+            <CardHeaderAvatar>
+                <MudAvatar Color="Color.Secondary">ØL</MudAvatar>
+            </CardHeaderAvatar>
+            <CardHeaderContent>
+                <MudText Typo="Typo.body1">@currentTasting.Name</MudText>
+                <MudText Typo="Typo.body2">@currentTasting.Description</MudText>
+                <MudText Typo="Typo.body2">@currentTasting.IsBlind</MudText>
+                <MudText Typo="Typo.body2">@currentTasting.IsActive</MudText>
+                <MudText Typo="Typo.body2">@currentTasting.TastingDate</MudText>
+                <MudText Typo="Typo.body2">Number of beers: @tastingBeers?.Count</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+    </MudCard>
+}
 
 @code
 {
     [Parameter]
     public int Id { get; set; }
+    private TastingModel? currentTasting = null;
+    private TasterModel? currentTaster = null;
+    private List<TastingBeerModel>? tastingBeers = null;
 
-    private List<TastingBeerModel> tastingBeers;
+    private async Task initializeTaster()
+    {
+        var retryCount = 10;
+        while (currentTaster is null && retryCount-- > 0)
+        {
+            if (ProtectedSessionStore is null)
+            {
+                Thread.Sleep(100);
+                continue;
+            }
+
+            var t = await ProtectedSessionStore.GetAsync<TasterModel>("taster");
+
+            if (t.Success)
+            {
+                currentTaster = t.Value;
+                break;
+            }
+
+            Thread.Sleep(50);
+        }
+        if (currentTaster is null)
+            throw new Exception("Taster not found!");
+    }
 
     protected override async Task OnInitializedAsync()
     {
+        await initializeTaster();
+
+        currentTasting = await _db.GetTasting(Id);
+
+        if (currentTasting == null)
+        {
+            _nav.NavigateTo("/tastingNotFound");
+            return;
+        }
+                
+        if (!currentTasting.IsActive)
+        {
+            _nav.NavigateTo("/nicetry");
+            return;
+        }    
+
+
+
+        currentTaster = await _db.GetTaster(currentTaster.TasterId);
         tastingBeers = await _db.GetTastingBeers(Id);
+
+        //tastings = await _db.GetTastingsForTaster(currentTaster.TasterId);
+        //votedBeers = await _db.GetTasterBeerVotes(currentTaster.TasterId);
     }
 }
