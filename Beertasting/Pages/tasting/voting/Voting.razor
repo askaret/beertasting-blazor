@@ -1,4 +1,5 @@
-﻿@page "/tasting/vote/{Id:int}"
+﻿@page "/tasting/vote/{TastingId:int}"
+@page "/tasting/vote/{TastingId:int}/{Beernumber:int}"
 @using DataAccessLibrary
 @using DataAccessLibrary.Models
 @using Beertasting.ViewModels
@@ -43,6 +44,7 @@ else
                 <MudText Typo="Typo.body2">@currentTasting.IsActive</MudText>
                 <MudText Typo="Typo.body2">@currentTasting.TastingDate</MudText>
                 <MudText Typo="Typo.body2">Number of beers: @tastingBeers?.Count</MudText>
+                
                 <MudText Typo="Typo.body2">Your score: @CalculatedScore</MudText>
             </CardHeaderContent>
         </MudCardHeader>
@@ -65,7 +67,10 @@ else
 @code
 {
     [Parameter]
-    public int Id { get; set; }
+    public int TastingId { get; set; }
+    
+    [Parameter]
+    public int BeerNumber { get; set; } = 0;
     private TastingModel? currentTasting = null;
     private TasterModel? currentTaster = null;
     private List<TastingBeerModel>? tastingBeers = null;
@@ -103,7 +108,7 @@ else
     {
         await initializeTaster();
 
-        currentTasting = await _db.GetTasting(Id);
+        currentTasting = await _db.GetTasting(TastingId);
 
         if (currentTasting == null)
         {
@@ -120,7 +125,7 @@ else
 
 
         currentTaster = await _db.GetTaster(currentTaster.TasterId);
-        tastingBeers = await _db.GetTastingBeers(Id);
+        tastingBeers = await _db.GetTastingBeers(TastingId);
 
         //tastings = await _db.GetTastingsForTaster(currentTaster.TasterId);
         //votedBeers = await _db.GetTasterBeerVotes(currentTaster.TasterId);
