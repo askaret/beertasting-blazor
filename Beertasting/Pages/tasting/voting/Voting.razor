@@ -20,7 +20,7 @@
 }
 else
 {
-    <MudCard>
+@*    <MudCard>
         <MudCardHeader>
             <CardHeaderAvatar>
                 <MudAvatar Color="Color.Secondary">𒍼</MudAvatar>
@@ -49,9 +49,9 @@ else
             </CardHeaderContent>
         </MudCardHeader>
     </MudCard>
-
+*@
     <MudPaper>
-        <MudCarousel @ref="_carousel" ItemsSource="@tastingBeers" Style="height:600px;" ShowArrows="true" ShowDelimiters="false" AutoCycle="false" SelectedIndexChanged="@IndexChanged" ArrowsPosition="Position.Top">
+        <MudCarousel @ref="_carousel" ItemsSource="@tastingBeers" Style="height:80vh;" ShowArrows="true" ShowDelimiters="false" AutoCycle="false" SelectedIndexChanged="@IndexChanged" ArrowsPosition="Position.Top">
             <ItemTemplate>
                 <div class="d-flex flex-column flex-column justify-center" style="height:100%">
                     <MudIcon Class="mx-auto" Icon="@Icons.Custom.Brands.MudBlazor" Size="@Size.Large" />
@@ -70,9 +70,6 @@ else
                 </div>
             </ItemTemplate>
         </MudCarousel>
-        
-        <br />
-
     </MudPaper>
 
 }
@@ -101,6 +98,10 @@ else
     private Double ScoreOverall = 0.0f;
     private Double CalculatedScore => (ScoreTaste * 2 + ScoreAppearance + ScoreOverall) / 4;
 
+    private void ScoreValueChanged()
+    {
+        
+    }
     private async Task initializeTaster()
     {
         var retryCount = 10;

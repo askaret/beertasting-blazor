@@ -274,5 +274,32 @@ namespace DataAccessLibrary
                              WHERE  TastingId = @TastingId";
             return _db.LoadData<VoteModel, dynamic>(sql, new { TastingId = tastingId });
         }
+
+        public Task AddVote(VoteModel vote)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateVote(VoteModel vote)
+        {
+            var sql = @"    UPDATE  dbo.Vote
+                               SET  Overall = @Overall,
+                                    Taste = @Taste,
+                                    Appearance = @Appearance,
+                                    Note = @Note
+                             WHERE  VoteId = @VoteId";
+
+            return _db.SaveData(sql, vote);
+        }
+
+        public Task<VoteModel> GetVote(int tasterId, int beerId, int tastingId)
+        {
+            var sql = @"    SELECT  *
+                              FROM  dbo.Vote
+                             WHERE  TastingId = @TastingId
+                               AND  TasterId = @TasterId
+                               AND  BeerId = @BeerId";
+            return _db.LoadSingle<VoteModel, dynamic>(sql, new { TastingId = tastingId, TasterId =  tasterId, BeerId = beerId});
+        }
     }
 }
