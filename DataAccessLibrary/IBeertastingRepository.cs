@@ -40,7 +40,7 @@ namespace DataAccessLibrary
         Task AddTastingBeer(int tastingId, int beerId, int sortOrder);
         Task UpdateTastingBeer(TastingBeerModel tastingBeer);
         Task RemoveTastingBeer(TastingBeerModel tastingBeer);
-        Task<List<TastingBeerModel>> GetTastingBeers(int id);
+        Task<List<TastingBeerModel>> GetTastingBeers(int id, bool includeRelated = true);
         Task<List<TastingResultModel>> GetTastingResults();
         #endregion
 
@@ -60,6 +60,7 @@ namespace DataAccessLibrary
         Task<List<BeerstyleModel>> GetBeerstyles();
         Task<List<TastingModel>> GetTastingsForTaster(int tasterId);
         Task<List<TasterBeerModelVotes>> GetTasterBeerVotes(int tasterId);
+        Task<List<TasterBeerModelVotes>> GetTasterBeerVotes(int tasterId, int tastingId);
         #endregion
     }
 }

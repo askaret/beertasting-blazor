@@ -4,33 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-/*
- SELECT     b.NAME as BeerName,
-            br.NAME as BreweryName,
-            b.ratebeerlink as RatebeerLink,
-            Taste,
-            Appearance,
-            Overall,
-            ( taste + appearance + overall ) AS Score
-FROM        dbo.vote v
-       JOIN dbo.beer b
-         ON b.beerid = v.beerid
-       JOIN dbo.brewery br
-         ON br.breweryid = b.breweryid
-WHERE       tasterid = @TasterId
-ORDER BY    overall DESC,
-            taste DESC,
-            appearance DESC   
- */
-
-
 namespace DataAccessLibrary.Models
 {
     public class TasterBeerModelVotes
     {
+        public int VoteId { get; set; }
+        public int BeerId { get; set; }
+        public int TastingId { get; set; }
+        public int TasterId { get; set; }
         public string BeerName { get; set; }
         public string BreweryName { get; set; }
         public string RateBeerLink {  get; set; }
+        public string Country { get; set; }
+        public int SortOrder { get; set; }
         public float Taste { get; set; }
         public float ABV { get; set; }
         public float Appearance { get; set; }
