@@ -300,7 +300,10 @@ namespace DataAccessLibrary
 
         public Task AddVote(VoteModel vote)
         {
-            throw new NotImplementedException();
+            var sql = @"INSERT INTO dbo.Vote (BeerId, TastingId, TasterId, Taste, Appearance, Overall, Note)
+                                    VALUES   (@BeerId, @TastingId, @TasterId, @Taste, @Appearance, @Overall, @Note)";
+
+            return _db.SaveData(sql, vote);
         }
 
         public Task UpdateVote(VoteModel vote)

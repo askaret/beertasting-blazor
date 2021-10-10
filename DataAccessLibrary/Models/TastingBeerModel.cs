@@ -18,5 +18,17 @@ namespace DataAccessLibrary.Models
         public int SortOrder { get; set; }
         public bool IsDirty { get; set; }
 
+        public void Anonymize()
+        {
+            if (BeerModel != null)
+            {
+                BeerModel.Name = $"Beer {SortOrder}";
+                if(BeerModel.BreweryModel != null)
+                {
+                    BeerModel.BreweryModel.Country = "Bouvet Island";
+                    BeerModel.BreweryModel.Name = "ACME Breweries";
+                }
+            }
+        }
     }
 }

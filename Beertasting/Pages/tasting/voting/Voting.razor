@@ -9,6 +9,7 @@
 @inject IBeertastingRepository _db
 @inject ProtectedSessionStorage ProtectedSessionStore
 @inject NavigationManager _nav
+@inject IDialogService DialogService
 
 <MudText Typo="Typo.h3" Class="pa-4">Beertasting</MudText>
 <MudText Typo="Typo.h4" Class="pa-4">Vote</MudText>
@@ -20,38 +21,22 @@
 }
 else
 {
-@*    <MudCard>
-        <MudCardHeader>
-            <CardHeaderAvatar>
-                <MudAvatar Color="Color.Secondary">𒍼</MudAvatar>
-            </CardHeaderAvatar>
-            <CardHeaderContent>
-                <MudText Typo="Typo.body1">@currentTaster.DisplayName</MudText>
-                <MudText Typo="Typo.body2">@currentTaster.EmailAddress</MudText>
-            </CardHeaderContent>
-        </MudCardHeader>
-    </MudCard>
-
-    <MudCard>
-        <MudCardHeader>
-            <CardHeaderAvatar>
-                <MudAvatar Color="Color.Secondary">ØL</MudAvatar>
-            </CardHeaderAvatar>
-            <CardHeaderContent>
-                <MudText Typo="Typo.body1">@currentTasting.Name</MudText>
-                <MudText Typo="Typo.body2">@currentTasting.Description</MudText>
-                <MudText Typo="Typo.body2">@currentTasting.IsBlind</MudText>
-                <MudText Typo="Typo.body2">@currentTasting.IsActive</MudText>
-                <MudText Typo="Typo.body2">@currentTasting.TastingDate</MudText>
-                <MudText Typo="Typo.body2">Number of beers: @tastingBeers?.Count</MudText>
-
-
-            </CardHeaderContent>
-        </MudCardHeader>
-    </MudCard>
-*@
     <MudPaper>
         <MudCarousel @ref="_carousel" ItemsSource="@tastingBeers" Style="height:80vh;" ShowArrows="true" ShowDelimiters="false" AutoCycle="false" SelectedIndexChanged="@IndexChanged" ArrowsPosition="Position.Top">
+            <PreviousButtonTemplate>
+                <div Class="mud-button-root mud-icon-button mud-icon-button-color-inherit mud-ripple mud-ripple-icon">
+                    <span class="mud-icon-button-label">
+                        <MudIcon Class="mud-ripple mud-ripple-icon mud-icon-button-size-medium" Icon="@Icons.Material.Filled.ArrowBackIos" Color="@Color.Primary" />
+                    </span>
+                </div>
+            </PreviousButtonTemplate>
+            <NextButtonTemplate>
+                <div Class="mud-button-root mud-icon-button mud-icon-button-color-inherit mud-ripple mud-ripple-icon">
+                    <span class="mud-icon-button-label">
+                        <MudIcon Class="mud-ripple mud-ripple-icon mud-icon-button-size-medium" Icon="@Icons.Material.Outlined.ArrowForwardIos" Color="@Color.Primary" />
+                    </span>
+                </div>
+            </NextButtonTemplate>
             <ItemTemplate>
                 <br /><br />
                 <div class="d-flex flex-column flex-column align-top" style="height:100%">
@@ -72,7 +57,7 @@ else
                         <MudItem xs="12" sm="12"><MudSlider T="double" ValueChanged="@((Value) => TasteChanged(Value, context))" Value="context.VoteModel.Taste" Min="0" Max="10" Step="0.5" Color="Color.Primary">Taste: @context.VoteModel.Taste.ToString("F1")</MudSlider></MudItem>
                         <MudItem xs="12" sm="12"><MudSlider T="double" ValueChanged="@((Value) => AppearanceChanged(Value, context))" Value="context.VoteModel.Appearance" Min="0" Max="10" Step="0.5" Color="Color.Secondary">Appearance: @context.VoteModel.Appearance.ToString("F1")</MudSlider></MudItem>
                         <MudItem xs="12" sm="12"><MudSlider T="double" ValueChanged="@((Value) => OverallChanged(Value, context))" Value="context.VoteModel.Overall" Min="0" Max="10" Step="0.5" Color="Color.Tertiary">Overall: @context.VoteModel.Overall.ToString("F1")</MudSlider></MudItem>
-                        <MudItem xs="12" sm="12"><MudTextField TextChanged="@((Value) => NoteChanged(Value, context))" Label="Note" Value="context.VoteModel.Note" Variant="Variant.Outlined" /></MudItem>
+                        <MudItem xs="12" sm="12"><MudTextField Lines="3" TextChanged="@((Value) => NoteChanged(Value, context))" Label="Note" Value="context.VoteModel.Note" Variant="Variant.Outlined" /></MudItem>
                         <MudItem xs="12" sm="12"><MudButton Disabled="@(!context.IsDirty)" ButtonType="ButtonType.Button" Variant="Variant.Outlined" Color="Color.Info" Size="Size.Small" OnClick="@(() => SaveVote(context))">VOTE</MudButton></MudItem>
                     </MudGrid>
                 </div>
@@ -142,19 +127,21 @@ else
     }
 
     private async Task SaveVote(TastingBeerModel tbm)
-    {        
+    {
         tbm.IsDirty = false;
 
-        //var vote = model.VoteModel;
-        //if(vote.VoteId is null)
-        //{
-        //    await _db.AddVote(vote);
+        var vote = tbm.VoteModel;
+        if (vote != null && vote.VoteId is null)
+        {
+            await _db.AddVote(vote);
 
-        //}
-        //else
-        //{
-        //    // update vote
-        //}
+            tbm.VoteModel = await _db.GetVote(tbm.VoteModel.TasterId, tbm.BeerId, tbm.TastingId);
+
+        }
+        else if (vote != null && vote.VoteId != null)
+        {
+            await _db.UpdateVote(vote);
+        }
 
         StateHasChanged();
     }
@@ -184,9 +171,25 @@ else
             throw new Exception("Taster not found!");
     }
 
-    private void IndexChanged(int index)
+    private async Task IndexChanged(int index)
     {
-        
+        if (tastingBeers.Any(x => x.IsDirty))
+        {
+            var parameters = new DialogParameters();
+            parameters.Add("ContentText", $"Unsaved vote(s), save before moving on?");
+            parameters.Add("ButtonText", "SAVE");
+            parameters.Add("Color", Color.Success);
+
+            var dialog = DialogService.Show<QueryDialog>("Save vote(s)", parameters);
+            var result = await dialog.Result;
+
+            if (result.Cancelled) return;
+
+            foreach (var tbm in tastingBeers.Where(x => x.IsDirty))
+            {
+                await SaveVote(tbm);
+            }
+        }
     }
 
     protected override async Task OnInitializedAsync()
@@ -194,7 +197,7 @@ else
         await initializeTaster();
 
         currentTasting = await _db.GetTasting(TastingId);
-        
+
         if (currentTasting == null)
         {
             _nav.NavigateTo("/tastingNotFound");
@@ -209,15 +212,19 @@ else
 
         currentTaster = await _db.GetTaster(currentTaster.TasterId);
         tastingBeers = await _db.GetTastingBeers(TastingId);
-        
-        foreach(var tb in tastingBeers)
+
+
+        foreach (var tb in tastingBeers)
         {
+            if (currentTasting.IsBlind)
+                tb.Anonymize();
+
             tb.VoteModel = await _db.GetVote(currentTaster.TasterId, tb.BeerId, currentTasting.TastingId) ?? new VoteModel()
-            {
-                BeerId = tb.BeerId,
-                TasterId = currentTaster.TasterId,
-                TastingId = currentTasting.TastingId
-            };
+                {
+                    BeerId = tb.BeerId,
+                    TasterId = currentTaster.TasterId,
+                    TastingId = currentTasting.TastingId
+                };
         }
     }
 }
