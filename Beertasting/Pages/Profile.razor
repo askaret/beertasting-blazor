@@ -116,7 +116,7 @@ else
     string displayname = "";
     private TasterModel? currentTaster;
     private List<TastingModel> tastings = new List<TastingModel>();
-    private List<TasterBeerModelVotes> votedBeers = new List<TasterBeerModelVotes>();
+    private List<TasterBeerVoteModel> votedBeers = new List<TasterBeerVoteModel>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -174,5 +174,4 @@ else
         }
         return photo;
     }
-
 }

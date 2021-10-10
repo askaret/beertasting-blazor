@@ -40,8 +40,15 @@ namespace DataAccessLibrary
         Task AddTastingBeer(int tastingId, int beerId, int sortOrder);
         Task UpdateTastingBeer(TastingBeerModel tastingBeer);
         Task RemoveTastingBeer(TastingBeerModel tastingBeer);
-        Task<List<TastingBeerModel>> GetTastingBeers(int id);
+        Task<List<TastingBeerModel>> GetTastingBeers(int id, bool includeRelated = true);
         Task<List<TastingResultModel>> GetTastingResults();
+        #endregion
+
+        #region VoteModel
+        Task AddVote(VoteModel vote);
+        Task UpdateVote(VoteModel vote);
+        Task<VoteModel> GetVote(int tasterId, int beerId, int tastingId);
+        Task<List<VoteModel>> GetVotes(int tastingId);
         #endregion
 
         #region Other accessors
@@ -52,8 +59,7 @@ namespace DataAccessLibrary
         Task<List<BeerclassModel>> GetBeerclasses();
         Task<List<BeerstyleModel>> GetBeerstyles();
         Task<List<TastingModel>> GetTastingsForTaster(int tasterId);
-        Task<List<TasterBeerModelVotes>> GetTasterBeerVotes(int tasterId);
-        Task<List<VoteModel>> GetVotes(int tastingId);
+        Task<List<TasterBeerVoteModel>> GetTasterBeerVotes(int tasterId);        
         #endregion
     }
 }
