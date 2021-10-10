@@ -59,8 +59,7 @@ namespace DataAccessLibrary
         Task<List<BeerclassModel>> GetBeerclasses();
         Task<List<BeerstyleModel>> GetBeerstyles();
         Task<List<TastingModel>> GetTastingsForTaster(int tasterId);
-        Task<List<TasterBeerModelVotes>> GetTasterBeerVotes(int tasterId);
-        Task<List<TasterBeerModelVotes>> GetTasterBeerVotes(int tasterId, int tastingId);
+        Task<List<TasterBeerVoteModel>> GetTasterBeerVotes(int tasterId);        
         #endregion
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLibrary.Models
 {
-    public class TasterBeerModelVotes
+    public class TasterBeerVoteModel
     {
         public int VoteId { get; set; }
         public int BeerId { get; set; }

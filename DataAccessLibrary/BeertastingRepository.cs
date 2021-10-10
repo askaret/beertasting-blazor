@@ -264,7 +264,7 @@ namespace DataAccessLibrary
             return _db.LoadData<TastingModel, dynamic>(query, new { TasterId = tasterId });
         }
 
-        public Task<List<TasterBeerModelVotes>> GetTasterBeerVotes(int tasterId)
+        public Task<List<TasterBeerVoteModel>> GetTasterBeerVotes(int tasterId)
         {
             var query = @"
                              SELECT     TOP 10 
@@ -286,7 +286,7 @@ namespace DataAccessLibrary
                                         taste DESC,
                                         appearance DESC";
 
-            return _db.LoadData<TasterBeerModelVotes, dynamic>(query, new { TasterId = tasterId });
+            return _db.LoadData<TasterBeerVoteModel, dynamic>(query, new { TasterId = tasterId });
         }
 
         public Task<List<VoteModel>> GetVotes(int tastingId)
@@ -326,32 +326,6 @@ namespace DataAccessLibrary
                                AND  TasterId = @TasterId
                                AND  BeerId = @BeerId";
             return _db.LoadSingle<VoteModel, dynamic>(sql, new { TastingId = tastingId, TasterId =  tasterId, BeerId = beerId});
-        }
-
-        public Task<List<TasterBeerModelVotes>> GetTasterBeerVotes(int tasterId, int tastingId)
-        {
-            var query = @"SELECT	v.VoteId,
-		                            v.BeerId,
-		                            b.Name as BeerName,
-                                    b.ratebeerlink as RatebeerLink,
-                                    b.ABV,		                            
-                                    br.Name as BreweryName,
-                                    br.Country,
-		                            tb.SortOrder,
-		                            v.TastingId,
-		                            v.TasterId,
-		                            v.Taste,
-		                            v.Appearance,
-		                            v.Overall,
-		                            v.Note
-                            FROM dbo.Vote v
-                            JOIN dbo.Beer b ON b.BeerId = v.BeerId
-                            JOIN dbo.brewery br ON br.BreweryId = b.BreweryId
-                            JOIN dbo.TastingBeer tb ON tb.TastingId = v.TastingId
-                            WHERE (v.TastingID = @TastingId AND v.TasterId = @TasterId)
-                            AND tb.BeerId = b.BeerId;";
-
-            return _db.LoadData<TasterBeerModelVotes, dynamic>(query, new { TastingId = tastingId, TasterId = tasterId });
         }
     }
 }
