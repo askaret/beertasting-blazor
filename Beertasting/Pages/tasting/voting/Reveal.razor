@@ -1,0 +1,88 @@
+﻿@page "/tasting/reveal/{TastingId:int}"
+
+@using Beertasting.Util
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+@using Beertasting.ViewModels
+@using System.Globalization
+@using System.ComponentModel.DataAnnotations
+
+@inject IBeertastingRepository _db
+@inject ProtectedSessionStorage ProtectedSessionStore
+@inject NavigationManager _nav
+@inject IDialogService DialogService
+
+<AdminGate />
+
+<MudText Typo="Typo.h3" Class="pa-4">Award ceremony</MudText>
+<MudText Typo="Typo.h4" Class="pa-4"></MudText>
+
+@code
+{
+    private MudCarousel<TastingBeerModel> _carousel;
+    private IList<string> _source = new List<string>() { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+
+    [Parameter]
+    public int TastingId { get; set; }
+
+    [Parameter]
+    public int BeerNumber { get; set; } = 0;
+    private TastingModel? currentTasting = null;
+    private List<TastingBeerModel>? tastingBeers = null;
+    private List<TastingResultModel>? tastingResults = null;
+    private List<BeerResultViewModel> beerResults = new List<BeerResultViewModel>();
+    private List<TastingBeerModel> tastingBeerModels = new List<TastingBeerModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        currentTasting = await _db.GetTasting(TastingId);
+
+        if (currentTasting == null)
+        {
+            _nav.NavigateTo("/tastingNotFound");
+            return;
+        }
+
+        if (currentTasting.IsActive)
+        {
+            var parameters = new DialogParameters();
+            parameters.Add("ContentText", $"Close \"{currentTasting.Name}\" and calculate results?");
+            parameters.Add("ButtonText", "Yes");
+            parameters.Add("Color", Color.Warning);
+
+            var dialog = DialogService.Show<QueryDialog>("Close and calculate?", parameters);
+            var result = await dialog.Result;
+
+            if (result.Cancelled)
+            {
+                _nav.NavigateTo($"/tasting/live/{TastingId}");
+                return;
+            }
+
+            await CloseTasting();
+        }
+
+        await TastingUtil.CalculateTasting(_db, currentTasting);
+
+        tastingBeerModels = await _db.GetTastingBeers(TastingId);
+        tastingResults = await _db.GetTastingResults();
+        beerResults = new List<BeerResultViewModel>();
+
+        foreach(var tbm in tastingBeerModels)
+        {
+            beerResults.Add(new BeerResultViewModel()
+                {
+                    BeerModel = tbm.BeerModel,
+                    TastingResults = new List<TastingResultModel>(tastingResults.Where(tr => tr.BeerId == tbm.BeerId && tr.TastingId == TastingId))
+                });
+        } 
+
+        beerResults = beerResults.OrderByDescending(br => br.AverageFinal).ToList();
+    }
+
+    private async Task CloseTasting()
+    {
+        currentTasting.IsActive = false;
+        await _db.UpdateTasting(currentTasting);
+    }
+}
