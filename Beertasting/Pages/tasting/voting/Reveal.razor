@@ -16,11 +16,84 @@
 
 <MudText Typo="Typo.h3" Class="pa-4">Award ceremony</MudText>
 <MudText Typo="Typo.h4" Class="pa-4"></MudText>
+<MudPaper>
+    <MudItem xs="12" md="12">
+        <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
+            <MudButton OnClick="@(() => RevealRegular())">Regular</MudButton>
+            <MudButton OnClick="@(() => RevealHomebrew())">Homebrew</MudButton>
+            <MudButton OnClick="@(() => RevealHighAbv())">High ABV</MudButton>
+        </MudButtonGroup>
+    </MudItem>
+</MudPaper>
+
+<MudPaper>
+    <MudGrid Class="pa-4">
+        <MudItem xs="12" sm="12" Class="align-content-center">BEER CLASS RESULTS</MudItem>
+        @if (ShowFirstPlace)
+        {
+            <MudItem xs="12" sm="12" Class="align-content-center">
+                <MudCard>
+                    <MudCardHeader>
+                        <CardHeaderAvatar>
+                            <MudAvatar Style="background-color:#FFD700">1</MudAvatar>
+                        </CardHeaderAvatar>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.body1">1.plass </MudText>
+                            <MudText Typo="Typo.caption">info info info</MudText>
+                            <MudText Typo="Typo.body1">blablalblaslb</MudText>
+                            <MudText Typo="Typo.caption">geewgnioweg pomwefgmop wegf</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                </MudCard>
+            </MudItem>
+        }
+        @if (ShowSecondPlace)
+        {
+            <MudItem xs="6" sm="6" Class="align-content-center">
+                <MudCard>
+                    <MudCardHeader>
+                        <CardHeaderAvatar>
+                            <MudAvatar Style="background-color:#C0C0C0">2</MudAvatar>
+                        </CardHeaderAvatar>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.body1">2.plass </MudText>
+                            <MudText Typo="Typo.caption">info info info</MudText>
+                            <MudText Typo="Typo.body1">blablalblaslb</MudText>
+                            <MudText Typo="Typo.caption">geewgnioweg pomwefgmop wegf</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                </MudCard>
+            </MudItem>
+        }
+
+        @if (ShowThirdPlace)
+        {
+            <MudItem xs="6" sm="6" Class="align-content-center">
+                <MudCard>
+                    <MudCardHeader>
+                        <CardHeaderAvatar>
+                            <MudAvatar Style="background-color:#b08d57  ">3</MudAvatar>
+                        </CardHeaderAvatar>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.body1">3.plass </MudText>
+                            <MudText Typo="Typo.caption">info info info</MudText>
+                            <MudText Typo="Typo.body1">blablalblaslb</MudText>
+                            <MudText Typo="Typo.caption">geewgnioweg pomwefgmop wegf</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
+</MudPaper>
+
+
 
 @code
 {
     private MudCarousel<TastingBeerModel> _carousel;
     private IList<string> _source = new List<string>() { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+    private static System.Timers.Timer _timer;
 
     [Parameter]
     public int TastingId { get; set; }
@@ -32,6 +105,42 @@
     private List<TastingResultModel>? tastingResults = null;
     private List<BeerResultViewModel> beerResults = new List<BeerResultViewModel>();
     private List<TastingBeerModel> tastingBeerModels = new List<TastingBeerModel>();
+
+    private bool ShowFirstPlace = false;
+    private bool ShowSecondPlace = false;
+    private bool ShowThirdPlace = false;
+
+    private async Task RevealRegular()
+    {
+        if (ShowThirdPlace && ShowSecondPlace && ShowFirstPlace)
+        {
+            ShowThirdPlace = false;
+            ShowSecondPlace = false;
+            ShowFirstPlace = false;
+        }
+        else if (!ShowThirdPlace)
+        {
+            ShowThirdPlace = true;
+        }
+        else if (!ShowSecondPlace)
+        {
+            ShowSecondPlace = true;
+        }
+        else
+            ShowFirstPlace = true;
+
+        StateHasChanged();
+    }
+
+    private async Task RevealHomebrew()
+    {
+
+    }
+
+    private async Task RevealHighAbv()
+    {
+
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -53,13 +162,13 @@
             var dialog = DialogService.Show<QueryDialog>("Close and calculate?", parameters);
             var result = await dialog.Result;
 
-            if (result.Cancelled)
-            {
-                _nav.NavigateTo($"/tasting/live/{TastingId}");
-                return;
-            }
+            //if (result.Cancelled)
+            //{
+            //    _nav.NavigateTo($"/tasting/live/{TastingId}");
+            //    return;
+            //}
 
-            await CloseTasting();
+            //await CloseTasting();
         }
 
         await TastingUtil.CalculateTasting(_db, currentTasting);
@@ -68,14 +177,14 @@
         tastingResults = await _db.GetTastingResults();
         beerResults = new List<BeerResultViewModel>();
 
-        foreach(var tbm in tastingBeerModels)
+        foreach (var tbm in tastingBeerModels)
         {
             beerResults.Add(new BeerResultViewModel()
                 {
                     BeerModel = tbm.BeerModel,
                     TastingResults = new List<TastingResultModel>(tastingResults.Where(tr => tr.BeerId == tbm.BeerId && tr.TastingId == TastingId))
                 });
-        } 
+        }
 
         beerResults = beerResults.OrderByDescending(br => br.AverageFinal).ToList();
     }
