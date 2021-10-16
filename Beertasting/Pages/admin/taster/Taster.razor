@@ -83,7 +83,7 @@ else
 		parameters.Add("ButtonText", "DELETE");
 		parameters.Add("Color", Color.Error);
 
-		var dialog = DialogService.Show<DeleteDialog>("Delete taster", parameters);
+		var dialog = DialogService.Show<QueryDialog>("Delete taster", parameters);
 		var result = await dialog.Result;
 
 		if (result.Cancelled) return;

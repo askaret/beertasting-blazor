@@ -8,9 +8,8 @@ namespace DataAccessLibrary.Models
 {
     public class VoteModel
     {
+        public int? VoteId { get; set; } = null;
         public double Final => (2 * Taste + Appearance + Overall) / 4;
-
-        public int VoteId {  get; set; }
         public int BeerId { get; set; }
         public int TastingId { get;set; }
         public int TasterId {  get; set; }

@@ -132,7 +132,7 @@
             parameters.Add("ButtonText", "CONFIRM");
             parameters.Add("Color", Color.Error);
 
-            var dialog = DialogService.Show<DeleteDialog>("Remove beer", parameters);
+            var dialog = DialogService.Show<QueryDialog>("Remove beer", parameters);
             var result = await dialog.Result;
 
             if (result.Cancelled) return;
