@@ -1,0 +1,60 @@
+﻿@page "/tasting/live/{Id:int}"
+
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+@using Beertasting.Util
+
+@inject IBeertastingRepository _db
+
+<MudText Class="pa-4" Typo="Typo.h3">@tasting?.Name</MudText>
+
+<MudCarousel Style="height:50vh;" ShowArrows="false" ShowDelimiters="true" AutoCycle="true" AutoCycleTime="@carouselCycleTime" ItemsSource="tastingBeers.Where(tb => votes.Select(v => v.BeerId).Contains(tb.BeerId))">
+    <ItemTemplate>
+        <MudText Class="pa-4" Typo="Typo.body1">@context.BeerModel?.Name</MudText>
+        @foreach(var vote in votes.Where(v => v.BeerId == context.BeerId))
+        {
+            <MudText Class="pa-2" Typo="Typo.body2">@vote.Note</MudText>
+        }
+        <MudText>@quote</MudText>
+    </ItemTemplate>
+</MudCarousel>
+
+
+@code
+{
+    [Parameter]
+    public int Id { get; set; }
+
+    private TimeSpan carouselCycleTime = new TimeSpan(0, 0, 5);
+    private TastingModel tasting;
+    private List<TastingBeerModel> tastingBeers = new List<TastingBeerModel>();
+    private List<BeerModel> beers = new List<BeerModel>();
+    private List<VoteModel> votes = new List<VoteModel>();
+    private Timer _timer;
+    private string quote;
+    private RandomQuoteGenerator quoteGenerator;
+
+    protected override async Task OnInitializedAsync()
+    {
+        tasting = await _db.GetTasting(Id);
+        tastingBeers = await _db.GetTastingBeers(Id);
+        beers = await _db.GetBeers();
+        votes = await _db.GetVotes(tasting.TastingId);
+
+        quoteGenerator = new RandomQuoteGenerator(await _db.GetTasters(), beers);
+
+        foreach(var tastingBeer in tastingBeers)
+        {
+            tastingBeer.BeerModel = beers.SingleOrDefault(b => b.BeerId == tastingBeer.BeerId);
+        }
+
+        _timer = new Timer(onTimerTick, null, 1000, 5000);
+    }
+
+    private async void onTimerTick(Object o)
+    {
+        votes = await _db.GetVotes(tasting.TastingId);
+        quoteGenerator.votes = votes;
+        quote = quoteGenerator.GetQuote();
+    }
+}

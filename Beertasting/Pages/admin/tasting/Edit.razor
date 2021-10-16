@@ -1,6 +1,5 @@
 ﻿@page "/admin/tasting/edit/{Id:int}"
 
-@using Beertasting.Pages.admin.Util
 @using Beertasting.ViewModels
 @using DataAccessLibrary
 @using DataAccessLibrary.Models
@@ -201,5 +200,11 @@
         tastingBeers = tastingBeers.OrderBy(tb => tb.SortOrder).ToList();
 
         StateHasChanged();
+    }
+    
+    public enum SortOrderChange
+    {
+        Up,
+        Down,
     }
 }
