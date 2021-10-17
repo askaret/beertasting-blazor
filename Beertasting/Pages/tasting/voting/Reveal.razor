@@ -40,10 +40,13 @@
                             <MudAvatar Style="background-color:#FFD700">1</MudAvatar>
                         </CardHeaderAvatar>
                         <CardHeaderContent>
-                            <MudText Typo="Typo.body1">1.plass </MudText>
-                            <MudText Typo="Typo.caption">info info info</MudText>
-                            <MudText Typo="Typo.body1">blablalblaslb</MudText>
-                            <MudText Typo="Typo.caption">geewgnioweg pomwefgmop wegf</MudText>
+                            <MudText Typo="Typo.body1">@_firstPlace.BeerModel.Name (@_firstPlace.BeerModel.ABV %)</MudText>
+                            <MudText Typo="Typo.caption">@_firstPlace.BeerModel.BeerStyleModel.Name</MudText>                            
+                            <MudText Typo="Typo.body1">@_firstPlace.BeerModel.BreweryModel.Name (@_firstPlace.BeerModel.BreweryModel.Country)</MudText>
+                            <MudText Typo="Typo.body2">Final score: @_firstPlace.AverageFinal</MudText>
+                            <MudText Typo="Typo.caption">Taste: @_firstPlace.AverageTaste</MudText>
+                            <MudText Typo="Typo.caption">Appearance: @_firstPlace.AverageAppearance</MudText>
+                            <MudText Typo="Typo.caption">Overall: @_firstPlace.AverageOverall</MudText>
                         </CardHeaderContent>
                     </MudCardHeader>
                 </MudCard>
@@ -58,10 +61,13 @@
                             <MudAvatar Style="background-color:#C0C0C0">2</MudAvatar>
                         </CardHeaderAvatar>
                         <CardHeaderContent>
-                            <MudText Typo="Typo.body1">2.plass </MudText>
-                            <MudText Typo="Typo.caption">info info info</MudText>
-                            <MudText Typo="Typo.body1">blablalblaslb</MudText>
-                            <MudText Typo="Typo.caption">geewgnioweg pomwefgmop wegf</MudText>
+                            <MudText Typo="Typo.body1">@_secondPlace.BeerModel.Name (@_secondPlace.BeerModel.ABV %)</MudText>
+                            <MudText Typo="Typo.caption">@_secondPlace.BeerModel.BeerStyleModel.Name</MudText>                            
+                            <MudText Typo="Typo.body1">@_secondPlace.BeerModel.BreweryModel.Name (@_secondPlace.BeerModel.BreweryModel.Country)</MudText>
+                            <MudText Typo="Typo.body2">Final score: @_secondPlace.AverageFinal</MudText>
+                            <MudText Typo="Typo.caption">Taste: @_secondPlace.AverageTaste</MudText>
+                            <MudText Typo="Typo.caption">Appearance: @_secondPlace.AverageAppearance</MudText>
+                            <MudText Typo="Typo.caption">Overall: @_secondPlace.AverageOverall</MudText>
                         </CardHeaderContent>
                     </MudCardHeader>
                 </MudCard>
@@ -77,16 +83,51 @@
                             <MudAvatar Style="background-color:#b08d57  ">3</MudAvatar>
                         </CardHeaderAvatar>
                         <CardHeaderContent>
-                            <MudText Typo="Typo.body1">3.plass </MudText>
-                            <MudText Typo="Typo.caption">info info info</MudText>
-                            <MudText Typo="Typo.body1">blablalblaslb</MudText>
-                            <MudText Typo="Typo.caption">geewgnioweg pomwefgmop wegf</MudText>
+                            <MudText Typo="Typo.body1">@_thirdPlace.BeerModel.Name (@_thirdPlace.BeerModel.ABV %)</MudText>
+                            <MudText Typo="Typo.caption">@_thirdPlace.BeerModel.BeerStyleModel.Name</MudText>                            
+                            <MudText Typo="Typo.body1">@_thirdPlace.BeerModel.BreweryModel.Name (@_thirdPlace.BeerModel.BreweryModel.Country)</MudText>
+                            <MudText Typo="Typo.body2">Final score: @_thirdPlace.AverageFinal</MudText>
+                            <MudText Typo="Typo.caption">Taste: @_thirdPlace.AverageTaste</MudText>
+                            <MudText Typo="Typo.caption">Appearance: @_thirdPlace.AverageAppearance</MudText>
+                            <MudText Typo="Typo.caption">Overall: @_thirdPlace.AverageOverall</MudText>
                         </CardHeaderContent>
                     </MudCardHeader>
                 </MudCard>
             </MudItem>
         }
     </MudGrid>
+</MudPaper>
+
+<MudPaper>
+    <MudTable Items="@filteredBeerResultsForTable" Bordered="false" Striped="true" Hover="true" Dense="false">
+        <ToolBarContent>
+            <MudText Typo="Typo.h4" Class="pa-4">Beers</MudText>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh>ABV</MudTh>
+            <MudTh>Brewery</MudTh>
+            <MudTh>Class</MudTh>
+            <MudTh>Style</MudTh>
+            <MudTh>Nr of tastings</MudTh>
+            <MudTh>Appearance Score</MudTh>
+            <MudTh>Taste Score</MudTh>
+            <MudTh>Overall Score</MudTh>
+            <MudTh>Final Score</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Name">@context.BeerModel.Name</MudTd>
+            <MudTd DataLabel="ABV">@context.BeerModel.ABV</MudTd>
+            <MudTd DataLabel="Brewery">@context.BeerModel.BreweryModel.Name</MudTd>
+            <MudTd DataLabel="Class">@context.BeerModel.BeerclassModel.Name</MudTd>
+            <MudTd DataLabel="Style">@context.BeerModel.BeerStyleModel.Name</MudTd>
+            <MudTd DataLabel="NR of tastings">@context.TastingResults.Count</MudTd>
+            <MudTd DataLabel="Appearance Score">@context.AverageAppearance.ToString("F2")</MudTd>
+            <MudTd DataLabel="Taste Score">@context.AverageTaste.ToString("F2")</MudTd>
+            <MudTd DataLabel="Overall Score">@context.AverageOverall.ToString("F2")</MudTd>
+            <MudTd DataLabel="Final Score">@context.AverageFinal.ToString("F2")</MudTd>
+        </RowTemplate>
+    </MudTable>
 </MudPaper>
 
 @code
@@ -113,7 +154,12 @@
     private List<TastingResultModel>? tastingResults = null;
     private List<BeerResultViewModel> beerResults = new List<BeerResultViewModel>();
     private List<BeerResultViewModel> filteredBeerResults = new List<BeerResultViewModel>();
+    private List<BeerResultViewModel> filteredBeerResultsForTable = new List<BeerResultViewModel>();
     private List<TastingBeerModel> tastingBeerModels = new List<TastingBeerModel>();
+
+    private BeerResultViewModel _firstPlace = new BeerResultViewModel();
+    private BeerResultViewModel _secondPlace = new BeerResultViewModel();
+    private BeerResultViewModel _thirdPlace = new BeerResultViewModel();
 
     private bool _showFirstPlace = false;
     private bool _showSecondPlace = false;
@@ -123,6 +169,8 @@
 
     private void CleanupTimerAndStates()
     {
+        _firstPlace = _secondPlace = _thirdPlace = new BeerResultViewModel();
+        filteredBeerResultsForTable.Clear();
         _timer.Enabled = false;
         _timerTick = 0;
         _selectedBeerClass = BeerClassEnum.NotSelected;
@@ -187,40 +235,38 @@
 
     private async void timerElapsed(Object source, System.Timers.ElapsedEventArgs e)
     {
-        _timerTick++;
+        var numberOfBeers = filteredBeerResults.Count() - 1;
+        var beerIndexToAdd = numberOfBeers - _timerTick;
 
-        if (_timerTick == 1)
+        if (beerIndexToAdd == 2)
         {
+            _thirdPlace = filteredBeerResults[beerIndexToAdd];
             _showThirdPlace = true;
         }
-        else if (_timerTick == 2)
+        else if (beerIndexToAdd == 1)
         {
+            _secondPlace = filteredBeerResults[beerIndexToAdd];
             _showSecondPlace = true;
-            _showThirdPlace = true;
         }
-        else if(_timerTick >= 3)
+        else if (beerIndexToAdd == 0)
         {
+            _firstPlace = filteredBeerResults[beerIndexToAdd];
             _showFirstPlace = true;
-            _showSecondPlace = true;
-            _showThirdPlace = true;
+            _timer.Enabled = false;
+        }
+        else
+        {
+            if (beerIndexToAdd < 0)
+            {
+                _timer.Enabled = false;
+                return;
+            }
+
+            filteredBeerResultsForTable.Add(filteredBeerResults[beerIndexToAdd]);
+            filteredBeerResultsForTable.OrderBy(x => x.AverageFinal);
         }
 
-        //if (ShowThirdPlace && ShowSecondPlace && ShowFirstPlace)
-        //{
-        //    ShowThirdPlace = false;
-        //    ShowSecondPlace = false;
-        //    ShowFirstPlace = false;
-        //}
-        //else if (!ShowThirdPlace)
-        //{
-        //    ShowThirdPlace = true;
-        //}
-        //else if (!ShowSecondPlace)
-        //{
-        //    ShowSecondPlace = true;
-        //}
-        //else
-        //    ShowFirstPlace = true;
+        _timerTick++;
 
         await InvokeAsync(StateHasChanged);
     }
