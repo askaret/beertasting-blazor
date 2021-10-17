@@ -19,13 +19,13 @@ namespace Beertasting.Util
         private string getNegativeTaster(int beerId)
         {
             var beerVotes = votes.Where(v => v.BeerId == beerId).OrderBy(bv => 2 * bv.Taste + bv.Appearance + bv.Overall).ToArray();
-            return tasters.SingleOrDefault(t => t.TasterId == beerVotes.FirstOrDefault()?.TasterId)?.DisplayName ?? "";
+            return tasters.Single(t => t.TasterId == beerVotes.FirstOrDefault()?.TasterId)?.DisplayName ?? "";
         }
 
         private string getPositiveTaster(int beerId)
         {
             var beerVotes = votes.Where(v => v.BeerId == beerId).OrderByDescending(bv => 2 * bv.Taste + bv.Appearance + bv.Overall).ToArray();
-            return tasters.SingleOrDefault(t => t.TasterId == beerVotes.FirstOrDefault()?.TasterId)?.DisplayName ?? "";
+            return tasters.Single(t => t.TasterId == beerVotes.FirstOrDefault()?.TasterId)?.DisplayName ?? "";
         }
 
         private string getAgreeTaster()
@@ -33,7 +33,7 @@ namespace Beertasting.Util
             var averages = votes.GroupBy(v => v.BeerId).Select(v => (v.Key, v.Average(b => b.Final)));
             var diff = votes.GroupBy(v => v.TasterId).Select(tv => (tv.Key, Math.Sqrt(tv.Sum(s => s.Final * s.Final - averages.SingleOrDefault(a => a.Key == s.BeerId).Item2* averages.SingleOrDefault(a => a.Key == s.BeerId).Item2))));
             diff = diff.OrderBy(d => d.Item2);
-            return tasters.SingleOrDefault(t => t.TasterId == diff.FirstOrDefault().Item2)?.DisplayName ?? "";
+            return tasters.SingleOrDefault(t => t.TasterId == diff.FirstOrDefault().Item2)?.DisplayName ?? "FIXME";
         }
 
         private string getNegativeQuote()

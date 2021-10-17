@@ -20,10 +20,10 @@ namespace DataAccessLibrary.Models
         {
             var filteredVotes = votes.Where(v => v.TastingId == TastingId && v.BeerId == BeerId).ToArray();
 
-            ScoreTaste = Math.Round(filteredVotes.Select(v => v.Taste).Average());
-            ScoreAppearance = Math.Round(filteredVotes.Select(v => v.Appearance).Average());
-            ScoreOverall = Math.Round(filteredVotes.Select(v => v.Overall).Average());
-            ScoreFinal = Math.Round(((2 * ScoreTaste) + ScoreAppearance + ScoreOverall) / 4);
+            ScoreTaste = Math.Round(filteredVotes.Select(v => v.Taste).Average(), 2);
+            ScoreAppearance = Math.Round(filteredVotes.Select(v => v.Appearance).Average(), 2);
+            ScoreOverall = Math.Round(filteredVotes.Select(v => v.Overall).Average(), 2);
+            ScoreFinal = Math.Round(((2 * ScoreTaste) + ScoreAppearance + ScoreOverall) / 4, 2);
         }
     }
 }

@@ -9,22 +9,102 @@
 <MudText Class="pa-4" Typo="Typo.h3">@tasting?.Name</MudText>
 
 <MudGrid Class="pa-4">
+    <MudItem xs="10" sm="10" />
     <MudItem xs="2" sm="2" Class="align-content-center">
         <MudIconButton Icon="@Icons.Material.Outlined.BarChart" Variant="Variant.Outlined" Color="Color.Success" Size="Size.Small" OnClick="@(() => RevealResults())" />
     </MudItem>
 </MudGrid>
 
-<MudCarousel Style="height:50vh;" ShowArrows="false" ShowDelimiters="true" AutoCycle="true" AutoCycleTime="@carouselCycleTime" ItemsSource="tastingBeers.Where(tb => votes.Select(v => v.BeerId).Contains(tb.BeerId))">
-    <ItemTemplate>
-        <MudText Class="pa-4" Typo="Typo.body1">@context.BeerModel?.Name</MudText>
-        @foreach(var vote in votes.Where(v => v.BeerId == context.BeerId))
-        {
-            <MudText Class="pa-2" Typo="Typo.body2">@vote.Note</MudText>
-        }
-        <MudText>@quote</MudText>
-    </ItemTemplate>
-</MudCarousel>
+<MudGrid Class="pa-4">
+    <MudItem xs="6" sm="6" Class="align-content-center">
+        <MudCard>
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h5">Number of votes</MudText>
+                    <MudText Typo="Typo.h4">94</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+        </MudCard>
+    </MudItem>
+    <MudItem xs="6" sm="6" Class="align-content-center">
+        <MudCard>
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h5">Number of comments</MudText>
+                    <MudText Typo="Typo.h4">12</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+        </MudCard>
+    </MudItem>
+</MudGrid>
+<MudGrid Class="pa-4">
+    <MudItem xs="12" sm="12" Class="align-content-center">
+        <MudCard>
+            <MudCardHeader>
+                <MudText Typo="Typo.h5">Average scores (all votes)</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudItem xs="2" sm="2" Class="pa-2">
+                    <MudText Typo="Typo.body1">Average taste</MudText>
+                </MudItem>
+                <MudItem xs="10" sm="10" Class="pa-2">
+                    <MudProgressLinear Color="Color.Primary" Value="5" Min="0" Max="10" />
+                </MudItem>
 
+                <MudItem xs="2" sm="2" Class="pa-2">
+                    <MudText Typo="Typo.body1">Average appearance</MudText>
+                </MudItem>
+                <MudItem xs="10" sm="10" Class="pa-2">
+                    <MudProgressLinear Color="Color.Secondary" Value="3" Min="0" Max="10" />
+                </MudItem>
+
+                <MudItem xs="2" sm="2" Class="pa-2">
+                    <MudText Typo="Typo.body1">Average overall</MudText>
+                </MudItem>
+                <MudItem xs="10" sm="10" Class="pa-2">
+                    <MudProgressLinear Color="Color.Info" Value="8" Min="0" Max="10" />
+                </MudItem>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+</MudGrid>
+
+<MudGrid Class="pa-4">
+    <MudItem xs="12" sm="12" Class="align-content-center">
+        <MudCard>
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h5">AI-insight</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText Typo="Typo.h4">@quote</MudText>
+                </MudCardContent>
+                @*<MudCarousel Style="height:30vh;" ShowArrows="false" ShowDelimiters="true" AutoCycle="true" AutoCycleTime="@carouselCycleTime" ItemsSource="tastingBeers.Where(tb => votes.Select(v => v.BeerId).Contains(tb.BeerId))">
+                    <ItemTemplate>
+                        <MudText Class="pa-4" Typo="Typo.body1">@context.BeerModel?.Name</MudText>
+                        @foreach (var vote in votes.Where(v => v.BeerId == context.BeerId))
+                        {
+                            <MudText Class="pa-2" Typo="Typo.body2">@vote.Note</MudText>
+                        }
+                        <MudText>@quote</MudText>
+                    </ItemTemplate>
+                </MudCarousel>
+            </MudCardContent>*@
+        </MudCard>
+    </MudItem>
+
+    <MudItem xs="12" sm="12" Class="align-content-center">
+        <MudCard>
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h5">Random comment</MudText>
+                    <MudText Typo="Typo.h4">Sut min pik, dette smaker hai!</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+        </MudCard>
+    </MudItem>
+</MudGrid>
 
 @code
 {
@@ -46,10 +126,9 @@
         tastingBeers = await _db.GetTastingBeers(Id);
         beers = await _db.GetBeers();
         votes = await _db.GetVotes(tasting.TastingId);
-
         quoteGenerator = new RandomQuoteGenerator(await _db.GetTasters(), beers);
 
-        foreach(var tastingBeer in tastingBeers)
+        foreach (var tastingBeer in tastingBeers)
         {
             tastingBeer.BeerModel = beers.SingleOrDefault(b => b.BeerId == tastingBeer.BeerId);
         }
@@ -60,11 +139,13 @@
     private void RevealResults()
     {
         _nav.NavigateTo($"/tasting/reveal/{Id}");
-    }
+    }
+
     private async void onTimerTick(Object o)
     {
         votes = await _db.GetVotes(tasting.TastingId);
         quoteGenerator.votes = votes;
         quote = quoteGenerator.GetQuote();
+        await InvokeAsync(StateHasChanged);
     }
 }
