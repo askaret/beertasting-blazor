@@ -3,10 +3,16 @@
 @using DataAccessLibrary
 @using DataAccessLibrary.Models
 @using Beertasting.Util
-
+@inject NavigationManager _nav
 @inject IBeertastingRepository _db
 
 <MudText Class="pa-4" Typo="Typo.h3">@tasting?.Name</MudText>
+
+<MudGrid Class="pa-4">
+    <MudItem xs="2" sm="2" Class="align-content-center">
+        <MudIconButton Icon="@Icons.Material.Outlined.BarChart" Variant="Variant.Outlined" Color="Color.Success" Size="Size.Small" OnClick="@(() => RevealResults())" />
+    </MudItem>
+</MudGrid>
 
 <MudCarousel Style="height:50vh;" ShowArrows="false" ShowDelimiters="true" AutoCycle="true" AutoCycleTime="@carouselCycleTime" ItemsSource="tastingBeers.Where(tb => votes.Select(v => v.BeerId).Contains(tb.BeerId))">
     <ItemTemplate>
@@ -51,6 +57,10 @@
         _timer = new Timer(onTimerTick, null, 1000, 5000);
     }
 
+    private void RevealResults()
+    {
+        _nav.NavigateTo($"/tasting/reveal/{Id}");
+    }
     private async void onTimerTick(Object o)
     {
         votes = await _db.GetVotes(tasting.TastingId);
