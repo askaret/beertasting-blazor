@@ -1,0 +1,335 @@
+﻿@page "/tasting/reveal/{TastingId:int}"
+
+@using Beertasting.Util
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+@using Beertasting.ViewModels
+@using System.Globalization
+@using System.ComponentModel.DataAnnotations
+
+@inject IBeertastingRepository _db
+@inject ProtectedSessionStorage ProtectedSessionStore
+@inject NavigationManager _nav
+@inject IDialogService DialogService
+
+<AdminGate />
+
+<MudText Typo="Typo.h3" Class="pa-4">Award ceremony @currentTasting?.Name</MudText>
+<MudText Typo="Typo.h4" Class="pa-4">@_selectedBeerClass</MudText>
+
+<MudPaper>
+    <MudItem xs="12" md="12">
+        <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
+            <MudButton OnClick="@(() => RevealRegular())">Regular</MudButton>
+            <MudButton OnClick="@(() => RevealHomebrew())">Homebrew</MudButton>
+            <MudButton OnClick="@(() => RevealHighAbv())">High ABV</MudButton>
+            <MudButton OnClick="@(() => RevealOverall())">Overall</MudButton>
+        </MudButtonGroup>
+    </MudItem>
+</MudPaper>
+
+<MudPaper>
+    <MudGrid Class="pa-4">
+        <MudItem xs="12" sm="12" Class="align-content-center">BEER CLASS RESULTS</MudItem>
+        @if (_showFirstPlace)
+        {
+            <MudItem xs="12" sm="12" Class="align-content-center">
+                <MudCard>
+                    <MudCardHeader>
+                        <CardHeaderAvatar>
+                            <MudAvatar Style="background-color:#FFD700">1</MudAvatar>
+                        </CardHeaderAvatar>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.body1">@_firstPlace.BeerModel.Name (@_firstPlace.BeerModel.ABV %)</MudText>
+                            <MudText Typo="Typo.caption">@_firstPlace.BeerModel.BeerStyleModel.Name</MudText>                            
+                            <MudText Typo="Typo.body1">@_firstPlace.BeerModel.BreweryModel.Name (@_firstPlace.BeerModel.BreweryModel.Country)</MudText>
+                            <MudText Typo="Typo.body2">Final score: @_firstPlace.AverageFinal</MudText>
+                            <MudText Typo="Typo.caption">Taste: @_firstPlace.AverageTaste</MudText>
+                            <MudText Typo="Typo.caption">Appearance: @_firstPlace.AverageAppearance</MudText>
+                            <MudText Typo="Typo.caption">Overall: @_firstPlace.AverageOverall</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                </MudCard>
+            </MudItem>
+        }
+        @if (_showSecondPlace)
+        {
+            <MudItem xs="6" sm="6" Class="align-content-center">
+                <MudCard>
+                    <MudCardHeader>
+                        <CardHeaderAvatar>
+                            <MudAvatar Style="background-color:#C0C0C0">2</MudAvatar>
+                        </CardHeaderAvatar>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.body1">@_secondPlace.BeerModel.Name (@_secondPlace.BeerModel.ABV %)</MudText>
+                            <MudText Typo="Typo.caption">@_secondPlace.BeerModel.BeerStyleModel.Name</MudText>                            
+                            <MudText Typo="Typo.body1">@_secondPlace.BeerModel.BreweryModel.Name (@_secondPlace.BeerModel.BreweryModel.Country)</MudText>
+                            <MudText Typo="Typo.body2">Final score: @_secondPlace.AverageFinal</MudText>
+                            <MudText Typo="Typo.caption">Taste: @_secondPlace.AverageTaste</MudText>
+                            <MudText Typo="Typo.caption">Appearance: @_secondPlace.AverageAppearance</MudText>
+                            <MudText Typo="Typo.caption">Overall: @_secondPlace.AverageOverall</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                </MudCard>
+            </MudItem>
+        }
+
+        @if (_showThirdPlace)
+        {
+            <MudItem xs="6" sm="6" Class="align-content-center">
+                <MudCard>
+                    <MudCardHeader>
+                        <CardHeaderAvatar>
+                            <MudAvatar Style="background-color:#b08d57  ">3</MudAvatar>
+                        </CardHeaderAvatar>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.body1">@_thirdPlace.BeerModel.Name (@_thirdPlace.BeerModel.ABV %)</MudText>
+                            <MudText Typo="Typo.caption">@_thirdPlace.BeerModel.BeerStyleModel.Name</MudText>                            
+                            <MudText Typo="Typo.body1">@_thirdPlace.BeerModel.BreweryModel.Name (@_thirdPlace.BeerModel.BreweryModel.Country)</MudText>
+                            <MudText Typo="Typo.body2">Final score: @_thirdPlace.AverageFinal</MudText>
+                            <MudText Typo="Typo.caption">Taste: @_thirdPlace.AverageTaste</MudText>
+                            <MudText Typo="Typo.caption">Appearance: @_thirdPlace.AverageAppearance</MudText>
+                            <MudText Typo="Typo.caption">Overall: @_thirdPlace.AverageOverall</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
+</MudPaper>
+
+<MudPaper>
+    <MudTable Items="@filteredBeerResultsForTable" Bordered="false" Striped="true" Hover="true" Dense="false">
+        <ToolBarContent>
+            <MudText Typo="Typo.h4" Class="pa-4">Beers</MudText>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh>ABV</MudTh>
+            <MudTh>Brewery</MudTh>
+            <MudTh>Class</MudTh>
+            <MudTh>Style</MudTh>
+            <MudTh>Nr of tastings</MudTh>
+            <MudTh>Appearance Score</MudTh>
+            <MudTh>Taste Score</MudTh>
+            <MudTh>Overall Score</MudTh>
+            <MudTh>Final Score</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Name">@context.BeerModel.Name</MudTd>
+            <MudTd DataLabel="ABV">@context.BeerModel.ABV</MudTd>
+            <MudTd DataLabel="Brewery">@context.BeerModel.BreweryModel.Name</MudTd>
+            <MudTd DataLabel="Class">@context.BeerModel.BeerclassModel.Name</MudTd>
+            <MudTd DataLabel="Style">@context.BeerModel.BeerStyleModel.Name</MudTd>
+            <MudTd DataLabel="NR of tastings">@context.TastingResults.Count</MudTd>
+            <MudTd DataLabel="Appearance Score">@context.AverageAppearance.ToString("F2")</MudTd>
+            <MudTd DataLabel="Taste Score">@context.AverageTaste.ToString("F2")</MudTd>
+            <MudTd DataLabel="Overall Score">@context.AverageOverall.ToString("F2")</MudTd>
+            <MudTd DataLabel="Final Score">@context.AverageFinal.ToString("F2")</MudTd>
+        </RowTemplate>
+    </MudTable>
+</MudPaper>
+
+@code
+{
+    enum BeerClassEnum
+    {
+        Regular = 1,
+        Homebrew = 2,
+        HighAbv = 3,
+        NotSelected = -1,
+        All = 0
+    };
+
+    private BeerClassEnum _selectedBeerClass = BeerClassEnum.NotSelected;
+    private static System.Timers.Timer _timer;
+
+    [Parameter]
+    public int TastingId { get; set; }
+
+    [Parameter]
+    public int BeerNumber { get; set; } = 0;
+    private TastingModel? currentTasting = null;
+    private List<TastingBeerModel>? tastingBeers = null;
+    private List<TastingResultModel>? tastingResults = null;
+    private List<BeerResultViewModel> beerResults = new List<BeerResultViewModel>();
+    private List<BeerResultViewModel> filteredBeerResults = new List<BeerResultViewModel>();
+    private List<BeerResultViewModel> filteredBeerResultsForTable = new List<BeerResultViewModel>();
+    private List<TastingBeerModel> tastingBeerModels = new List<TastingBeerModel>();
+
+    private BeerResultViewModel _firstPlace = new BeerResultViewModel();
+    private BeerResultViewModel _secondPlace = new BeerResultViewModel();
+    private BeerResultViewModel _thirdPlace = new BeerResultViewModel();
+
+    private bool _showFirstPlace = false;
+    private bool _showSecondPlace = false;
+    private bool _showThirdPlace = false;
+    private int _lastBeerShown = -1;
+    private int _timerTick = 0;
+
+    private void CleanupTimerAndStates()
+    {
+        _firstPlace = _secondPlace = _thirdPlace = new BeerResultViewModel();
+        filteredBeerResultsForTable.Clear();
+        _timer.Enabled = false;
+        _timerTick = 0;
+        _selectedBeerClass = BeerClassEnum.NotSelected;
+
+        _showThirdPlace = false;
+        _showSecondPlace = false;
+        _showFirstPlace = false;
+        _lastBeerShown = -1;
+
+        StateHasChanged();
+    }
+
+    private void InitializeAndStartTimer()
+    {
+        filteredBeerResults.Clear();
+        switch (_selectedBeerClass)
+        {
+            case BeerClassEnum.Regular:
+            case BeerClassEnum.Homebrew:
+            case BeerClassEnum.HighAbv:
+                filteredBeerResults.AddRange(beerResults.Where(x => x.BeerModel.BeerclassModel != null && x.BeerModel.BeerclassModel.BeerClassId == (int)_selectedBeerClass));
+                break;
+            case BeerClassEnum.All:
+                filteredBeerResults.AddRange(beerResults);
+                break;
+            case BeerClassEnum.NotSelected:
+                return;
+        }
+
+        _timer.Start();
+        StateHasChanged();
+    }
+
+    private async Task RevealOverall()
+    {
+        CleanupTimerAndStates();
+        _selectedBeerClass = BeerClassEnum.All;
+        InitializeAndStartTimer();
+    }
+
+    private async Task RevealRegular()
+    {
+        CleanupTimerAndStates();
+        _selectedBeerClass = BeerClassEnum.Regular;
+        InitializeAndStartTimer();
+    }
+
+
+    private async Task RevealHomebrew()
+    {
+        CleanupTimerAndStates();
+        _selectedBeerClass = BeerClassEnum.Homebrew;
+        InitializeAndStartTimer();
+    }
+
+    private async Task RevealHighAbv()
+    {
+        CleanupTimerAndStates();
+        _selectedBeerClass = BeerClassEnum.HighAbv;
+        InitializeAndStartTimer();
+    }
+
+    private async void timerElapsed(Object source, System.Timers.ElapsedEventArgs e)
+    {
+        var numberOfBeers = filteredBeerResults.Count() - 1;
+        var beerIndexToAdd = numberOfBeers - _timerTick;
+
+        if (beerIndexToAdd == 2)
+        {
+            _thirdPlace = filteredBeerResults[beerIndexToAdd];
+            _showThirdPlace = true;
+        }
+        else if (beerIndexToAdd == 1)
+        {
+            _secondPlace = filteredBeerResults[beerIndexToAdd];
+            _showSecondPlace = true;
+        }
+        else if (beerIndexToAdd == 0)
+        {
+            _firstPlace = filteredBeerResults[beerIndexToAdd];
+            _showFirstPlace = true;
+            _timer.Enabled = false;
+        }
+        else
+        {
+            if (beerIndexToAdd < 0)
+            {
+                _timer.Enabled = false;
+                return;
+            }
+
+            filteredBeerResultsForTable.Add(filteredBeerResults[beerIndexToAdd]);
+            filteredBeerResultsForTable.OrderBy(x => x.AverageFinal);
+        }
+
+        _timerTick++;
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _timer = new System.Timers.Timer(2000)
+            {
+                AutoReset = true,
+                Enabled = false
+            };
+
+        _timer.Elapsed += timerElapsed;
+
+        currentTasting = await _db.GetTasting(TastingId);
+
+        if (currentTasting == null)
+        {
+            _nav.NavigateTo("/tastingNotFound");
+            return;
+        }
+
+        if (currentTasting.IsActive)
+        {
+            var parameters = new DialogParameters();
+            parameters.Add("ContentText", $"Close \"{currentTasting.Name}\" and calculate results?");
+            parameters.Add("ButtonText", "Yes");
+            parameters.Add("Color", Color.Warning);
+
+            var dialog = DialogService.Show<QueryDialog>("Close and calculate?", parameters);
+            var result = await dialog.Result;
+
+            // Comment the next 7 lines to test
+            if (result.Cancelled)
+            {
+                _nav.NavigateTo($"/tasting/live/{TastingId}");
+                return;
+            }
+
+            await CloseTasting();
+        }
+
+        await TastingUtil.CalculateTasting(_db, currentTasting);
+
+        tastingBeerModels = await _db.GetTastingBeers(TastingId);
+        tastingResults = await _db.GetTastingResults();
+        beerResults = new List<BeerResultViewModel>();
+
+        foreach (var tbm in tastingBeerModels)
+        {
+            beerResults.Add(new BeerResultViewModel()
+                {
+                    BeerModel = tbm.BeerModel,
+                    TastingResults = new List<TastingResultModel>(tastingResults.Where(tr => tr.BeerId == tbm.BeerId && tr.TastingId == TastingId))
+                });
+        }
+
+        beerResults = beerResults.OrderByDescending(br => br.AverageFinal).ToList();
+    }
+
+    private async Task CloseTasting()
+    {
+        currentTasting.IsActive = false;
+        await _db.UpdateTasting(currentTasting);
+    }
+}

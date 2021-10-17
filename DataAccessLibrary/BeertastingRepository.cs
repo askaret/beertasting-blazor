@@ -17,6 +17,17 @@ namespace DataAccessLibrary
             return _db.LoadData<BeerstyleModel, dynamic>(query, new { });
         }
 
+        public Task<BeerstyleModel> GetBeerstyle(int id)
+        {
+            var query = "select * from dbo.Beerstyle where BeerstyleId = @beerstyleId";
+            return _db.LoadSingle<BeerstyleModel, dynamic>(query, new { beerstyleId = id });
+        }
+
+        public Task<BeerclassModel> GetBeerclass(int id)
+        {
+            var query = "select * from dbo.Beerclass where BeerclassId = @beerclassId";
+            return _db.LoadSingle<BeerclassModel, dynamic>(query, new { beerclassId = id });
+        }
         public Task<List<BeerclassModel>> GetBeerclasses()
         {
             var query = "select * from dbo.Beerclass";
@@ -129,10 +140,22 @@ namespace DataAccessLibrary
             return _db.LoadSingle<TastingModel, dynamic>(sql, new { id });
         }
 
-        public Task<List<TastingBeerModel>> GetTastingBeers(int id)
+        public async Task<List<TastingBeerModel>> GetTastingBeers(int id, bool includeRelated = true)
         {
             var sql = @"select * from dbo.TastingBeer where TastingId = @tastingId";
-            return _db.LoadData<TastingBeerModel, dynamic>(sql, new { tastingId = id });
+            var tastingBeerModels = await _db.LoadData<TastingBeerModel, dynamic>(sql, new { tastingId = id });
+
+            if (includeRelated)
+            {
+                foreach (var tb in tastingBeerModels)
+                {
+                    tb.BeerModel = await GetBeer(tb.BeerId);
+                    tb.BeerModel.BeerclassModel = await GetBeerclass(tb.BeerModel.BeerClassId);
+                    tb.BeerModel.BeerStyleModel = await GetBeerstyle(tb.BeerModel.BeerStyleId);
+                    tb.BeerModel.BreweryModel = await GetBrewery(tb.BeerModel.BreweryId);
+                }
+            }
+            return tastingBeerModels;
         }
 
         public Task DeleteBeer(BeerModel beer)
@@ -241,7 +264,7 @@ namespace DataAccessLibrary
             return _db.LoadData<TastingModel, dynamic>(query, new { TasterId = tasterId });
         }
 
-        public Task<List<TasterBeerModelVotes>> GetTasterBeerVotes(int tasterId)
+        public Task<List<TasterBeerVoteModel>> GetTasterBeerVotes(int tasterId)
         {
             var query = @"
                              SELECT     TOP 10 
@@ -263,7 +286,7 @@ namespace DataAccessLibrary
                                         taste DESC,
                                         appearance DESC";
 
-            return _db.LoadData<TasterBeerModelVotes, dynamic>(query, new { TasterId = tasterId });
+            return _db.LoadData<TasterBeerVoteModel, dynamic>(query, new { TasterId = tasterId });
         }
 
         public Task<List<VoteModel>> GetVotes(int tastingId)
@@ -273,6 +296,36 @@ namespace DataAccessLibrary
                               FROM  dbo.Vote
                              WHERE  TastingId = @TastingId";
             return _db.LoadData<VoteModel, dynamic>(sql, new { TastingId = tastingId });
+        }
+
+        public Task AddVote(VoteModel vote)
+        {
+            var sql = @"INSERT INTO dbo.Vote (BeerId, TastingId, TasterId, Taste, Appearance, Overall, Note)
+                                    VALUES   (@BeerId, @TastingId, @TasterId, @Taste, @Appearance, @Overall, @Note)";
+
+            return _db.SaveData(sql, vote);
+        }
+
+        public Task UpdateVote(VoteModel vote)
+        {
+            var sql = @"    UPDATE  dbo.Vote
+                               SET  Overall = @Overall,
+                                    Taste = @Taste,
+                                    Appearance = @Appearance,
+                                    Note = @Note
+                             WHERE  VoteId = @VoteId";
+
+            return _db.SaveData(sql, vote);
+        }
+
+        public Task<VoteModel> GetVote(int tasterId, int beerId, int tastingId)
+        {
+            var sql = @"    SELECT  *
+                              FROM  dbo.Vote
+                             WHERE  TastingId = @TastingId
+                               AND  TasterId = @TasterId
+                               AND  BeerId = @BeerId";
+            return _db.LoadSingle<VoteModel, dynamic>(sql, new { TastingId = tastingId, TasterId =  tasterId, BeerId = beerId});
         }
     }
 }
