@@ -299,13 +299,14 @@
             var dialog = DialogService.Show<QueryDialog>("Close and calculate?", parameters);
             var result = await dialog.Result;
 
-            //if (result.Cancelled)
-            //{
-            //    _nav.NavigateTo($"/tasting/live/{TastingId}");
-            //    return;
-            //}
+            // Comment the next 7 lines to test
+            if (result.Cancelled)
+            {
+                _nav.NavigateTo($"/tasting/live/{TastingId}");
+                return;
+            }
 
-            //await CloseTasting();
+            await CloseTasting();
         }
 
         await TastingUtil.CalculateTasting(_db, currentTasting);
