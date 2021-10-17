@@ -14,14 +14,16 @@
 
 <AdminGate />
 
-<MudText Typo="Typo.h3" Class="pa-4">Award ceremony</MudText>
-<MudText Typo="Typo.h4" Class="pa-4"></MudText>
+<MudText Typo="Typo.h3" Class="pa-4">Award ceremony @currentTasting?.Name</MudText>
+<MudText Typo="Typo.h4" Class="pa-4">@_selectedBeerClass</MudText>
+<MudText Typo="Typo.caption" Class="pa-4">Ticks: @_timerTick / Enabled: @_timer?.Enabled</MudText>
 <MudPaper>
     <MudItem xs="12" md="12">
         <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
             <MudButton OnClick="@(() => RevealRegular())">Regular</MudButton>
             <MudButton OnClick="@(() => RevealHomebrew())">Homebrew</MudButton>
             <MudButton OnClick="@(() => RevealHighAbv())">High ABV</MudButton>
+            <MudButton OnClick="@(() => RevealOverall())">Overall</MudButton>
         </MudButtonGroup>
     </MudItem>
 </MudPaper>
@@ -29,7 +31,7 @@
 <MudPaper>
     <MudGrid Class="pa-4">
         <MudItem xs="12" sm="12" Class="align-content-center">BEER CLASS RESULTS</MudItem>
-        @if (ShowFirstPlace)
+        @if (_showFirstPlace)
         {
             <MudItem xs="12" sm="12" Class="align-content-center">
                 <MudCard>
@@ -47,7 +49,7 @@
                 </MudCard>
             </MudItem>
         }
-        @if (ShowSecondPlace)
+        @if (_showSecondPlace)
         {
             <MudItem xs="6" sm="6" Class="align-content-center">
                 <MudCard>
@@ -66,7 +68,7 @@
             </MudItem>
         }
 
-        @if (ShowThirdPlace)
+        @if (_showThirdPlace)
         {
             <MudItem xs="6" sm="6" Class="align-content-center">
                 <MudCard>
@@ -87,12 +89,18 @@
     </MudGrid>
 </MudPaper>
 
-
-
 @code
 {
-    private MudCarousel<TastingBeerModel> _carousel;
-    private IList<string> _source = new List<string>() { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+    enum BeerClassEnum
+    {
+        Regular = 1,
+        Homebrew = 2,
+        HighAbv = 3,
+        NotSelected = -1,
+        All = 0
+    };
+
+    private BeerClassEnum _selectedBeerClass = BeerClassEnum.NotSelected;
     private static System.Timers.Timer _timer;
 
     [Parameter]
@@ -104,46 +112,129 @@
     private List<TastingBeerModel>? tastingBeers = null;
     private List<TastingResultModel>? tastingResults = null;
     private List<BeerResultViewModel> beerResults = new List<BeerResultViewModel>();
+    private List<BeerResultViewModel> filteredBeerResults = new List<BeerResultViewModel>();
     private List<TastingBeerModel> tastingBeerModels = new List<TastingBeerModel>();
 
-    private bool ShowFirstPlace = false;
-    private bool ShowSecondPlace = false;
-    private bool ShowThirdPlace = false;
+    private bool _showFirstPlace = false;
+    private bool _showSecondPlace = false;
+    private bool _showThirdPlace = false;
+    private int _lastBeerShown = -1;
+    private int _timerTick = 0;
 
-    private async Task RevealRegular()
+    private void CleanupTimerAndStates()
     {
-        if (ShowThirdPlace && ShowSecondPlace && ShowFirstPlace)
-        {
-            ShowThirdPlace = false;
-            ShowSecondPlace = false;
-            ShowFirstPlace = false;
-        }
-        else if (!ShowThirdPlace)
-        {
-            ShowThirdPlace = true;
-        }
-        else if (!ShowSecondPlace)
-        {
-            ShowSecondPlace = true;
-        }
-        else
-            ShowFirstPlace = true;
+        _timer.Enabled = false;
+        _timerTick = 0;
+        _selectedBeerClass = BeerClassEnum.NotSelected;
+
+        _showThirdPlace = false;
+        _showSecondPlace = false;
+        _showFirstPlace = false;
+        _lastBeerShown = -1;
 
         StateHasChanged();
     }
 
+    private void InitializeAndStartTimer()
+    {
+        filteredBeerResults.Clear();
+        switch (_selectedBeerClass)
+        {
+            case BeerClassEnum.Regular:
+            case BeerClassEnum.Homebrew:
+            case BeerClassEnum.HighAbv:
+                filteredBeerResults.AddRange(beerResults.Where(x => x.BeerModel.BeerclassModel != null && x.BeerModel.BeerclassModel.BeerClassId == (int)_selectedBeerClass));
+                break;
+            case BeerClassEnum.All:
+                filteredBeerResults.AddRange(beerResults);
+                break;
+            case BeerClassEnum.NotSelected:
+                return;
+        }
+
+        _timer.Start();
+        StateHasChanged();
+    }
+
+    private async Task RevealOverall()
+    {
+        CleanupTimerAndStates();
+        _selectedBeerClass = BeerClassEnum.All;
+        InitializeAndStartTimer();
+    }
+
+    private async Task RevealRegular()
+    {
+        CleanupTimerAndStates();
+        _selectedBeerClass = BeerClassEnum.Regular;
+        InitializeAndStartTimer();
+    }
+
+
     private async Task RevealHomebrew()
     {
-
+        CleanupTimerAndStates();
+        _selectedBeerClass = BeerClassEnum.Homebrew;
+        InitializeAndStartTimer();
     }
 
     private async Task RevealHighAbv()
     {
+        CleanupTimerAndStates();
+        _selectedBeerClass = BeerClassEnum.HighAbv;
+        InitializeAndStartTimer();
+    }
 
+    private async void timerElapsed(Object source, System.Timers.ElapsedEventArgs e)
+    {
+        _timerTick++;
+
+        if (_timerTick == 1)
+        {
+            _showThirdPlace = true;
+        }
+        else if (_timerTick == 2)
+        {
+            _showSecondPlace = true;
+            _showThirdPlace = true;
+        }
+        else if(_timerTick >= 3)
+        {
+            _showFirstPlace = true;
+            _showSecondPlace = true;
+            _showThirdPlace = true;
+        }
+
+        //if (ShowThirdPlace && ShowSecondPlace && ShowFirstPlace)
+        //{
+        //    ShowThirdPlace = false;
+        //    ShowSecondPlace = false;
+        //    ShowFirstPlace = false;
+        //}
+        //else if (!ShowThirdPlace)
+        //{
+        //    ShowThirdPlace = true;
+        //}
+        //else if (!ShowSecondPlace)
+        //{
+        //    ShowSecondPlace = true;
+        //}
+        //else
+        //    ShowFirstPlace = true;
+
+        await InvokeAsync(StateHasChanged);
     }
 
     protected override async Task OnInitializedAsync()
     {
+        _timer = new System.Timers.Timer(2000)
+            {
+                AutoReset = true,
+                Enabled = false
+            };
+
+        _timer.Elapsed += timerElapsed;
+
         currentTasting = await _db.GetTasting(TastingId);
 
         if (currentTasting == null)
