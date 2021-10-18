@@ -203,9 +203,7 @@ else
             return;
         }
 
-        currentTaster = await _db.GetTaster(currentTaster.TasterId);
         tastingBeers = await _db.GetTastingBeers(TastingId);
-
 
         foreach (var tb in tastingBeers)
         {

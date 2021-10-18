@@ -2,6 +2,7 @@
 @using DataAccessLibrary
 @using DataAccessLibrary.Models
 
+@inject ProtectedSessionStorage ProtectedSessionStore
 @inject IBeertastingRepository _db
 
 <MudText Typo="Typo.h3" Class="pa-4">Tastings</MudText>
@@ -22,10 +23,15 @@
             <MudTd DataLabel="Name">@context.Name</MudTd>
             <MudTd DataLabel="Description">@context.Description</MudTd>
             <MudTd DataLabel="Date">@context.TastingDate</MudTd>
-            <MudTd DataLabel="Voting"><MudIconButton Link=@string.Concat("/tasting/vote/", context.TastingId) Icon="@Icons.Material.Outlined.HowToVote" Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined"></MudIconButton></MudTd>
+            <MudTd DataLabel="Voting">
+                <MudIconButton Link=@string.Concat("/tasting/vote/", context.TastingId) Icon="@Icons.Material.Outlined.HowToVote" Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined"></MudIconButton>
+                @if(currentTaster is not null && currentTaster.IsAdmin)
+                {
+                    <MudIconButton Class="mx-2" Link=@string.Concat("/tasting/live/", context.TastingId) Icon="@Icons.Material.Outlined.Elderly" Color="Color.Success" Size="Size.Small" Variant="Variant.Outlined"></MudIconButton>    
+                }
+            </MudTd>
         </RowTemplate>
     </MudTable>
-
 }
 @if (oldTastings is null)
 {
@@ -56,12 +62,38 @@ else
 {
     private List<TastingModel>? activeTastings;
     private List<TastingModel>? oldTastings;
+    private TasterModel? currentTaster = null;
 
     protected override async Task OnInitializedAsync()
     {
+        await initializeTaster();
         var tastings = await _db.GetTastings();
-
         activeTastings = tastings.Where(t => t.IsActive).OrderByDescending(t => t.TastingDate).ToList();
         oldTastings = tastings.Where(t => !t.IsActive).OrderByDescending(t => t.TastingDate).ToList();
+    }
+
+    private async Task initializeTaster()
+    {
+        var retryCount = 10;
+        while (currentTaster is null && retryCount-- > 0)
+        {
+            if (ProtectedSessionStore is null)
+            {
+                Thread.Sleep(100);
+                continue;
+            }
+
+            var t = await ProtectedSessionStore.GetAsync<TasterModel>("taster");
+
+            if (t.Success)
+            {
+                currentTaster = t.Value;
+                break;
+            }
+
+            Thread.Sleep(50);
+        }
+        if (currentTaster is null)
+            throw new Exception("Taster not found!");
     }
 }
