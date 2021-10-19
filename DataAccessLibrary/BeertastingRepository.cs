@@ -325,7 +325,33 @@ namespace DataAccessLibrary
                              WHERE  TastingId = @TastingId
                                AND  TasterId = @TasterId
                                AND  BeerId = @BeerId";
+
             return _db.LoadSingle<VoteModel, dynamic>(sql, new { TastingId = tastingId, TasterId =  tasterId, BeerId = beerId});
+        }
+
+        public Task<LiveTastingInfoModel> GetTastingLiveInfo(int tastingId)
+        {
+            var sql = @"select	ROUND(AVG(v.Taste),2) as Taste, 
+		                        ROUND(AVG(v.Appearance),2) as Appearance, 
+		                        ROUND(AVG(v.Overall), 2) as Overall,
+		                        (select count(*) from dbo.vote v2 where v2.TastingId = @TastingId) as VoteCount,
+		                        (select count(*) from dbo.vote v3 where LEN(v3.Note) > 0 and v3.TastingId = @TastingId) as NoteCount
+                        from	Dbo.Vote v
+                        where	v.TastingId = @TastingId;";
+
+            return _db.LoadSingle<LiveTastingInfoModel, dynamic>(sql, new { TastingId = tastingId });
+        }
+
+        public Task<List<NoteModel>> GetLatestNotesFromTasting(int tastingId)
+        {
+            var sql = @"SELECT  TOP 10
+                                t.DisplayName as Taster, v.Note
+		                FROM    Dbo.Vote v
+		                JOIN    dbo.Taster t on t.TasterId = v.TasterId
+		                WHERE   LEN(v.Note) > 0 AND v.TastingId = @TastingId
+                        ORDER BY v.VoteId desc";
+
+            return _db.LoadData<NoteModel, dynamic>(sql, new { TastingId = tastingId });
         }
     }
 }

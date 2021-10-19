@@ -14,7 +14,6 @@
 <MudText Typo="Typo.h3" Class="pa-4">Beertasting</MudText>
 <MudText Typo="Typo.h4" Class="pa-4">Vote</MudText>
 
-
 @if (currentTaster == null || currentTasting == null || (tastingBeers is null || !tastingBeers.Any()))
 {
     <p><em>Loading...</em></p>
@@ -204,9 +203,7 @@ else
             return;
         }
 
-        currentTaster = await _db.GetTaster(currentTaster.TasterId);
         tastingBeers = await _db.GetTastingBeers(TastingId);
-
 
         foreach (var tb in tastingBeers)
         {

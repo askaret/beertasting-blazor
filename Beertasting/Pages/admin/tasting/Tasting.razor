@@ -1,4 +1,5 @@
 ﻿@page "/admin/tasting"
+@using Beertasting.Util
 @using Beertasting.ViewModels
 @using DataAccessLibrary
 @using DataAccessLibrary.Models
@@ -127,16 +128,8 @@
 
     private async void Calculate(TastingModel tasting)
     {
-        await _db.RemoveTastingResults(tasting.TastingId);
-        var resultTasks = new List<Task>();
-        var tastingVotes = await _db.GetVotes(tasting.TastingId);
-        foreach (var beerVotes in tastingVotes.GroupBy(tv => tv.BeerId))
-        {
-            var result = new TastingResultModel() { BeerId = beerVotes.Key, TastingId = tasting.TastingId };
-            result.CalculateResults(beerVotes.ToArray());
-            resultTasks.Add(_db.AddTastingResults(result));
-        }
-        await Task.WhenAll(resultTasks);
+        await TastingUtil.CalculateTasting(_db, tasting);
+
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
         Snackbar.Add($"Finished calculating tasting {tasting.Name}", Severity.Success);
     }

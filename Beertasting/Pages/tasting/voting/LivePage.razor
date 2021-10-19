@@ -1,0 +1,180 @@
+﻿@page "/tasting/live/{Id:int}"
+
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+@using Beertasting.Util
+@inject NavigationManager _nav
+@inject IBeertastingRepository _db
+
+<AdminGate />
+
+@if (tasting is null || !tasting.IsActive)
+{
+	<em>Nope...</em>
+}
+else
+{
+	<MudGrid Class="pa-2">
+		<MudItem xs="11" sm="11"><MudText Typo="Typo.h3">@tasting?.Name</MudText></MudItem>
+		<MudItem xs="1" sm="1">
+			<MudIconButton Icon="@Icons.Material.Outlined.BarChart" Variant="Variant.Outlined" Color="Color.Success" Size="Size.Small" OnClick="@(() => RevealResults())" />
+		</MudItem>
+	</MudGrid>
+
+	<MudGrid Class="pa-4">
+		<MudItem xs="6" sm="6" Class="align-content-center">
+			<MudCard>
+				<MudCardHeader>
+					<CardHeaderContent>
+						<MudText Typo="Typo.h5">Number of votes</MudText>
+						<MudText Typo="Typo.h4" Color="Color.Info">@_liveInfo.VoteCount</MudText>
+					</CardHeaderContent>
+				</MudCardHeader>
+			</MudCard>
+		</MudItem>
+		<MudItem xs="6" sm="6" Class="align-content-center">
+			<MudCard>
+				<MudCardHeader>
+					<CardHeaderContent>
+						<MudText Typo="Typo.h5">Number of comments</MudText>
+						<MudText Typo="Typo.h4" Color="Color.Info">@_liveInfo.NoteCount</MudText>
+					</CardHeaderContent>
+				</MudCardHeader>
+			</MudCard>
+		</MudItem>
+	</MudGrid>
+	<MudGrid Class="pa-4">
+		<MudItem xs="12" sm="12" Class="align-content-center">
+			<MudCard>
+				<MudCardHeader>
+					<MudText Typo="Typo.h5">Average scores (all votes)</MudText>
+				</MudCardHeader>
+				<MudCardContent>
+					<MudItem xs="2" sm="2" Class="pa-2">
+						<MudText Typo="Typo.body1">Average taste</MudText>
+					</MudItem>
+					<MudItem xs="10" sm="10" Class="pa-2">
+						<MudProgressLinear Color="Color.Primary" Value="_liveInfo.Taste" Min="0" Max="10" />
+					</MudItem>
+
+					<MudItem xs="2" sm="2" Class="pa-2">
+						<MudText Typo="Typo.body1">Average appearance</MudText>
+					</MudItem>
+					<MudItem xs="10" sm="10" Class="pa-2">
+						<MudProgressLinear Color="Color.Secondary" Value="_liveInfo.Appearance" Min="0" Max="10" />
+					</MudItem>
+
+					<MudItem xs="2" sm="2" Class="pa-2">
+						<MudText Typo="Typo.body1">Average overall</MudText>
+					</MudItem>
+					<MudItem xs="10" sm="10" Class="pa-2">
+						<MudProgressLinear Color="Color.Tertiary" Value="_liveInfo.Overall" Min="0" Max="10" />
+					</MudItem>
+				</MudCardContent>
+			</MudCard>
+		</MudItem>
+	</MudGrid>
+
+	<MudGrid Class="pa-4">
+		@if  (!string.IsNullOrEmpty(quote))
+		{
+			<MudItem xs="12" sm="12" Class="align-content-center">
+					<MudCard>
+					<MudCardHeader>
+						<CardHeaderContent>
+							<MudText Typo="Typo.h5">AI-insight</MudText>
+							<MudText Typo="Typo.h4" Color="Color.Info">@quote</MudText>
+						</CardHeaderContent>
+					</MudCardHeader>
+				</MudCard>
+			</MudItem>
+		}
+		@if (_note is not null)
+		{
+			<MudItem xs="12" sm="12" Class="align-content-center">
+				<MudCard>
+					<MudCardHeader>
+						<CardHeaderContent>
+							<MudText Typo="Typo.h5">@_note.Taster says</MudText>
+							<MudText Typo="Typo.h4" Color="Color.Info">@_note.Note</MudText>
+						</CardHeaderContent>
+					</MudCardHeader>
+				</MudCard>
+			</MudItem>
+		}
+	</MudGrid>
+}
+@code
+{
+	[Parameter]
+	public int Id { get; set; }
+
+	private TastingModel tasting;
+	private List<TastingBeerModel> tastingBeers = new List<TastingBeerModel>();
+	private List<BeerModel> beers = new List<BeerModel>();
+	private List<VoteModel> votes = new List<VoteModel>();
+	private Timer _timer;
+	private string quote;
+	private RandomQuoteGenerator quoteGenerator;
+	private int _timerTickCount = 0;
+	private LiveTastingInfoModel _liveInfo = new LiveTastingInfoModel();
+	private List<NoteModel> _notes = new List<NoteModel>();
+	private NoteModel? _note = null;
+	private DateTime timeStamp = DateTime.MinValue;
+	protected override async Task OnInitializedAsync()
+	{
+		tasting = await _db.GetTasting(Id);
+		tastingBeers = await _db.GetTastingBeers(Id);
+		beers = await _db.GetBeers();
+		votes = await _db.GetVotes(tasting.TastingId);
+		quoteGenerator = new RandomQuoteGenerator(await _db.GetTasters(), beers, tasting.IsBlind);
+
+		foreach (var tastingBeer in tastingBeers)
+		{
+			tastingBeer.BeerModel = beers.SingleOrDefault(b => b.BeerId == tastingBeer.BeerId);
+		}
+
+		_timer = new Timer(onTimerTick, null, 0, 1000);
+	}
+
+	private void RevealResults()
+	{
+		_nav.NavigateTo($"/tasting/reveal/{Id}");
+	}
+
+	private DateTime lastQuote = DateTime.MinValue;
+	private DateTime lastNote = DateTime.MinValue;
+	private DateTime lastVote = DateTime.MinValue;
+
+	private async void onTimerTick(Object o)
+	{
+		var now = DateTime.Now;
+
+		if ((now - lastQuote).TotalSeconds >= 20)
+		{
+			votes = await _db.GetVotes(tasting.TastingId);
+			quoteGenerator.votes = votes;
+			quote = quoteGenerator.GetQuote();
+			lastQuote = DateTime.Now;
+		}
+
+		if ((now - lastNote).TotalSeconds >= 15)
+		{
+			_notes = await _db.GetLatestNotesFromTasting(tasting.TastingId);
+			if (_notes.Any())
+			{
+				_note = _notes[Random.Shared.Next(0, _notes.Count - 1)];
+				lastNote = DateTime.Now;
+			}
+		}
+
+		if ((now - lastVote).TotalSeconds >= 2)
+		{
+			_liveInfo = await _db.GetTastingLiveInfo(tasting.TastingId);
+			lastVote = DateTime.Now;
+		}
+
+		_timerTickCount++;
+		await InvokeAsync(StateHasChanged);
+	}
+}
