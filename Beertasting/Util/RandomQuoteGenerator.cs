@@ -7,13 +7,14 @@ namespace Beertasting.Util
         public List<VoteModel> votes = new List<VoteModel>();
         private IEnumerable<TasterModel> tasters;
         private IEnumerable<BeerModel> beers;
-
+        private bool _isBlindTasting = false;
         private Random randomGenerator = new Random();
 
-        public RandomQuoteGenerator(IEnumerable<TasterModel> tasters, IEnumerable<BeerModel> beers)
+        public RandomQuoteGenerator(IEnumerable<TasterModel> tasters, IEnumerable<BeerModel> beers, bool isBlindTasting)
         {
             this.tasters = tasters;
             this.beers = beers;
+            _isBlindTasting = isBlindTasting;
         }
 
         private string getNegativeTaster(int beerId)
@@ -31,9 +32,10 @@ namespace Beertasting.Util
         private string getAgreeTaster()
         {
             var averages = votes.GroupBy(v => v.BeerId).Select(v => (v.Key, v.Average(b => b.Final)));
-            var diff = votes.GroupBy(v => v.TasterId).Select(tv => (tv.Key, Math.Sqrt(tv.Sum(s => s.Final * s.Final - averages.SingleOrDefault(a => a.Key == s.BeerId).Item2* averages.SingleOrDefault(a => a.Key == s.BeerId).Item2))));
-            diff = diff.OrderBy(d => d.Item2);
-            return tasters.SingleOrDefault(t => t.TasterId == diff.FirstOrDefault().Item2)?.DisplayName ?? "FIXME";
+            var diff = votes.GroupBy(v => v.TasterId).Select(tv => (tv.Key, Math.Sqrt(tv.Sum(s => s.Final * s.Final - averages.SingleOrDefault(a => a.Key == s.BeerId).Item2 * averages.SingleOrDefault(a => a.Key == s.BeerId).Item2))));
+            diff = diff.Where(d => !double.IsNaN(d.Item2)).OrderBy(d => d.Item2);
+
+            return tasters.SingleOrDefault(t => t.TasterId == diff.FirstOrDefault().Key)?.DisplayName ?? "Random goat nugget";
         }
 
         private string getNegativeQuote()
@@ -42,6 +44,12 @@ namespace Beertasting.Util
             var templateQuote = QuoteTemplates.NegativeQuotes[r];
             return templateQuote;
         }
+
+        private string getRandomBeerName()
+		{
+            var r = randomGenerator.Next(0, QuoteTemplates.BeerNames.Length);
+            return QuoteTemplates.BeerNames[r];
+		}
 
         private string getPositiveQuote()
         {
@@ -60,6 +68,9 @@ namespace Beertasting.Util
         public string GetQuote()
         {
             var candidateBeers = votes.GroupBy(v => v.BeerId).Where(b => b.Count() > votes.Select(v => v.TasterId).Distinct().Count() / 2);
+            if (!candidateBeers.Any())
+                return String.Empty;
+
             var beerVotes = candidateBeers.ElementAt(randomGenerator.Next(0, candidateBeers.Count()));
             var beer = beers.SingleOrDefault(b => b.BeerId == beerVotes.Key);
 
@@ -84,6 +95,8 @@ namespace Beertasting.Util
                     break;
             }
 
+            if(_isBlindTasting)  
+                return string.Format(quote, taster, getRandomBeerName());
             return string.Format(quote, taster, beer.Name);
         }
     }
