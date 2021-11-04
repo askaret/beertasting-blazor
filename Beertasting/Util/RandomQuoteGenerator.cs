@@ -93,7 +93,7 @@ namespace Beertasting.Util
 
             if(_isBlindTasting)
             {
-                return string.Format(quote, taster, $"Beer {tastingBeers.First(x => x.BeerId == beer.BeerId).SortOrder}");
+                return string.Format(quote, taster, $"Beer #{tastingBeers.First(x => x.BeerId == beer.BeerId).SortOrder}");
             }
             
             return string.Format(quote, taster, beer.Name); 
