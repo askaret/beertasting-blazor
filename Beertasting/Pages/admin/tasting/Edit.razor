@@ -43,6 +43,8 @@
                     <MudTh>Name</MudTh>
                     <MudTh>Brewery</MudTh>
                     <MudTh>ABV %</MudTh>
+                    <MudTh>Class</MudTh>
+                    <MudTh>Style</MudTh>
                     <MudTh>URL</MudTh>
                     <MudTh><MudButton Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined" OnClick="@(() => AddBeer())">Add Beer</MudButton></MudTh>
                 </HeaderContent>
@@ -53,6 +55,9 @@
                     </MudTd>
                     <MudTd DataLabel="Name">@tbContext.BeerModel?.Name</MudTd>
                     <MudTd DataLabel="Brewery">@tbContext.BeerModel?.BreweryModel?.Name</MudTd>
+                    <MudTd DataLabel="ABV %">@tbContext.BeerModel?.ABV</MudTd>
+                    <MudTd DataLabel="Class">@tbContext.BeerModel.BeerclassModel.Name</MudTd>
+                    <MudTd DataLabel="Style">@tbContext.BeerModel.BeerStyleModel.Name</MudTd>
                     <MudTd DataLabel="ABV %">@tbContext.BeerModel?.ABV</MudTd>
                     <MudTd DataLabel="URL">
                         @if (!string.IsNullOrEmpty(tbContext.BeerModel?.RateBeerLink))
@@ -109,10 +114,6 @@
             beer.BeerStyleModel = beerStyles.SingleOrDefault(bs => bs.BeerStyleId == beer.BeerStyleId);
         }
 
-        foreach (var tastingBeer in tastingBeers)
-        {
-            tastingBeer.BeerModel = beers.SingleOrDefault(b => b.BeerId == tastingBeer.BeerId);
-        }
         tastingBeers = tastingBeers.OrderBy(tb => tb.SortOrder).ToList();
     }
 

@@ -127,7 +127,7 @@ else
 		tastingBeers = await _db.GetTastingBeers(Id);
 		beers = await _db.GetBeers();
 		votes = await _db.GetVotes(tasting.TastingId);
-		quoteGenerator = new RandomQuoteGenerator(await _db.GetTasters(), beers, tasting.IsBlind);
+		quoteGenerator = new RandomQuoteGenerator(await _db.GetTasters(), beers, tastingBeers, tasting.IsBlind);
 
 		foreach (var tastingBeer in tastingBeers)
 		{

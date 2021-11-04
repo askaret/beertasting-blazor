@@ -9,11 +9,13 @@ namespace Beertasting.Util
         private IEnumerable<BeerModel> beers;
         private bool _isBlindTasting = false;
         private Random randomGenerator = new Random();
+        private List<TastingBeerModel> tastingBeers;
 
-        public RandomQuoteGenerator(IEnumerable<TasterModel> tasters, IEnumerable<BeerModel> beers, bool isBlindTasting)
+        public RandomQuoteGenerator(IEnumerable<TasterModel> tasters, IEnumerable<BeerModel> beers, List<TastingBeerModel> tastingBeers, bool isBlindTasting)
         {
             this.tasters = tasters;
             this.beers = beers;
+            this.tastingBeers = tastingBeers;
             _isBlindTasting = isBlindTasting;
         }
 
@@ -45,12 +47,6 @@ namespace Beertasting.Util
             return templateQuote;
         }
 
-        private string getRandomBeerName()
-		{
-            var r = randomGenerator.Next(0, QuoteTemplates.BeerNames.Length);
-            return QuoteTemplates.BeerNames[r];
-		}
-
         private string getPositiveQuote()
         {
             var r = randomGenerator.Next(0, QuoteTemplates.PositiveQuotes.Length);
@@ -72,8 +68,8 @@ namespace Beertasting.Util
                 return String.Empty;
 
             var beerVotes = candidateBeers.ElementAt(randomGenerator.Next(0, candidateBeers.Count()));
-            var beer = beers.SingleOrDefault(b => b.BeerId == beerVotes.Key);
-
+            var beer = beers.Single(b => b.BeerId == beerVotes.Key);
+            
             string quote = "";
             string taster = "";
             switch (randomGenerator.Next(0, 3))
@@ -95,9 +91,12 @@ namespace Beertasting.Util
                     break;
             }
 
-            if(_isBlindTasting)  
-                return string.Format(quote, taster, getRandomBeerName());
-            return string.Format(quote, taster, beer.Name);
+            if(_isBlindTasting)
+            {
+                return string.Format(quote, taster, $"Beer {tastingBeers.First(x => x.BeerId == beer.BeerId).SortOrder}");
+            }
+            
+            return string.Format(quote, taster, beer.Name); 
         }
     }
 }
