@@ -11,7 +11,7 @@ namespace Beertasting.ViewModels
         public string Name { get; set; }
         [Required(ErrorMessage = "Country is required.")] 
         public string Country { get; set; }
-        [Required(ErrorMessage = "Website is required.")]
+        
         public string Website { get; set; }
 
         public BreweryViewModel()

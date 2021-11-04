@@ -57,7 +57,7 @@ else
                         <MudItem xs="12" sm="12"><MudSlider T="double" ValueChanged="@((Value) => AppearanceChanged(Value, context))" Value="context.VoteModel.Appearance" Min="0" Max="10" Step="0.5" Color="Color.Secondary">Appearance: @context.VoteModel.Appearance.ToString("F1")</MudSlider></MudItem>
                         <MudItem xs="12" sm="12"><MudSlider T="double" ValueChanged="@((Value) => OverallChanged(Value, context))" Value="context.VoteModel.Overall" Min="0" Max="10" Step="0.5" Color="Color.Tertiary">Overall: @context.VoteModel.Overall.ToString("F1")</MudSlider></MudItem>
                         <MudItem xs="12" sm="12"><MudTextField Lines="3" TextChanged="@((Value) => NoteChanged(Value, context))" Label="Note" Value="context.VoteModel.Note" Variant="Variant.Outlined" /></MudItem>
-                        <MudItem xs="12" sm="12"><MudButton Disabled="@(!context.IsDirty)" ButtonType="ButtonType.Button" Variant="Variant.Outlined" Color="Color.Info" Size="Size.Small" OnClick="@(() => SaveVote(context))">VOTE</MudButton></MudItem>
+                        <MudItem xs="12" sm="12"><MudButton Disabled="@(!context.IsDirty)" ButtonType="ButtonType.Button" Variant="Variant.Outlined" Color="Color.Info" Size="Size.Small" OnClick="@(() => SaveVote(context))">SAVE</MudButton></MudItem>
                     </MudGrid>
                 </div>
             </ItemTemplate>
@@ -168,15 +168,15 @@ else
     {
         if (tastingBeers.Any(x => x.IsDirty))
         {
-            var parameters = new DialogParameters();
-            parameters.Add("ContentText", $"Unsaved vote(s), save before moving on?");
-            parameters.Add("ButtonText", "SAVE");
-            parameters.Add("Color", Color.Success);
+            //var parameters = new DialogParameters();
+            //parameters.Add("ContentText", $"Unsaved vote(s), save before moving on?");
+            //parameters.Add("ButtonText", "SAVE");
+            //parameters.Add("Color", Color.Success);
 
-            var dialog = DialogService.Show<QueryDialog>("Save vote(s)", parameters);
-            var result = await dialog.Result;
+            //var dialog = DialogService.Show<QueryDialog>("Save vote(s)", parameters);
+            //var result = await dialog.Result;
 
-            if (result.Cancelled) return;
+            //if (result.Cancelled) return;
 
             foreach (var tbm in tastingBeers.Where(x => x.IsDirty))
             {
