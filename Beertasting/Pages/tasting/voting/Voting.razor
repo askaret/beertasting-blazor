@@ -21,7 +21,7 @@
 else
 {
     <MudPaper>
-        <MudCarousel @ref="_carousel" ItemsSource="@tastingBeers" Style="height:80vh;" ShowArrows="true" ShowDelimiters="false" AutoCycle="false" SelectedIndexChanged="@IndexChanged" ArrowsPosition="Position.Top">
+        <MudCarousel @ref="_carousel" ItemsSource="@tastingBeers.OrderBy(x => x.SortOrder)" Style="height:80vh;" ShowArrows="true" ShowDelimiters="false" AutoCycle="false" SelectedIndexChanged="@IndexChanged" ArrowsPosition="Position.Top">
             <PreviousButtonTemplate>
                 <div Class="mud-button-root mud-icon-button mud-icon-button-color-inherit mud-ripple mud-ripple-icon">
                     <span class="mud-icon-button-label">
