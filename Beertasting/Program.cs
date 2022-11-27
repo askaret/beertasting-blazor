@@ -1,3 +1,6 @@
+using Beertasting.Services;
+using Blazored.LocalStorage;
+using Blazored.SessionStorage;
 using DataAccessLibrary;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Identity.Web;
@@ -6,19 +9,28 @@ using MudBlazor.Services;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor().AddMicrosoftIdentityConsentHandler();
 builder.Services.AddMudServices();
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddTransient<IBeertastingRepository, BeertastingRepository>();
+builder.Services.AddTransient<ITasterService, TasterService>();
+
 var initialScopes = builder.Configuration.GetValue<string>("DownstreamApi:Scopes")?.Split(' ');
 
-builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+builder.Services
+    .AddBlazoredLocalStorage()
+    .AddBlazoredSessionStorage()
+    .AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
-        .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
-            .AddMicrosoftGraph(builder.Configuration.GetSection("DownstreamApi"))
-            .AddInMemoryTokenCaches();
+    .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
+    .AddMicrosoftGraph(builder.Configuration.GetSection("DownstreamApi"))
+    .AddInMemoryTokenCaches();
+
 builder.Services.AddControllersWithViews()
     .AddMicrosoftIdentityUI();
 
@@ -46,8 +58,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAuthentication();
-app.UseAuthorization();
 app.UseRouting();
+app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {

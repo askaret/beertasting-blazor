@@ -1,5 +1,7 @@
-﻿using DataAccessLibrary.Models;
+﻿using Beertasting.Util;
+using DataAccessLibrary.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Cryptography;
 
 namespace Beertasting.ViewModels
 {
@@ -11,6 +13,10 @@ namespace Beertasting.ViewModels
         [Required(ErrorMessage = "E-mail address is required")] 
         public string EmailAddress { get; set; }
         public bool IsAdmin { get; set; }
+        public string Photo { get; set; }
+        public string JobTitle { get; set; }
+
+        public string Checksum => $"{TasterId}{EmailAddress}{(IsAdmin ? "admin" : "notadmin")}{JobTitle}{DisplayName}".Hash();
 
         public TasterViewModel()
         {

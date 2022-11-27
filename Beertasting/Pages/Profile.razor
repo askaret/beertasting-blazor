@@ -1,20 +1,21 @@
 ﻿@page "/profile"
 
-@using Microsoft.Identity.Web
-@using Microsoft.Graph
+@using Beertasting.Services
+@using Beertasting.Util
 @using Beertasting.ViewModels
 @using DataAccessLibrary
 @using DataAccessLibrary.Models
 @using System.Globalization
 @using System.ComponentModel.DataAnnotations
 
-@inject Microsoft.Graph.GraphServiceClient GraphServiceClient
-@inject MicrosoftIdentityConsentAndConditionalAccessHandler ConsentHandler
 @inject IBeertastingRepository _db;
+@inject ITasterService tasterService;
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
 <MudText Typo="Typo.h3" Class="pa-4">User profile</MudText>
 
-@if (user == null || currentTaster == null)
+@if (tasterVM == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -23,30 +24,30 @@ else
     <MudCard>
         <MudCardHeader>
             <CardHeaderAvatar>
-                <MudAvatar Color="Color.Secondary">@user.DisplayName.Substring(0, 1)</MudAvatar>
+                <MudAvatar Color="Color.Secondary">@tasterVM.DisplayName.Substring(0, 1)</MudAvatar>
             </CardHeaderAvatar>
             <CardHeaderContent>
-                <MudText Typo="Typo.body1">@user.DisplayName</MudText>
-                <MudText Typo="Typo.body2">@user.JobTitle</MudText>
-                <MudText Typo="Typo.body2">@user.Mail</MudText>
-                @if (currentTaster.IsAdmin)
+                <MudText Typo="Typo.body1">@tasterVM.DisplayName</MudText>
+                <MudText Typo="Typo.body2">@tasterVM.JobTitle</MudText>
+                <MudText Typo="Typo.body2">@tasterVM.EmailAddress</MudText>
+                @if (tasterVM.IsAdmin)
                 {
                     <MudText Typo="Typo.body1" Color="Color.Error">ADMIN</MudText>
                 }
             </CardHeaderContent>
         </MudCardHeader>
         <MudCardContent Style="align-content: center">
-            <img style="margin: 5px 0; height: 250px;" src="data:image/jpeg;base64, @photo" />
+            <img style="margin: 5px 0; height: 250px;" src="data:image/jpeg;base64, @tasterVM.Photo" />
         </MudCardContent>
     </MudCard>
 
-    <EditForm Model="@currentTaster" OnValidSubmit="SaveDisplayName">
+    <EditForm Model="@tasterVM" OnValidSubmit="SaveDisplayName">
         <DataAnnotationsValidator />
         <MudCard>
             <MudCardContent>
                 <MudGrid>
                     <MudItem xs="12" sm="6">
-                        <MudTextField Label="Display name" @bind-Value="currentTaster.DisplayName" For="@(() => currentTaster.DisplayName)" Variant="Variant.Outlined" />
+                        <MudTextField Label="Display name" @bind-Value="tasterVM.DisplayName" For="@(() => tasterVM.DisplayName)" Variant="Variant.Outlined" />
                     </MudItem>
                     <MudItem xs="12" sm="6">
                         <MudCardActions>
@@ -111,8 +112,7 @@ else
 }
 
 @code {
-    Microsoft.Graph.User? user;
-    string photo = "";
+    TasterViewModel? tasterVM = null;
     string displayname = "";
     private TasterModel? currentTaster;
     private List<TastingModel> tastings = new List<TastingModel>();
@@ -120,58 +120,22 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        try
-        {
-            user = await GraphServiceClient.Me.Request().GetAsync();
-            photo = await GetPhoto();
-
-            currentTaster = await _db.GetTaster(user.Mail);
-
-            if (currentTaster is null)
-            {
-                currentTaster = new TasterModel()
-                    {
-                        DisplayName = user.DisplayName,
-                        EmailAddress = user.Mail,
-                        IsAdmin = false
-                    };
-                await _db.AddTaster(currentTaster);
-
-                currentTaster = await _db.GetTaster(user.Mail);
-            }
-
-            tastings = await _db.GetTastingsForTaster(currentTaster.TasterId);
-            votedBeers = await _db.GetTasterBeerVotes(currentTaster.TasterId);
+        tasterVM = await localStorage.GetItemAsync<TasterViewModel>(CacheKeys.PROFILE);
+        if (tasterVM == null || tasterVM.TasterId == 0 || tasterVM.Checksum != await sessionStorage.GetItemAsync<string>(CacheKeys.CHECKSUM)) {
+            tasterVM = await tasterService.GetTasterVM();
+            await localStorage.SetItemAsync<TasterViewModel>(CacheKeys.PROFILE, tasterVM);
+            await sessionStorage.SetItemAsync<string>(CacheKeys.CHECKSUM, tasterVM.Checksum);
         }
-        catch (Exception ex)
-        {
-            ConsentHandler.HandleException(ex);
-        }
+        tastings = await _db.GetTastingsForTaster(tasterVM.TasterId);
+        votedBeers = await _db.GetTasterBeerVotes(tasterVM.TasterId);
+        
     }
 
     private async Task SaveDisplayName()
     {
-        await _db.UpdateTaster(currentTaster);
+        if (tasterVM != null) {
+            await _db.UpdateTaster(tasterVM.ToTasterModel());
+        }
         StateHasChanged();
-    }
-    protected async Task<string> GetPhoto()
-    {
-        string photo;
-
-        try
-        {
-            using (var photoStream = await GraphServiceClient.Me.Photo.Content.Request().GetAsync())
-            {
-                byte[] photoByte = ((System.IO.MemoryStream)photoStream).ToArray();
-                photo = Convert.ToBase64String(photoByte);
-                this.StateHasChanged();
-            }
-
-        }
-        catch (Exception)
-        {
-            photo = "";
-        }
-        return photo;
     }
 }
