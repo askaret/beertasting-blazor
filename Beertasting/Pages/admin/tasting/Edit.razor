@@ -56,8 +56,8 @@
                     <MudTd DataLabel="Name">@tbContext.BeerModel?.Name</MudTd>
                     <MudTd DataLabel="Brewery">@tbContext.BeerModel?.BreweryModel?.Name</MudTd>
                     <MudTd DataLabel="ABV %">@tbContext.BeerModel?.ABV</MudTd>
-                    <MudTd DataLabel="Class">@tbContext.BeerModel.BeerclassModel.Name</MudTd>
-                    <MudTd DataLabel="Style">@tbContext.BeerModel.BeerStyleModel.Name</MudTd>
+                    <MudTd DataLabel="Class">@tbContext.BeerModel?.BeerclassModel?.Name</MudTd>
+                    <MudTd DataLabel="Style">@tbContext.BeerModel?.BeerStyleModel?.Name</MudTd>
                     <MudTd DataLabel="URL">
                         @if (!string.IsNullOrEmpty(tbContext.BeerModel?.RateBeerLink))
                             {
