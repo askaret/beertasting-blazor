@@ -167,17 +167,7 @@ else
     private async Task IndexChanged(int index)
     {
         if (tastingBeers.Any(x => x.IsDirty))
-        {
-            //var parameters = new DialogParameters();
-            //parameters.Add("ContentText", $"Unsaved vote(s), save before moving on?");
-            //parameters.Add("ButtonText", "SAVE");
-            //parameters.Add("Color", Color.Success);
-
-            //var dialog = DialogService.Show<QueryDialog>("Save vote(s)", parameters);
-            //var result = await dialog.Result;
-
-            //if (result.Cancelled) return;
-
+        {   
             foreach (var tbm in tastingBeers.Where(x => x.IsDirty))
             {
                 await SaveVote(tbm);
