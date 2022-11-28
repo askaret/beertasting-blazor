@@ -86,10 +86,10 @@
 
     private bool showTastings;
 
-    private HashSet<int> selectedTastings = new HashSet<int>();
-    private HashSet<int> selectedClasses = new HashSet<int>();
-    private HashSet<int> selectedStyles = new HashSet<int>();
-    private HashSet<int> selectedBreweries = new HashSet<int>();
+    private IEnumerable<int> selectedTastings = new List<int>();
+    private IEnumerable<int> selectedClasses = new List<int>();
+    private IEnumerable<int> selectedStyles = new List<int>();
+    private IEnumerable<int> selectedBreweries = new List<int>();
     private List<TastingModel>? tastings = new List<TastingModel>();
     private List<BeerResultViewModel> beerResults = new List<BeerResultViewModel>();
     private List<BeerModel> beers;
@@ -105,22 +105,24 @@
         beers = await _db.GetBeers();
 
         breweries = await _db.GetBreweries();
-        breweries.ForEach(b => selectedBreweries.Add(b.BreweryId));
+        ((List<int>)selectedBreweries).AddRange(breweries.Select(b => b.BreweryId));
 
         beerclasses = await _db.GetBeerclasses();
-        beerclasses.ForEach(c => selectedClasses.Add(c.BeerClassId));
+        ((List<int>)selectedClasses).AddRange(beerclasses.Select(b => b.BeerClassId));
 
         beerstyles = await _db.GetBeerstyles();
-        beerstyles.ForEach(s => selectedStyles.Add(s.BeerStyleId));
-        
+        ((List<int>)selectedStyles).AddRange(beerstyles.Select(b => b.BeerStyleId));
+
         tastings = (await _db.GetTastings()).Where(t => !t.IsActive).ToList();
-        if (Id is null)
+        
+
+        if (!Id.HasValue)
         {
-            tastings.ForEach(t => selectedTastings.Add(t.TastingId));
+            ((List<int>)selectedTastings).AddRange(tastings.Select(t => t.TastingId));
         }
         else if (tastings.Any(t => t.TastingId == Id))
         {
-            selectedTastings.Add(Id.Value);
+            ((List<int>)selectedTastings).Add(Id.Value);
         }
 
         tastingResults = await _db.GetTastingResults();
@@ -136,9 +138,9 @@
         beerResults = beerResults.OrderByDescending(br => br.AverageFinal).ToList();
     }
 
-    private string GetMultiSelectionText(List<string> selectedTastings)
+    private string GetMultiSelectionText(IEnumerable<string> selectedTastings)
     {
-        return $"{selectedTastings.Count} items selected";
+        return $"{selectedTastings.Count()} items selected";
     }
 
     private bool FilterResults(BeerResultViewModel tastingResult)
@@ -154,12 +156,13 @@
         return true;
     }
 
-    private void SelectedValuesChanged(HashSet<int> selectedIds)
+    private void SelectedValuesChanged(IEnumerable<int> selectedIds)
     {
-        selectedTastings = selectedIds;
+        selectedTastings = selectedIds.ToList();
         foreach (var beerResult in beerResults)
         {
             beerResult.TastingResults = new List<TastingResultModel>(tastingResults.Where(tr => tr.BeerId == beerResult.BeerModel.BeerId && selectedTastings.Contains(tr.TastingId)));
         }
+        
     }
 }
