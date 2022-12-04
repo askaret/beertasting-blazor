@@ -8,7 +8,7 @@ env:
   AZURE_WEBAPP_PACKAGE_PATH: Beertasting/publish
   AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.BouvetBeertasting_8cbe }}
   CONFIGURATION: Release
-  DOTNET_CORE_VERSION: 6.0.x
+  DOTNET_CORE_VERSION: 7.0.x
   WORKING_DIRECTORY: Beertasting
 jobs:
   build-and-deploy:
