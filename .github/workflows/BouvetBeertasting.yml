@@ -10,7 +10,7 @@ env:
   AZURE_SLOT_NAME: Production
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 7.0.x
-  WORKING_DIRECTORY: juleølsmaking
+  WORKING_DIRECTORY: beertasting
 jobs:
   build-and-deploy:
     runs-on: windows-latest
