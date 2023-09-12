@@ -4,13 +4,13 @@ on:
     branches:
     - master
 env:
-  AZURE_WEBAPP_NAME: Juleølsmaking
-  AZURE_WEBAPP_PACKAGE_PATH: Juleølsmaking/publish
-  AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.BouvetBeertasting_8cbe }}
+  AZURE_WEBAPP_NAME: juleølsmaking
+  AZURE_WEBAPP_PACKAGE_PATH: juleølsmaking/publish
+  AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_034A9949ABC6418B9478FC6A2D001F1D }}
   AZURE_SLOT_NAME: Production
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 7.0.x
-  WORKING_DIRECTORY: Beertasting
+  WORKING_DIRECTORY: juleølsmaking
 jobs:
   build-and-deploy:
     runs-on: windows-latest
