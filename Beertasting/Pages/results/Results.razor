@@ -68,7 +68,7 @@
     <RowTemplate>
         <MudTd DataLabel="Name">@context.BeerModel.Name</MudTd>
         <MudTd DataLabel="ABV">@context.BeerModel.ABV</MudTd>
-        <MudTd DataLabel="Brewery">@context.BeerModel.BreweryModel.Name</MudTd>
+        <MudTd DataLabel="Brewery"><a href="@context.BeerModel.BreweryModel.Website" target="_blank">@context.BeerModel.BreweryModel.Name</a></MudTd>
         <MudTd DataLabel="Class">@context.BeerModel.BeerclassModel.Name</MudTd>
         <MudTd DataLabel="Style">@context.BeerModel.BeerStyleModel.Name</MudTd>
         <MudTd DataLabel="NR of tastings">@context.TastingResults.Count</MudTd>
