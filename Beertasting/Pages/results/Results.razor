@@ -66,7 +66,7 @@
         <MudTh><MudTableSortLabel SortBy="new Func<BeerResultViewModel, object>(x => x.AverageFinal)">Final Score</MudTableSortLabel></MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Name">@context.BeerModel.Name</MudTd>
+        <MudTd DataLabel="Name"><a href="@context.BeerModel.RateBeerLink" target="_blank">&#127462 &#127464 @context.BeerModel.Name</a></MudTd>
         <MudTd DataLabel="ABV">@context.BeerModel.ABV</MudTd>
         <MudTd DataLabel="Brewery"><a href="@context.BeerModel.BreweryModel.Website" target="_blank">@context.BeerModel.BreweryModel.Name</a></MudTd>
         <MudTd DataLabel="Class">@context.BeerModel.BeerclassModel.Name</MudTd>
