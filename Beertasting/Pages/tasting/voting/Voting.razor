@@ -37,29 +37,49 @@ else
                 </div>
             </NextButtonTemplate>
             <ItemTemplate>
-                <br /><br />
-                <div class="d-flex flex-column flex-column align-top" style="height:100%">
-                    <MudCard>
-                        <MudCardHeader>
-                            <CardHeaderAvatar>
-                                <MudAvatar Color="Color.Primary">@context.SortOrder</MudAvatar>
-                            </CardHeaderAvatar>
-                            <CardHeaderContent>
-                                <MudText Typo="Typo.body1">@context.BeerModel.Name (@context.BeerModel.ABV %)</MudText>
-                                <MudText Typo="Typo.caption">@context.BeerModel.BeerStyleModel.Name - @context.BeerModel.BeerclassModel?.Name</MudText>
-                                <MudText Typo="Typo.body1">@context.BeerModel.BreweryModel.Name</MudText>
-                                <MudText Typo="Typo.caption">@context.BeerModel.BreweryModel.Country</MudText>
-                            </CardHeaderContent>
-                        </MudCardHeader>
-                    </MudCard>
-                    <MudGrid Class="pa-4">
-                        <MudItem xs="12" sm="12"><MudSlider T="double" ValueChanged="@((Value) => TasteChanged(Value, context))" Value="context.VoteModel.Taste" Min="0" Max="10" Step="0.5" Color="Color.Primary">Taste: @context.VoteModel.Taste.ToString("F1")</MudSlider></MudItem>
-                        <MudItem xs="12" sm="12"><MudSlider T="double" ValueChanged="@((Value) => AppearanceChanged(Value, context))" Value="context.VoteModel.Appearance" Min="0" Max="10" Step="0.5" Color="Color.Secondary">Appearance: @context.VoteModel.Appearance.ToString("F1")</MudSlider></MudItem>
-                        <MudItem xs="12" sm="12"><MudSlider T="double" ValueChanged="@((Value) => OverallChanged(Value, context))" Value="context.VoteModel.Overall" Min="0" Max="10" Step="0.5" Color="Color.Tertiary">Overall: @context.VoteModel.Overall.ToString("F1")</MudSlider></MudItem>
-                        <MudItem xs="12" sm="12"><MudTextField Lines="3" TextChanged="@((Value) => NoteChanged(Value, context))" Label="Note" Value="context.VoteModel.Note" Variant="Variant.Outlined" /></MudItem>
-                        <MudItem xs="12" sm="12"><MudButton Disabled="@(!context.IsDirty)" ButtonType="ButtonType.Button" Variant="Variant.Outlined" Color="Color.Info" Size="Size.Small" OnClick="@(() => SaveVote(context))">SAVE</MudButton></MudItem>
-                    </MudGrid>
-                </div>
+                <MudGrid>
+                    <MudSpacer />
+                    <MudItem xs="12" sm="12">
+                        <MudCard>
+                            <MudCardHeader>
+                                <CardHeaderAvatar>
+                                    <MudAvatar Color="Color.Default">@context.SortOrder</MudAvatar>
+                                </CardHeaderAvatar>
+                                <CardHeaderContent>
+                                    <MudText Typo="Typo.h4">@context.BeerModel.Name (@context.BeerModel.ABV %)</MudText>
+                                    <MudText Typo="Typo.body1">@context.BeerModel.BeerStyleModel.Name - @context.BeerModel.BeerclassModel?.Name</MudText>
+                                    <MudText Typo="Typo.body1">@context.BeerModel.BreweryModel.Name</MudText>
+                                    <MudText Typo="Typo.body1">@context.BeerModel.BreweryModel.Country</MudText>
+                                </CardHeaderContent>
+                            </MudCardHeader>
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="12" Style="text-align:center;">
+                        <MudItem xs="12" sm="12">
+                            <MudText Typo="Typo.body1">Taste</MudText>
+                        </MudItem>
+                        <MudItem xs="12" sm="12">
+                            <MudRating FullIcon="@Icons.Material.Filled.LocalDrink" EmptyIcon="@Icons.Material.Outlined.LocalDrink" SelectedValue="@context.VoteModel.Taste" SelectedValueChanged="@((SelectedValue) => OnTasteChanged(SelectedValue, context))" MaxValue="6" Size="Size.Large" Color="@Color.Secondary" />
+                        </MudItem>
+                        <MudSpacer/>
+                        <MudItem xs="12" sm="12">
+                            <MudText Typo="Typo.body1">Appearance</MudText>
+                        </MudItem>
+                        <MudItem xs="12" sm="12">
+                            <MudRating FullIcon="@Icons.Material.Filled.RemoveRedEye" EmptyIcon="@Icons.Material.Outlined.RemoveRedEye" SelectedValue="@context.VoteModel.Appearance" SelectedValueChanged="@((SelectedValue) => OnAppearanceChanged(SelectedValue, context))" MaxValue="6" Size="Size.Large" Color="@Color.Primary" />
+                        </MudItem>
+                        <MudSpacer />
+                        <MudItem xs="12" sm="12">
+                            <MudText Typo="Typo.body1">Overall</MudText>
+                        </MudItem>
+                        <MudItem xs="12" sm="12">
+                            <MudRating FullIcon="@Icons.Material.Filled.Celebration" EmptyIcon="@Icons.Material.Outlined.Celebration" SelectedValue="@context.VoteModel.Overall" SelectedValueChanged="@((SelectedValue) => OnOverallChanged(SelectedValue, context))" MaxValue="6" Size="Size.Large" Color="@Color.Tertiary" />
+                        </MudItem>
+                        <MudSpacer />
+                    </MudItem>
+                    <MudItem xs="12" sm="12"><MudTextField Lines="3" TextChanged="@((Value) => NoteChanged(Value, context))" Label="Note" Value="context.VoteModel.Note" Variant="Variant.Outlined" /></MudItem>
+                    <MudItem xs="12" sm="12"><MudButton Disabled="@(!context.IsDirty)" ButtonType="ButtonType.Button" Variant="Variant.Outlined" Color="Color.Info" Size="Size.Small" OnClick="@(() => SaveVote(context))">SAVE</MudButton></MudItem>
+                </MudGrid>
             </ItemTemplate>
         </MudCarousel>
     </MudPaper>
@@ -79,32 +99,32 @@ else
     private TasterModel? currentTaster = null;
     private List<TastingBeerModel>? tastingBeers = null;
 
-    private async Task TasteChanged(double d, TastingBeerModel tbm)
+    private void OnTasteChanged(int value, TastingBeerModel tbm)
     {
-        if (tbm.VoteModel.Taste == d)
+        if (tbm.VoteModel?.Taste == value)
             return;
 
-        tbm.VoteModel.Taste = d;
+        tbm.VoteModel.Taste = value;
         tbm.IsDirty = true;
         StateHasChanged();
     }
 
-    private async Task AppearanceChanged(double d, TastingBeerModel tbm)
+    private void OnAppearanceChanged(int value, TastingBeerModel tbm)
     {
-        if (tbm.VoteModel.Appearance == d)
+        if (tbm.VoteModel?.Appearance == value)
             return;
 
-        tbm.VoteModel.Appearance = d;
+        tbm.VoteModel.Appearance = value;
         tbm.IsDirty = true;
         StateHasChanged();
     }
 
-    private async Task OverallChanged(double d, TastingBeerModel tbm)
+    private void OnOverallChanged(int value, TastingBeerModel tbm)
     {
-        if (tbm.VoteModel.Overall == d)
+        if (tbm.VoteModel?.Overall == value)
             return;
 
-        tbm.VoteModel.Overall = d;
+        tbm.VoteModel.Overall = value;
         tbm.IsDirty = true;
         StateHasChanged();
     }
@@ -167,7 +187,7 @@ else
     private async Task IndexChanged(int index)
     {
         if (tastingBeers.Any(x => x.IsDirty))
-        {   
+        {
             foreach (var tbm in tastingBeers.Where(x => x.IsDirty))
             {
                 await SaveVote(tbm);
@@ -194,13 +214,14 @@ else
         }
 
         tastingBeers = await _db.GetTastingBeers(TastingId);
+        var votes = await _db.GetVotes(currentTaster.TasterId, TastingId);
 
         foreach (var tb in tastingBeers)
         {
             if (currentTasting.IsBlind)
                 tb.Anonymize();
 
-            tb.VoteModel = await _db.GetVote(currentTaster.TasterId, tb.BeerId, currentTasting.TastingId) ?? new VoteModel()
+            tb.VoteModel = votes.FirstOrDefault(x => x.BeerId == tb.BeerId) ?? new VoteModel()
                 {
                     BeerId = tb.BeerId,
                     TasterId = currentTaster.TasterId,

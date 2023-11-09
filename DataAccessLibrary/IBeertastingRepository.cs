@@ -48,6 +48,7 @@ namespace DataAccessLibrary
         Task AddVote(VoteModel vote);
         Task UpdateVote(VoteModel vote);
         Task<VoteModel> GetVote(int tasterId, int beerId, int tastingId);
+        Task<List<VoteModel>> GetVotes(int tasterId, int tastingId);
         Task<List<VoteModel>> GetVotes(int tastingId);
         #endregion
 

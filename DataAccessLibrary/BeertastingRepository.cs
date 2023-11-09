@@ -318,6 +318,16 @@ namespace DataAccessLibrary
             return _db.SaveData(sql, vote);
         }
 
+        public Task<List<VoteModel>> GetVotes(int tasterId, int tastingId)
+        {
+            var sql = @"    SELECT  *
+                              FROM  dbo.Vote
+                             WHERE  TastingId = @TastingId
+                               AND  TasterId = @TasterId";
+
+            return _db.LoadData<VoteModel, dynamic>(sql, new { TastingId = tastingId, TasterId = tasterId});
+
+        }
         public Task<VoteModel> GetVote(int tasterId, int beerId, int tastingId)
         {
             var sql = @"    SELECT  *

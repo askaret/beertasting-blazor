@@ -13,9 +13,9 @@ namespace DataAccessLibrary.Models
         public int BeerId { get; set; }
         public int TastingId { get;set; }
         public int TasterId {  get; set; }
-        public double Taste {  get; set; }
-        public double Appearance {  get; set; }
-        public double Overall {  get; set; }
+        public int Taste {  get; set; }
+        public int Appearance {  get; set; }
+        public int Overall {  get; set; }
         public string Note {  get; set; }
     }
 }
