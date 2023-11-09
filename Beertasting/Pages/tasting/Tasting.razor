@@ -69,7 +69,7 @@ else
         await initializeTaster();
         var tastings = await _db.GetTastings();
         activeTastings = tastings.Where(t => t.IsActive).OrderByDescending(t => t.TastingDate).ToList();
-        oldTastings = tastings.Where(t => !t.IsActive).OrderByDescending(t => t.TastingDate).ToList();
+        oldTastings = tastings.Where(t => !t.IsActive && t.TastingDate < DateTime.Now).OrderByDescending(t => t.TastingDate).ToList();
     }
 
     private async Task initializeTaster()
