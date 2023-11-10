@@ -4,10 +4,10 @@ on:
     workflows: ["Build"]
     types: [requested]
     branches:
-    - main
+    - master
   push:
     branches:
-    - main
+    - master
 env:
   AZURE_WEBAPP_NAME: beertasting
   AZURE_WEBAPP_PACKAGE_PATH: .\published
