@@ -1,5 +1,10 @@
 name: Build and deploy .NET Core application to Web App beertasting
 on:
+  workflow_run:
+    workflows: ["Build"]
+    types: [requested]
+    branches:
+    - main
   push:
     branches:
     - main
