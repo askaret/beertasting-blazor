@@ -1,48 +1,54 @@
-name: Build and deploy (old)
+name: Build and deploy .NET Core application to Web App beertasting
 on:
   push:
     branches:
-    - master
+    - main
 env:
-  AZURE_WEBAPP_NAME: juleølsmaking
-  AZURE_WEBAPP_PACKAGE_PATH: juleølsmaking/publish
-  AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_034A9949ABC6418B9478FC6A2D001F1D }}
-  AZURE_SLOT_NAME: Production
+  AZURE_WEBAPP_NAME: beertasting
+  AZURE_WEBAPP_PACKAGE_PATH: .\published
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 7.0.x
-  WORKING_DIRECTORY: beertasting
+  WORKING_DIRECTORY: .
 jobs:
-  build-and-deploy:
+  build:
     runs-on: windows-latest
+    env:
+      BOB_SECRET: ${{ secrets.APPSETTINGSJSON }}
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-dotnet@v1.8.0
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - name: Find and replace all instances of appsettings.json with the secret APPSETTINGSJSON
+        run: |
+          $files = Get-ChildItem -Path $PSScriptRoot -Filter appsettings.json -File -Recurse
+          foreach ($file in $files){
+              (Get-Content -path $file.FullName -Raw) -replace '.*', '${{ secrets.APPSETTINGSJSON }}' | Set-Content -Path $file.FullName
+          }
+      - name: Restore
+        run: dotnet restore beertasting.sln
+      - name: Build
+        run: dotnet build beertasting.sln --configuration ${{ env.CONFIGURATION }}
+      - name: Test
+        run: dotnet test beertasting.sln --no-build
+      - name: Publish
+        run: dotnet publish beertasting.sln --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
+      - name: Publish Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: webapp
+          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    steps:
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v2
       with:
-        include-prerelease: True
-        dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
-    - name: Restore
-      run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
-    - name: Update secrets
-      run: |
-        dir
-        cd Beertasting
-        Set-Content .\appsettings.json -Value '${{ secrets.AppsettingsJson }}'
-      shell: pwsh      
-    - name: Build
-      run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
-    - name: Test
-      run: dotnet test "${{ env.WORKING_DIRECTORY }}" --no-build
-    - name: Publish
-      run: dotnet publish "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
+        name: webapp
+        path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
     - name: Deploy to Azure WebApp
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        slot-name: ${{ env.AZURE_SLOT_NAME }}
+        publish-profile: ${{ secrets.beertasting_32BB }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-        publish-profile: ${{ env.AZURE_WEBAPP_PUBLISH_PROFILE }}
-    - name: Publish Artifacts
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        name: webapp
-        path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
