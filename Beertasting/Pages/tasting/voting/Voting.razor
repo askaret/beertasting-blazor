@@ -2,14 +2,11 @@
 @page "/tasting/vote/{TastingId:int}/{Beernumber:int}"
 @using DataAccessLibrary
 @using DataAccessLibrary.Models
-@using Beertasting.ViewModels
-@using System.Globalization
-@using System.ComponentModel.DataAnnotations
 
 @inject IBeertastingRepository _db
 @inject ProtectedSessionStorage ProtectedSessionStore
 @inject NavigationManager _nav
-@inject IDialogService DialogService
+@inject ISnackbar Snackbar
 
 <MudText Typo="Typo.h3" Class="pa-4">Beertasting</MudText>
 <MudText Typo="Typo.h4" Class="pa-4">Vote</MudText>
@@ -141,21 +138,32 @@ else
 
     private async Task SaveVote(TastingBeerModel tbm)
     {
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
+        Snackbar.Configuration.VisibleStateDuration = 1;
+        
         tbm.IsDirty = false;
-
         var vote = tbm.VoteModel;
-        if (vote != null && vote.VoteId is null)
+        
+        try
         {
-            await _db.AddVote(vote);
+            if (vote != null && vote.VoteId is null)
+            {
+                await _db.AddVote(vote);
 
-            tbm.VoteModel = await _db.GetVote(tbm.VoteModel.TasterId, tbm.BeerId, tbm.TastingId);
-
+                tbm.VoteModel = await _db.GetVote(tbm.VoteModel.TasterId, tbm.BeerId, tbm.TastingId);
+            }
+            else if (vote != null && vote.VoteId != null)
+            {
+                await _db.UpdateVote(vote);
+            }
         }
-        else if (vote != null && vote.VoteId != null)
+        catch (Exception e)
         {
-            await _db.UpdateVote(vote);
+            Snackbar.Add("Failed to save vote", Severity.Error);
+            throw new Exception("Failed saving vote to database", e);
         }
-
+        
+        Snackbar.Add("Vote successfully saved", Severity.Success);
         StateHasChanged();
     }
 
