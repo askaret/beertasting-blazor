@@ -300,19 +300,22 @@ namespace DataAccessLibrary
 
         public Task AddVote(VoteModel vote)
         {
-            var sql = @"INSERT INTO dbo.Vote (BeerId, TastingId, TasterId, Taste, Appearance, Overall, Note)
-                                    VALUES   (@BeerId, @TastingId, @TasterId, @Taste, @Appearance, @Overall, @Note)";
+            vote.Created = DateTime.Now;
+            var sql = @"INSERT INTO dbo.Vote (BeerId, TastingId, TasterId, Taste, Appearance, Overall, Note, Created)
+                                    VALUES   (@BeerId, @TastingId, @TasterId, @Taste, @Appearance, @Overall, @Note, @Created)";
 
             return _db.SaveData(sql, vote);
         }
 
         public Task UpdateVote(VoteModel vote)
         {
+            vote.LastModified = DateTime.Now;
             var sql = @"    UPDATE  dbo.Vote
                                SET  Overall = @Overall,
                                     Taste = @Taste,
                                     Appearance = @Appearance,
-                                    Note = @Note
+                                    Note = @Note,
+                                    LastModified = @LastModified
                              WHERE  VoteId = @VoteId";
 
             return _db.SaveData(sql, vote);
@@ -359,7 +362,7 @@ namespace DataAccessLibrary
 		                FROM    Dbo.Vote v
 		                JOIN    dbo.Taster t on t.TasterId = v.TasterId
 		                WHERE   LEN(v.Note) > 0 AND v.TastingId = @TastingId
-                        ORDER BY v.VoteId desc";
+                        ORDER BY v.LastModified desc";
 
             return _db.LoadData<NoteModel, dynamic>(sql, new { TastingId = tastingId });
         }

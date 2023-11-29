@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace DataAccessLibrary.Models
 {
     public class VoteModel
@@ -17,5 +12,7 @@ namespace DataAccessLibrary.Models
         public int Appearance {  get; set; }
         public int Overall {  get; set; }
         public string Note {  get; set; }
+        public DateTime? Created { get; set; } = null;
+        public DateTime? LastModified { get; set; } = null;
     }
 }
