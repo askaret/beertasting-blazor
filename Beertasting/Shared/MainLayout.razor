@@ -1,18 +1,8 @@
 ﻿@inherits LayoutComponentBase
-@using Microsoft.Identity.Web
-@using Microsoft.Graph
-@using Beertasting.ViewModels
-@using DataAccessLibrary
-@using DataAccessLibrary.Models
-@using System.Globalization
-@using System.ComponentModel.DataAnnotations
 
 @inject ProtectedSessionStorage ProtectedSessionStore
-@inject MicrosoftIdentityConsentAndConditionalAccessHandler ConsentHandler
-@inject IBeertastingRepository _db
-@inject ILogger<MainLayout> _logger
 
-<MudThemeProvider Theme="@_activeTheme" />
+<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" Theme="BouvetTheme"/>
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -39,52 +29,66 @@
 
 @code {
     bool _drawerOpen = true;
-    private MudTheme _activeTheme = bouvetThemeLight;
-
+    private bool _isDarkMode;
+    private MudThemeProvider _mudThemeProvider;
+    
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
-            await SetTheme();
+        {
+            var themePreference  = await ProtectedSessionStore.GetAsync<string>("theme");
+            
+            if (themePreference.Success && !string.IsNullOrEmpty(themePreference.Value))
+            {
+                _isDarkMode = themePreference.Value == "dark";
+            }
+            else
+            {
+                _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+            }
+            StateHasChanged();
+        }
     }
-    private async Task SetTheme(string? themeName = null)
-    {
-        if (ProtectedSessionStore is null)
-            return;
-
-        if(string.IsNullOrEmpty(themeName))
-        {
-            var res = await ProtectedSessionStore.GetAsync<string>("selected-theme");
-            themeName = res.Success ? res.Value : "bouveThemeLight";
-        }
-        
-        if(themeName!.Equals("bouvetThemeLight"))
-        {
-            _activeTheme = bouvetThemeLight;
-        }
-        else if(themeName.Equals("bouvetThemeDark"))
-        {
-            _activeTheme = bouvetThemeDark;
-        }
-        await ProtectedSessionStore.SetAsync("selected-theme", themeName);
-        StateHasChanged();
-    }
-
+    
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
     }
-
+    
     private async void ThemeToggle()
     {
-        if (_activeTheme == bouvetThemeDark)
-            await SetTheme("bouvetThemeLight");
-        else
-            await SetTheme("bouvetThemeDark");
+        _isDarkMode = !_isDarkMode;
+        await ProtectedSessionStore.SetAsync("theme", _isDarkMode ? "dark" : "light"); 
     }
 
-    static MudTheme bouvetThemeDark = new MudTheme()
+    MudTheme BouvetTheme = new()
     {
         Palette = new Palette()
+        {
+            Background = BouvetColors.NerdyOffWhitePale,
+            DrawerBackground = BouvetColors.NerdyOffWhitePale,
+            Primary = BouvetColors.CloakBlå,
+            Secondary = BouvetColors.BorisOransj,
+            //Surface = BouvetColors.CollinsGrå,
+            //BackgroundGrey = BouvetColors.HotPink,
+            //Black = BouvetColors.Svart,
+            //DrawerText = BouvetColors.ColossusRgba,
+            //DrawerIcon = BouvetColors.WorpBlåRgba,
+            AppbarBackground = BouvetColors.Colossus,
+            //AppbarText = BouvetColors.BorisOransjRgba,
+            TextPrimary = BouvetColors.ColossusRgba,
+            TextSecondary = BouvetColors.Svart,
+            ActionDefault = BouvetColors.ColossusRgba,
+            //ActionDisabled = "rgba(255,0,0, 1)",
+            //ActionDisabledBackground = "rgba(255,255,255, 0.12)",
+            //Divider = BouvetColors.HotPinkRgba,
+            //DividerLight = "rgba(255,255,255, 0.06)",
+            TableLines = BouvetColors.CloakBlå,
+            LinesDefault = BouvetColors.ColossusRgba,
+            //LinesInputs = BouvetColors.BorisOransjRgba,
+            //TextDisabled = BouvetColors.HotPinkRgba,
+        },
+        PaletteDark = new PaletteDark
         {
             Black = "#27272f",
             Background = "#32333d",
@@ -111,32 +115,4 @@
         }
     };
 
-    static MudTheme bouvetThemeLight = new MudTheme()
-    {
-        Palette = new Palette()
-        {
-            Background = BouvetColors.NerdyOffWhitePale,
-            DrawerBackground = BouvetColors.NerdyOffWhitePale,
-            Primary = BouvetColors.CloakBlå,
-            Secondary = BouvetColors.BorisOransj,
-            //Surface = BouvetColors.CollinsGrå,
-            //BackgroundGrey = BouvetColors.HotPink,
-            //Black = BouvetColors.Svart,
-            //DrawerText = BouvetColors.ColossusRgba,
-            //DrawerIcon = BouvetColors.WorpBlåRgba,
-            AppbarBackground = BouvetColors.Colossus,
-            //AppbarText = BouvetColors.BorisOransjRgba,
-            TextPrimary = BouvetColors.ColossusRgba,
-            TextSecondary = BouvetColors.Svart,
-            ActionDefault = BouvetColors.ColossusRgba,
-            //ActionDisabled = "rgba(255,0,0, 1)",
-            //ActionDisabledBackground = "rgba(255,255,255, 0.12)",
-            //Divider = BouvetColors.HotPinkRgba,
-            //DividerLight = "rgba(255,255,255, 0.06)",
-            TableLines = BouvetColors.CloakBlå,
-            LinesDefault = BouvetColors.ColossusRgba,
-            //LinesInputs = BouvetColors.BorisOransjRgba,
-            //TextDisabled = BouvetColors.HotPinkRgba,
-        }
-    };
 }
