@@ -63,6 +63,8 @@ namespace DataAccessLibrary
         Task<List<TasterBeerVoteModel>> GetTasterBeerVotes(int tasterId);     
         Task<LiveTastingInfoModel> GetTastingLiveInfo(int tastingId);
         Task<List<NoteModel>> GetLatestNotesFromTasting(int tastingId);
-        #endregion
-    }
+		Task<List<ChatLogModel>> GetChatLogForTasting(int tastingId);
+		Task<List<string>> GetChatParticipants(int tastingId);
+		#endregion
+	}
 }

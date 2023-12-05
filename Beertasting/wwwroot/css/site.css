@@ -71,3 +71,19 @@ a, .btn-link {
     #components-reconnect-modal.components-reconnect-rejected {
         display: block;
     }
+
+.chat-line {
+    color: black;
+}
+.chat-timestamp {
+    color: green;
+}
+.chat-beernumber {
+    color: saddlebrown;
+}
+.chat-nick {
+    color: red;
+}
+.chat-text {
+    color: darkblue;
+}
