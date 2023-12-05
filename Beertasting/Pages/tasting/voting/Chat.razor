@@ -1,0 +1,101 @@
+﻿@page "/tasting/chat/{id:int}"
+@using Beertasting.ViewModels
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+@using Microsoft.JSInterop
+@layout EmptyLayout
+@inject NavigationManager navManager
+@inject IBeertastingRepository _db
+@inject IJSRuntime JS
+
+<link rel="stylesheet" href="https://unpkg.com/98.css" />
+<link rel="stylesheet" href="/css/fixedsys.css" />
+<style>
+    .window_frame {
+        background-color: white;
+        height: 100%;
+        box-shadow: inset -1px -1px #fff, inset 1px 1px grey, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a
+    }
+    .chat-participant {
+        font-family: fixedsys;
+        display: block;
+        font-size: 24px;
+        margin-left: 4px;
+    }
+    .chat-log-entry {
+        display: block;
+        font-family: fixedsys;
+        font-size: 24px;
+        margin-left: 4px;
+    }
+</style>
+<div class="window" style="width: 100vw; margin: 0 auto;">
+    <div class="title-bar">
+        <div class="title-bar-text">#bouvetjuleøl IRC chat</div>
+        <div class="title-bar-controls">
+            <button aria-label="Minimize"></button>
+            <button aria-label="Maximize"></button>
+            <button aria-label="Close"></button>
+        </div>
+    </div>
+    <div class="window-body" style="height: 90vh;">
+        <div style="display: flex; height: 100%;">
+            <div style="width: 80%; overflow: scroll;" class="window_frame chat-frame" @ref="ChatFrame">
+                @foreach (var chat in ChatLog)
+                {
+                    <span class="chat-log-entry">
+                    @((MarkupString)chat.Prefix())
+                    @chat.Text
+                    </span>
+                }
+            </div>
+            <div style="width: 20%; overflow-x: hidden;" class="window_frame">
+                @foreach (var nick in ChatParticipants)
+                {
+                    <span class="chat-participant">@nick</span>
+                }
+            </div>
+
+        </div>
+    </div>
+    <div class="status-bar">
+        <p class="status-bar-field">Press F1 for help</p>
+        <p class="status-bar-field">Slide 1</p>
+        <p class="status-bar-field">CPU Usage: 14%</p>
+    </div>
+</div>
+<script type="text/javascript">
+    function scrollToEnd(element) {
+        setTimeout(() => element.scrollTo(0, element.scrollHeight), 500);
+    }
+</script>
+@code
+{
+    [Parameter] public int Id { get; set; }
+    private List<string> ChatParticipants { get; set; } = new();
+    private List<ChatLogEntry> ChatLog { get; set; } = new();
+    public ElementReference ChatFrame { get; set; }
+
+    private readonly System.Timers.Timer _timer = new(TimeSpan.FromSeconds(2));
+
+    protected override void OnInitialized()
+    {
+        _timer.Elapsed += async (object? sender, System.Timers.ElapsedEventArgs e) =>
+        {
+            await UpdateChat();
+        };
+        _timer.Enabled = true;
+    }
+
+    private async Task UpdateChat()
+    {
+        ChatParticipants = await _db.GetChatParticipants(Id);
+        ChatLog = (await _db.GetChatLogForTasting(Id)).OrderBy(q => q.Timestamp).ThenBy(q => q.SortOrder).Select(e => new ChatLogEntry(e.DisplayName, e.Note, e.Timestamp, e.SortOrder)).ToList();
+
+        await InvokeAsync(StateHasChanged);
+
+        await JS.InvokeVoidAsync("scrollToEnd", ChatFrame);
+    }
+
+
+}

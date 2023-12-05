@@ -366,5 +366,45 @@ namespace DataAccessLibrary
 
             return _db.LoadData<NoteModel, dynamic>(sql, new { TastingId = tastingId });
         }
+
+        public Task<List<ChatLogModel>> GetChatLogForTasting(int tastingId)
+        {
+            var sql = @";with
+    Beers
+    as
+    (
+        select t.TastingId, b.BeerId, tb.SortOrder
+        from Tasting t
+            inner join TastingBeer tb on t.TastingId = tb.TastingId
+            inner join Beer b on tb.BeerId = b.BeerId
+    )
+
+select t.DisplayName
+    , coalesce(v.LastModified, coalesce(v.Created, getdate())) as [Timestamp]
+    , v.Note
+    , b.SortOrder
+from Vote v
+    inner join Beers b on v.TastingId = b.TastingId and v.BeerId = b.BeerId
+    inner join Taster t on v.TasterId = t.TasterId
+where v.TastingId = @TastingId and v.Note is not null and v.Note <> ''
+order by v.VoteId";
+
+            return _db.LoadData<ChatLogModel, dynamic>(sql, new { TastingId = tastingId });
+        }
+
+        public Task<List<string>> GetChatParticipants(int tastingId)
+        {
+            var sql = @"select 
+    case when t.IsAdmin = 1 then 
+        '@' + t.DisplayName
+        else
+        t.DisplayName
+        end as DisplayName
+    from Taster t
+    where t.TasterId in (Select TasterId from Vote where TastingId = @TastingId)
+    order by t.IsAdmin desc, t.DisplayName";
+
+            return _db.LoadData<string, dynamic>(sql, new { TastingId = tastingId });
+        }
     }
 }

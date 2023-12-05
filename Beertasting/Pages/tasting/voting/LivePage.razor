@@ -43,66 +43,8 @@ else
 			</MudCard>
 		</MudItem>
 	</MudGrid>
-	<MudGrid Class="pa-4">
-		<MudItem xs="12" sm="12" Class="align-content-center">
-			<MudCard>
-				<MudCardHeader>
-					<MudText Typo="Typo.h5">Average scores (all votes)</MudText>
-				</MudCardHeader>
-				<MudCardContent>
-					<MudItem xs="2" sm="2" Class="pa-2">
-						<MudText Typo="Typo.body1">Average taste</MudText>
-					</MudItem>
-					<MudItem xs="10" sm="10" Class="pa-2">
-						<MudProgressLinear Color="Color.Primary" Value="_liveInfo.Taste" Min="0" Max="10" />
-					</MudItem>
+	<iframe src="/tasting/chat/@Id" style="height: 70vh;"></iframe>
 
-					<MudItem xs="2" sm="2" Class="pa-2">
-						<MudText Typo="Typo.body1">Average appearance</MudText>
-					</MudItem>
-					<MudItem xs="10" sm="10" Class="pa-2">
-						<MudProgressLinear Color="Color.Secondary" Value="_liveInfo.Appearance" Min="0" Max="10" />
-					</MudItem>
-
-					<MudItem xs="2" sm="2" Class="pa-2">
-						<MudText Typo="Typo.body1">Average overall</MudText>
-					</MudItem>
-					<MudItem xs="10" sm="10" Class="pa-2">
-						<MudProgressLinear Color="Color.Tertiary" Value="_liveInfo.Overall" Min="0" Max="10" />
-					</MudItem>
-				</MudCardContent>
-			</MudCard>
-		</MudItem>
-	</MudGrid>
-
-	<MudGrid Class="pa-4">
-		@if  (!string.IsNullOrEmpty(quote))
-		{
-			<MudItem xs="12" sm="12" Class="align-content-center">
-					<MudCard>
-					<MudCardHeader>
-						<CardHeaderContent>
-							<MudText Typo="Typo.h5">AI-insight</MudText>
-							<MudText Typo="Typo.h4" Color="Color.Info">@quote</MudText>
-						</CardHeaderContent>
-					</MudCardHeader>
-				</MudCard>
-			</MudItem>
-		}
-		@if (_note is not null)
-		{
-			<MudItem xs="12" sm="12" Class="align-content-center">
-				<MudCard>
-					<MudCardHeader>
-						<CardHeaderContent>
-							<MudText Typo="Typo.h5">@_note.Taster says</MudText>
-							<MudText Typo="Typo.h4" Color="Color.Info">@_note.Note</MudText>
-						</CardHeaderContent>
-					</MudCardHeader>
-				</MudCard>
-			</MudItem>
-		}
-	</MudGrid>
 }
 @code
 {
