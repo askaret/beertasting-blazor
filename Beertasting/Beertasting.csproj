@@ -11,6 +11,7 @@
     <PackageReference Include="Blazored.Localstorage" Version="4.3.0" />
     <PackageReference Include="Blazored.SessionStorage" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Azure.SignalR" Version="1.22.0" />
     <PackageReference Include="Microsoft.Identity.Web" Version="1.25.8" />
     <PackageReference Include="Microsoft.Identity.Web.MicrosoftGraph" Version="1.25.8" />
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.25.8" />

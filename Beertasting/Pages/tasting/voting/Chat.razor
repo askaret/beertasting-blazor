@@ -76,7 +76,7 @@
     private List<ChatLogEntry> ChatLog { get; set; } = new();
     public ElementReference ChatFrame { get; set; }
 
-    private readonly System.Timers.Timer _timer = new(TimeSpan.FromSeconds(2));
+    private readonly System.Timers.Timer _timer = new(TimeSpan.FromSeconds(1));
 
     protected override void OnInitialized()
     {
