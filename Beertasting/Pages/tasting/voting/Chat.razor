@@ -78,13 +78,11 @@
 
     private readonly System.Timers.Timer _timer = new(TimeSpan.FromSeconds(1));
 
-    protected override void OnInitialized()
+    private CancellationToken ct = new CancellationTokenSource().Token;
+
+    protected override async Task OnInitializedAsync()
     {
-        _timer.Elapsed += async (object? sender, System.Timers.ElapsedEventArgs e) =>
-        {
-            await UpdateChat();
-        };
-        _timer.Enabled = true;
+        await UpdateChat();
     }
 
     private async Task UpdateChat()
@@ -95,6 +93,12 @@
         await InvokeAsync(StateHasChanged);
 
         await JS.InvokeVoidAsync("scrollToEnd", ChatFrame);
+        
+        // Doing this recursively because the timer didn't stop running when exiting the page...
+        await Task.Delay(1000).ContinueWith(async (x) =>
+        {
+            await UpdateChat();
+        }, ct);
     }
 
 
