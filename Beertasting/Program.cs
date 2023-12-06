@@ -15,7 +15,7 @@ builder.Logging.AddConsole();
 builder.Services.AddSignalR(options =>
 {
     options.MaximumReceiveMessageSize = 512 * 1024;
-});
+}).AddAzureSignalR();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor(options =>
 {
