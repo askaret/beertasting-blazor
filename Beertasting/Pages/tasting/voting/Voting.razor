@@ -71,7 +71,7 @@ else
                         </MudItem>
                         <MudSpacer />
                     </MudItem>
-                    <MudItem xs="12" sm="12"><MudTextField Lines="3" TextChanged="@((Value) => NoteChanged(Value, context))" Label="Note" Value="context.VoteModel.Note" Variant="Variant.Outlined" /></MudItem>
+                    <MudItem xs="12" sm="12"><MudTextField Lines="3" TextChanged="@((Value) => NoteChanged(Value, context))" Label="Note (max 250 chars)" Value="context.VoteModel.Note" Variant="Variant.Outlined" MaxLength="250" /></MudItem>
                     <MudItem xs="12" sm="12"><MudButton Disabled="@(!context.IsDirty)" ButtonType="ButtonType.Button" Variant="Variant.Outlined" Color="Color.Info" Size="Size.Small" OnClick="@(() => SaveVote(context))">SAVE</MudButton></MudItem>
                 </MudGrid>
             </ItemTemplate>
@@ -137,20 +137,22 @@ else
     {
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
         Snackbar.Configuration.VisibleStateDuration = 1;
-        
+
         tbm.IsDirty = false;
         var vote = tbm.VoteModel;
-        
+
         try
         {
             if (vote != null && vote.VoteId is null)
             {
+                vote.Note = new(vote.Note.Take(250).ToArray());
                 await _db.AddVote(vote);
 
                 tbm.VoteModel = await _db.GetVote(tbm.VoteModel.TasterId, tbm.BeerId, tbm.TastingId);
             }
             else if (vote != null && vote.VoteId != null)
             {
+                vote.Note = new(vote.Note.Take(250).ToArray());
                 await _db.UpdateVote(vote);
             }
         }
