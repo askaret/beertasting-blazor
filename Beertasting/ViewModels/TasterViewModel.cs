@@ -35,7 +35,7 @@ namespace Beertasting.ViewModels
         {
             return new TasterModel()
             {
-                DisplayName = DisplayName,
+                DisplayName = new(DisplayName.Take(18).ToArray()),
                 EmailAddress = EmailAddress,
                 IsAdmin = IsAdmin, 
                 TasterId = TasterId

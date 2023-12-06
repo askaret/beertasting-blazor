@@ -47,7 +47,7 @@ else
             <MudCardContent>
                 <MudGrid>
                     <MudItem xs="12" sm="6">
-                        <MudTextField Label="Display name" @bind-Value="tasterVM.DisplayName" For="@(() => tasterVM.DisplayName)" Variant="Variant.Outlined" />
+                        <MudTextField Label="Display name (max 18 char)" @bind-Value="tasterVM.DisplayName" For="@(() => tasterVM.DisplayName)" Variant="Variant.Outlined" MaxLength="18"/>
                     </MudItem>
                     <MudItem xs="12" sm="6">
                         <MudCardActions>
