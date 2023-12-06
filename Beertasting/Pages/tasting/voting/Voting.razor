@@ -8,16 +8,13 @@
 @inject NavigationManager _nav
 @inject ISnackbar Snackbar
 
-<MudText Typo="Typo.h3" Class="pa-4">Beertasting</MudText>
-<MudText Typo="Typo.h4" Class="pa-4">Vote</MudText>
-
 @if (currentTaster == null || currentTasting == null || (tastingBeers is null || !tastingBeers.Any()))
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <MudPaper>
+    <MudPaper class="mt-3">
         <MudCarousel @ref="_carousel" ItemsSource="@tastingBeers.OrderBy(x => x.SortOrder)" Style="height:80vh;" ShowArrows="true" ShowDelimiters="false" AutoCycle="false" SelectedIndexChanged="@IndexChanged" ArrowsPosition="Position.Top">
             <PreviousButtonTemplate>
                 <div Class="mud-button-root mud-icon-button mud-icon-button-color-inherit mud-ripple mud-ripple-icon">
