@@ -1,0 +1,10 @@
+﻿@page "/public"
+@namespace Beertasting.Pages
+@using Microsoft.AspNetCore.Authorization
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@attribute [AllowAnonymous]
+@{
+    Layout = "_EmptyLayout";
+}
+
+<component type="typeof(PublicApp)" render-mode="Server" />

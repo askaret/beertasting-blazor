@@ -77,6 +77,7 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
     endpoints.MapBlazorHub();
+    endpoints.MapFallbackToPage("~/public/{**segment}", "/_PublicHost");
     endpoints.MapFallbackToPage("/_Host");
 });
 
