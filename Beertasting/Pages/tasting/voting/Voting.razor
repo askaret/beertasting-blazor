@@ -140,19 +140,19 @@ else
 
         tbm.IsDirty = false;
         var vote = tbm.VoteModel;
-
+        
         try
         {
             if (vote != null && vote.VoteId is null)
             {
-                vote.Note = new(vote.Note.Take(250).ToArray());
+                vote.Note = new(vote.Note?.Take(250).ToArray());
                 await _db.AddVote(vote);
 
                 tbm.VoteModel = await _db.GetVote(tbm.VoteModel.TasterId, tbm.BeerId, tbm.TastingId);
             }
             else if (vote != null && vote.VoteId != null)
             {
-                vote.Note = new(vote.Note.Take(250).ToArray());
+                vote.Note = new(vote.Note?.Take(250).ToArray());
                 await _db.UpdateVote(vote);
             }
         }
